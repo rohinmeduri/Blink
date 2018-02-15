@@ -9,12 +9,13 @@ public class PlayerMovement : NetworkBehaviour {
     public bool canJump = false;
     public int onWall = 0; // 1: left wall. -1: right wall
 
-    public const int GROUND_RUN_SPEED = 10;
-    public const int AIR_RUN_FORCE = 100;
-    public const int AIR_MAX_SPEED = 10;
-    public const int JUMP_SPEED = 12;
+    public const int GROUND_RUN_FORCE = 3;
+    public const int AIR_RUN_FORCE = 1;
+    public const int MAX_SPEED = 10;
+    public const int JUMP_SPEED = 15;
     public const int JUMP_NUM = 2;
-    public const int WALLJUMP_SPEED = 10;
+    public const int WALLJUMP_SPEED = 15;
+    public const float DRAG_COEF = 0.8F;
 
     public Rigidbody2D rb2D;
     public Collider2D c2D;
@@ -43,49 +44,66 @@ public class PlayerMovement : NetworkBehaviour {
 
         run();
         jump();
+        
 
     }
 
+    /**
+     * Script for Running
+     */
     void run()
     {
-        // replace with same method for ground vs air: forces with capped velocity
+        // changes velocity gradually to a goal velocity determined by controls
+        float goalSpeed = MAX_SPEED * Input.GetAxis("Horizontal");
+        int runForce;
 
-        if (c2D.IsTouching(ground))
+        if (c2D.IsTouching(ground)) runForce = GROUND_RUN_FORCE;
+        else runForce = AIR_RUN_FORCE;
+
+        if (Mathf.Abs(goalSpeed - rb2D.velocity.x) < runForce)
         {
-            rb2D.velocity = new Vector2(GROUND_RUN_SPEED * Input.GetAxis("Horizontal"), rb2D.velocity.y);
+            rb2D.velocity = new Vector2(goalSpeed, rb2D.velocity.y);
         }
         else
         {
-            rb2D.AddForce(new Vector2((rb2D.velocity.x < AIR_MAX_SPEED) ? AIR_RUN_FORCE * Input.GetAxis("Horizontal") : 0, 0));
+            rb2D.velocity = new Vector2(rb2D.velocity.x + runForce * Mathf.Sign(goalSpeed - rb2D.velocity.x), rb2D.velocity.y);
         }
     }
-
+    
+    /**
+     * Script for Jumping
+     */
     void jump()
     {
-
+        // checks if touching walls
         int whichWall = touchingCollider();
 
-        if (Input.GetAxis("Jump") > 0 && jumps > 0 && canJump)
+        if (Input.GetAxis("Jump") > 0 && canJump)
         {
-            if (whichWall == 0)
+            if (whichWall != 0) // walljump
+            {
+                rb2D.velocity = new Vector2(whichWall * WALLJUMP_SPEED, JUMP_SPEED);
+            }
+            else if (jumps > 0) // normal jump
             {
                 rb2D.velocity = new Vector2(rb2D.velocity.x, JUMP_SPEED);
                 jumps--;
-            }
-            else
-            {
-                rb2D.velocity = new Vector2(whichWall * WALLJUMP_SPEED, JUMP_SPEED);
             }
 
             canJump = false;
         }
 
+        // resets jump
         if (Input.GetAxis("Jump") == 0)
         {
             canJump = true;
         }
     }
-
+    
+    /**
+     * Checks for touching walls
+     * Will need to edit later to accomodate walljumping on platforms
+     */ 
     int touchingCollider()
     {
         if (c2D.IsTouching(leftWall))
@@ -98,12 +116,13 @@ public class PlayerMovement : NetworkBehaviour {
         }
         return 0;
     }
-
-
-
-
+    
+    /**
+     * Collision Detector
+     */ 
     void OnCollisionEnter2D(Collision2D col)
-    {
+    {   
+        // Resets jump counter when touching ground
         if (col.gameObject.name == "Ground") // possibly can glitch in the future if player lands perfectly on ground without colliding with it
         {
             jumps = JUMP_NUM;
