@@ -7,6 +7,8 @@ public class PlayerMovement : NetworkBehaviour {
 
     public int jumps = 0;
     public bool canJump = false;
+
+    [SyncVar]
     private bool facingRight = true;
 
     public const float GROUND_RUN_FORCE = 3; // How fast player can attain intended velocity on ground
@@ -36,8 +38,9 @@ public class PlayerMovement : NetworkBehaviour {
     // Update is called once per frame
     void Update()
     {
-
-        if (!isLocalPlayer)
+        gameObject.GetComponent<SpriteRenderer>().flipX = !facingRight;
+       
+        if (!hasAuthority)
         {
             return;
         }
@@ -46,13 +49,23 @@ public class PlayerMovement : NetworkBehaviour {
         jump();
     }
 
+    [Command]
+    void CmdFlipSprite(bool fr)
+    {
+        facingRight = fr;
+    }
+
     /**
      * Script for Running
      */
     void run()
     {
-        facingRight = Input.GetAxis("Horizontal") > 0 || (Input.GetAxis("Horizontal") == 0 && facingRight);
-        gameObject.GetComponent<SpriteRenderer>().flipX = !facingRight;
+        bool facingRightNow = Input.GetAxis("Horizontal") > 0 || (Input.GetAxis("Horizontal") == 0 && facingRight);
+        if(facingRightNow != facingRight)
+        {
+            CmdFlipSprite(facingRightNow);
+        }
+        facingRight = facingRightNow;
 
         // changes velocity gradually to a goal velocity determined by controls
         float goalSpeed = MAX_SPEED * Input.GetAxis("Horizontal");
