@@ -13,30 +13,25 @@ public class PlayerMovement : NetworkBehaviour {
     public const float AIR_RUN_FORCE = 1; // .... in air
     public const float MAX_SPEED = 15; // maximum horizontal speed
     public const float JUMP_SPEED = 15; // jump height
-    public const int JUMP_NUM = 1; // number of jumps without touching ground
+    public const int JUMP_NUM = 2; // number of jumps without touching ground
     public const float WALLJUMP_SPEED = 15; // horizontal speed gained from wall-jumps
     public const float FALL_SPEED = -20; // maximum fall speed
     public const float FALL_FORCE = 1; // force of gravity
     public const float FALL_COEF = 2; // How much player can control fall speed. Smaller = more control (preferrably > 1 [see for yourself ;)])
+    public const float MIN_WJ_RECOVERY_ANGLE = -Mathf.PI / 4; // smallest angle of a wall where jump number can be recovered
 
     public Rigidbody2D rb2D;
     public Collider2D c2D;
     
-    private bool touchingGround = false;
-    private int touchingWall = 0; // -1: right wall. 1: left wall. 0: no wall.
-
-    private Collider2D leftWall;
-    private Collider2D rightWall;
-    private Collider2D ground;
+    private Vector2 currentNormal;
+    
 
     // Use this for initialization
     void Start () {
         rb2D = gameObject.GetComponent<Rigidbody2D>();
         c2D = gameObject.GetComponent<Collider2D>();
-        leftWall = GameObject.Find("Left Wall").GetComponent<Collider2D>();
-        rightWall = GameObject.Find("Right Wall").GetComponent<Collider2D>();
-        ground = GameObject.Find("Ground").GetComponent<Collider2D>();
-}
+        currentNormal = new Vector2(0, 0);
+    }
 
     // Update is called once per frame
     void Update()
@@ -49,8 +44,6 @@ public class PlayerMovement : NetworkBehaviour {
 
         run();
         jump();
-
-        Debug.Log(touchingGround + ", " + touchingWall);
     }
 
     /**
@@ -65,8 +58,9 @@ public class PlayerMovement : NetworkBehaviour {
         float goalSpeed = MAX_SPEED * Input.GetAxis("Horizontal");
         float runForce;
 
-        if (touchingGround) runForce = GROUND_RUN_FORCE;
-        else runForce = AIR_RUN_FORCE;
+        if (currentNormal.Equals(new Vector2(0,0))) runForce = AIR_RUN_FORCE;
+        else runForce = GROUND_RUN_FORCE;
+        
 
         if (Mathf.Abs(goalSpeed - rb2D.velocity.x) < runForce)
         {
@@ -83,23 +77,16 @@ public class PlayerMovement : NetworkBehaviour {
      * Script for Jumping
      */
     void jump()
-    { 
-        
+    {
         // checks if touching walls
-        if (Input.GetAxis("Jump") > 0 && canJump)
+        if (Input.GetAxis("Jump") > 0 && canJump && jumps > 0)
         {
-            if (touchingWall != 0 && !touchingGround) // walljump
-            {
-                rb2D.velocity = new Vector2(touchingWall * WALLJUMP_SPEED, JUMP_SPEED);
-            }
-            else if (jumps > 0) // normal jump
-            {
-                rb2D.velocity = new Vector2(rb2D.velocity.x, JUMP_SPEED);
-                jumps--;
-            }
-
+            rb2D.velocity = new Vector2(WALLJUMP_SPEED * currentNormal.x + rb2D.velocity.x, JUMP_SPEED);
+            jumps--;
             canJump = false;
         }
+        
+
 
         // resets jump
         if (Input.GetAxis("Jump") == 0)
@@ -122,44 +109,33 @@ public class PlayerMovement : NetworkBehaviour {
     
     /**
      * Collision Detector
-     * Need to find a reliable way to figure out if touching ground and if touching wall
-     * Possibly use coll.GetContacts()?
      */ 
-    private void OnCollisionEnter2D(Collision2D coll)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        GameObject collGO = coll.gameObject;
-
-        // check if touching a wall
-        if (Mathf.Abs(c2D.gameObject.transform.position.y - collGO.gameObject.transform.position.y) < (c2D.gameObject.GetComponent<Collider2D>().bounds.size.y + collGO.gameObject.GetComponent<Collider2D>().bounds.size.y) / 2 - 0.1F)
-        {
-            touchingWall = (int)Mathf.Sign(c2D.gameObject.transform.position.x - collGO.gameObject.transform.position.x);
-        }
-        else
-        {
-            // check if touching ground from above
-            if (c2D.gameObject.transform.position.y > collGO.gameObject.transform.position.y)
-            {
-                touchingGround = true;
-
-                // resets jumps
-                jumps = JUMP_NUM;
-            }
-        }
         
     }
 
-    private void OnCollisionExit2D(Collision2D coll)
+    private void OnCollisionStay2D(Collision2D collision)
     {
-        GameObject collGO = coll.gameObject;
+        
+        ContactPoint2D[] cps = new ContactPoint2D[2];
 
-        // check if leaving wall
-        if(Mathf.Abs(c2D.gameObject.transform.position.y - collGO.gameObject.transform.position.y) < (c2D.gameObject.GetComponent<Collider2D>().bounds.size.y + collGO.gameObject.GetComponent<Collider2D>().bounds.size.y) / 2 - 0.1F)
+        collision.GetContacts(cps);
+
+        ContactPoint2D cp = cps[0];
+        
+        if(cp.normal.y > Mathf.Sin(MIN_WJ_RECOVERY_ANGLE)) jumps = JUMP_NUM;
+
+        if (Mathf.Abs(cp.normal.y) >= Mathf.Abs(currentNormal.y))
         {
-            touchingWall = 0;
+            currentNormal = cp.normal;
         }
-        else // leaving ground
-        {
-            touchingGround = false;
-        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        Debug.Log(currentNormal.x + ", " + currentNormal.y);
+        currentNormal = new Vector2(0, 0);
+        jumps--;
     }
 }
