@@ -18,7 +18,6 @@ public class PlayerMovement : NetworkBehaviour {
     public const float FALL_SPEED = -10; // maximum fall speed
     public const float FALL_FORCE = 1; // force of gravity
     public const float FALL_COEF = 2; // How much player can control fall speed. Smaller = more control (preferrably > 1 [see for yourself ;)])
-
     public Rigidbody2D rb2D;
     public Collider2D c2D;
 
