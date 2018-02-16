@@ -33,13 +33,13 @@ public class PlayerMovement : NetworkBehaviour {
         leftWall = GameObject.Find("Left Wall").GetComponent<Collider2D>();
         rightWall = GameObject.Find("Right Wall").GetComponent<Collider2D>();
         ground = GameObject.Find("Ground").GetComponent<Collider2D>();
-}
+    }
 
     // Update is called once per frame
     void Update()
     {
 
-        if (!isLocalPlayer)
+        if (!hasAuthority)
         {
             return;
         }
