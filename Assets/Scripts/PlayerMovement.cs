@@ -7,6 +7,7 @@ public class PlayerMovement : NetworkBehaviour {
 
     public int jumps = 0;
     public bool canJump = false;
+    private bool facingRight = true;
 
     public const float GROUND_RUN_FORCE = 3; // How fast player can attain intended velocity on ground
     public const float AIR_RUN_FORCE = 1; // .... in air
@@ -54,6 +55,7 @@ public class PlayerMovement : NetworkBehaviour {
      */
     void run()
     {
+        facingRight = Input.GetAxis("Horizontal") > 0 || (Input.GetAxis("Horizontal") == 0 && facingRight);
         // changes velocity gradually to a goal velocity determined by controls
         float goalSpeed = MAX_SPEED * Input.GetAxis("Horizontal");
         float runForce;
@@ -69,6 +71,7 @@ public class PlayerMovement : NetworkBehaviour {
         {
             rb2D.velocity = new Vector2(rb2D.velocity.x + runForce * Mathf.Sign(goalSpeed - rb2D.velocity.x), rb2D.velocity.y);
         }
+        gameObject.GetComponent<SpriteRenderer>().flipX = !facingRight;
     }
 
     /**
