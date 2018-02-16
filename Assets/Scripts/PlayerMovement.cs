@@ -147,7 +147,6 @@ public class PlayerMovement : NetworkBehaviour {
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        Debug.Log(currentNormal.x + ", " + currentNormal.y);
         currentNormal = new Vector2(0, 0);
         jumps--;
     }
