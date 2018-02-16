@@ -7,15 +7,16 @@ public class PlayerMovement : NetworkBehaviour {
 
     public int jumps = 0;
     public bool canJump = false;
-    public int onWall = 0; // 1: left wall. -1: right wall
 
-    public const int GROUND_RUN_FORCE = 3;
-    public const int AIR_RUN_FORCE = 1;
-    public const int MAX_SPEED = 10;
-    public const int JUMP_SPEED = 15;
-    public const int JUMP_NUM = 2;
-    public const int WALLJUMP_SPEED = 15;
-    public const float DRAG_COEF = 0.8F;
+    public const float GROUND_RUN_FORCE = 3; // How fast player can attain intended velocity on ground
+    public const float AIR_RUN_FORCE = 1; // .... in air
+    public const float MAX_SPEED = 10; // maximum horizontal speed
+    public const float JUMP_SPEED = 15; // jump height
+    public const int JUMP_NUM = 2; // number of jumps without touching ground
+    public const float WALLJUMP_SPEED = 15; // horizontal speed gained from wall-jumps
+    public const float FALL_SPEED = -10; // maximum fall speed
+    public const float FALL_FORCE = 1; // force of gravity
+    public const float FALL_COEF = 2; // How much player can control fall speed. Smaller = more control (preferrably > 1 [see for yourself ;)])
 
     public Rigidbody2D rb2D;
     public Collider2D c2D;
@@ -55,7 +56,7 @@ public class PlayerMovement : NetworkBehaviour {
     {
         // changes velocity gradually to a goal velocity determined by controls
         float goalSpeed = MAX_SPEED * Input.GetAxis("Horizontal");
-        int runForce;
+        float runForce;
 
         if (c2D.IsTouching(ground)) runForce = GROUND_RUN_FORCE;
         else runForce = AIR_RUN_FORCE;
@@ -69,7 +70,7 @@ public class PlayerMovement : NetworkBehaviour {
             rb2D.velocity = new Vector2(rb2D.velocity.x + runForce * Mathf.Sign(goalSpeed - rb2D.velocity.x), rb2D.velocity.y);
         }
     }
-    
+
     /**
      * Script for Jumping
      */
@@ -98,13 +99,25 @@ public class PlayerMovement : NetworkBehaviour {
         {
             canJump = true;
         }
+
+        float fallSpeed = FALL_SPEED * (1 - Input.GetAxis("Vertical") / FALL_COEF);
+
+        // simulate gravity
+        if (Mathf.Abs(fallSpeed - rb2D.velocity.y) < FALL_FORCE)
+        {
+            rb2D.velocity = new Vector2(rb2D.velocity.x, fallSpeed);
+        }
+        else
+        {
+            rb2D.velocity = new Vector2(rb2D.velocity.x, rb2D.velocity.y + FALL_FORCE * Mathf.Sign(fallSpeed - rb2D.velocity.y));
+        }
     }
-    
-    /**
-     * Checks for touching walls
-     * Will need to edit later to accomodate walljumping on platforms
-     */ 
-    int touchingCollider()
+
+     /**
+      * Checks for touching walls
+      * Will need to edit later to accomodate walljumping on platforms
+      */
+    int touchingCollider() // 1: left wall. -1: right wall. 0: not touching walls
     {
         if (c2D.IsTouching(leftWall))
         {
