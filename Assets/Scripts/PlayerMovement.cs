@@ -86,7 +86,7 @@ public class PlayerMovement : NetworkBehaviour {
 
         if (Input.GetAxis("Jump") > 0 && canJump)
         {
-            if (whichWall != 0) // walljump
+            if (whichWall != 0 && !c2D.IsTouching(ground)) // walljump
             {
                 rb2D.velocity = new Vector2(whichWall * WALLJUMP_SPEED, JUMP_SPEED);
             }
