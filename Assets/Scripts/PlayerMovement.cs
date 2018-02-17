@@ -58,6 +58,12 @@ public class PlayerMovement : NetworkBehaviour {
 
     void FixedUpdate()
     {
+
+        if (!hasAuthority)
+        {
+            return;
+        }
+
         run();
         jump();
     }
