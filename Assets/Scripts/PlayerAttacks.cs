@@ -14,6 +14,8 @@ public class PlayerAttacks : NetworkBehaviour {
     public float playerHeight;
     
     void FixedUpdate () {
+        Debug.Log(attackButtonHeld);
+
         if (!hasAuthority)
         {
             return;
@@ -36,7 +38,8 @@ public class PlayerAttacks : NetworkBehaviour {
 
         else
         {
-            if (attackButtonHeld == true && canAttack)
+
+            if (attackButtonHeld && canAttack)
             {
                 player.GetComponent<Rigidbody2D>().velocity = new Vector2 (0, 0);
                 float horizontalDirection;
@@ -66,7 +69,9 @@ public class PlayerAttacks : NetworkBehaviour {
                     Debug.Log("hit");
                     //hit.rigidbody.AddForce(direction * attackForce);
                     CmdKnockback(hit.rigidbody.gameObject, direction);
+                    
                 }
+
                 canAttack = false;
             }
             attackButtonHeld = false;
@@ -79,6 +84,7 @@ public class PlayerAttacks : NetworkBehaviour {
         go.GetComponent<Rigidbody2D>().velocity = dir * baseAttackForce;
         go.GetComponent<PlayerMovement>().hitStun();
         RpcKnockback(go, dir);
+
     }
 
     [ClientRpc]
@@ -86,5 +92,6 @@ public class PlayerAttacks : NetworkBehaviour {
     {
         go.GetComponent<Rigidbody2D>().velocity = dir * baseAttackForce;
         go.GetComponent<PlayerMovement>().hitStun();
+
     }
 }
