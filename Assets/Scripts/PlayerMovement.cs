@@ -11,16 +11,17 @@ public class PlayerMovement : NetworkBehaviour {
     [SyncVar]
     private bool facingRight = true;
 
-    public const float GROUND_RUN_FORCE = 3; // How fast player can attain intended velocity on ground
+    public const float GROUND_RUN_FORCE = 5; // How fast player can attain intended velocity on ground
     public const float AIR_RUN_FORCE = 1; // .... in air
     public const float MAX_SPEED = 15; // maximum horizontal speed
     public const float JUMP_SPEED = 15; // jump height
-    public const int JUMP_NUM = 2; // number of jumps without touching ground
+    public const int JUMP_NUM = 1; // number of midair jumps without touching ground
     public const float WALLJUMP_SPEED = 15; // horizontal speed gained from wall-jumps
     public const float FALL_SPEED = -20; // maximum fall speed
     public const float FALL_FORCE = 1; // force of gravity
     public const float FALL_COEF = 2; // How much player can control fall speed. Smaller = more control (preferrably > 1 [see for yourself ;)])
-    public const float MIN_WJ_RECOVERY_ANGLE = -Mathf.PI / 4; // smallest angle of a wall where jump number can be recovered
+    public const float MAX_WJABLE_ANGLE = -Mathf.PI / 18; // largest negative angle of a wall where counts as walljump
+    public const float MIN_WJ_RECOVERY_ANGLE = Mathf.PI / 18; // smallest angle of a wall where air jumps are recovered
 
     public Rigidbody2D rb2D;
     public Collider2D c2D;
@@ -71,10 +72,11 @@ public class PlayerMovement : NetworkBehaviour {
         float goalSpeed = MAX_SPEED * Input.GetAxis("Horizontal");
         float runForce;
 
+        // determine whether should use ground acceleration or air acceleration
         if (currentNormal.Equals(new Vector2(0,0))) runForce = AIR_RUN_FORCE;
         else runForce = GROUND_RUN_FORCE;
         
-
+        // move to goal speed if possible; otherwise, approach it by "runForce"
         if (Mathf.Abs(goalSpeed - rb2D.velocity.x) < runForce)
         {
             rb2D.velocity = new Vector2(goalSpeed, rb2D.velocity.y);
@@ -91,22 +93,33 @@ public class PlayerMovement : NetworkBehaviour {
      */
     void jump()
     {
+        Debug.Log(jumps);
+
         // checks if touching walls
-        if (Input.GetAxis("Jump") > 0 && canJump && jumps > 0)
+        if (Input.GetAxis("Jump") > 0 && canJump) 
         {
-            rb2D.velocity = new Vector2(WALLJUMP_SPEED * currentNormal.x + rb2D.velocity.x, JUMP_SPEED);
-            jumps--;
+            // if have midair jumps or attempted jump isn't midair or on a wall that's too steep
+            if(jumps > 0 || !(currentNormal.y < Mathf.Sin(MAX_WJABLE_ANGLE) || currentNormal.Equals(new Vector2(0, 0))))
+            {
+                rb2D.velocity = new Vector2(WALLJUMP_SPEED * currentNormal.x + rb2D.velocity.x, JUMP_SPEED);
+            }
+            // if jumping in midair or on a wall that's too steep
+            if (jumps > 0 && (currentNormal.y < Mathf.Sin(MAX_WJABLE_ANGLE) || currentNormal.Equals(new Vector2(0, 0))))
+            {
+                jumps--;
+            }
+
+            // cannot jump until release jump key
             canJump = false;
         }
         
-
-
         // resets jump
         if (Input.GetAxis("Jump") == 0)
         {
             canJump = true;
         }
 
+        // set falling terminal velocity
         float fallSpeed = FALL_SPEED * (1 - Input.GetAxis("Vertical") / FALL_COEF);
 
         // simulate gravity
@@ -130,24 +143,24 @@ public class PlayerMovement : NetworkBehaviour {
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        
+        // get points of contact with platforms
         ContactPoint2D[] cps = new ContactPoint2D[2];
-
         collision.GetContacts(cps);
-
         ContactPoint2D cp = cps[0];
-        
-        if(cp.normal.y > Mathf.Sin(MIN_WJ_RECOVERY_ANGLE)) jumps = JUMP_NUM;
 
+        // set currentNormal to be the normal of the flattest ground currently touching
         if (Mathf.Abs(cp.normal.y) >= Mathf.Abs(currentNormal.y))
         {
             currentNormal = cp.normal;
         }
+
+        // resets jump if the flattest ground is flat enough
+        if (currentNormal.y > Mathf.Sin(MIN_WJ_RECOVERY_ANGLE)) jumps = JUMP_NUM;
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
+        // set currentNormal to zero vector when leave a ground
         currentNormal = new Vector2(0, 0);
-        jumps--;
     }
 }
