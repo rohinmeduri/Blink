@@ -47,13 +47,11 @@ public class PlayerMovement : NetworkBehaviour {
     // Update is called once per frame
     void Update()
     {
-       
+        flipSprite();
         if (!hasAuthority)
         {
             return;
         }
-
-        flipSprite();
     }
 
     void FixedUpdate()
@@ -81,6 +79,10 @@ public class PlayerMovement : NetworkBehaviour {
     void flipSprite()
     {
         gameObject.GetComponent<SpriteRenderer>().flipX = !facingRight;
+        if (!hasAuthority)
+        {
+            return;
+        }
         bool facingRightNow = Input.GetAxis("Horizontal") > 0 || (Input.GetAxis("Horizontal") == 0 && facingRight);
         if (facingRightNow != facingRight)
         {
