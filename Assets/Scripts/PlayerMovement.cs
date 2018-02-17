@@ -39,21 +39,40 @@ public class PlayerMovement : NetworkBehaviour {
     // Update is called once per frame
     void Update()
     {
-        gameObject.GetComponent<SpriteRenderer>().flipX = !facingRight;
        
         if (!hasAuthority)
         {
             return;
         }
 
+        flipSprite();
+    }
+
+    void FixedUpdate()
+    {
         run();
         jump();
     }
 
+
+    /**
+     * Scripts for flipping the sprite
+     */
     [Command]
     void CmdFlipSprite(bool fr)
     {
         facingRight = fr;
+    }
+
+    void flipSprite()
+    {
+        gameObject.GetComponent<SpriteRenderer>().flipX = !facingRight;
+        bool facingRightNow = Input.GetAxis("Horizontal") > 0 || (Input.GetAxis("Horizontal") == 0 && facingRight);
+        if (facingRightNow != facingRight)
+        {
+            CmdFlipSprite(facingRightNow);
+        }
+        facingRight = facingRightNow;
     }
 
     /**
@@ -61,12 +80,7 @@ public class PlayerMovement : NetworkBehaviour {
      */
     void run()
     {
-        bool facingRightNow = Input.GetAxis("Horizontal") > 0 || (Input.GetAxis("Horizontal") == 0 && facingRight);
-        if(facingRightNow != facingRight)
-        {
-            CmdFlipSprite(facingRightNow);
-        }
-        facingRight = facingRightNow;
+        
 
         // changes velocity gradually to a goal velocity determined by controls
         float goalSpeed = MAX_SPEED * Input.GetAxis("Horizontal");
@@ -93,8 +107,6 @@ public class PlayerMovement : NetworkBehaviour {
      */
     void jump()
     {
-        //Debug.Log(jumps);
-
         // checks if touching walls
         if (Input.GetAxis("Jump") > 0 && canJump) 
         {
