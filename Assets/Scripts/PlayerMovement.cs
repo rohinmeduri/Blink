@@ -13,7 +13,7 @@ public class PlayerMovement : NetworkBehaviour {
 
     public const float GROUND_RUN_FORCE = 5; // How fast player can attain intended velocity on ground
     public const float AIR_RUN_FORCE = 1; // .... in air
-    public const float MAX_SPEED = 15; // maximum horizontal speed
+    public const float MAX_SPEED = 10; // maximum horizontal speed
     public const float JUMP_SPEED = 15; // jump height
     public const int JUMP_NUM = 1; // number of midair jumps without touching ground
     public const float WALLJUMP_SPEED = 15; // horizontal speed gained from wall-jumps
@@ -145,13 +145,17 @@ public class PlayerMovement : NetworkBehaviour {
     /**
      * Collision Detector
      */ 
-    private void OnCollisionEnter2D(Collision2D collision)
+   /*private void OnCollisionEnter2D(Collision2D collision)
     {
         
-    }
+    }*/
 
     private void OnCollisionStay2D(Collision2D collision)
     {
+        if (!hasAuthority)
+        {
+            return;
+        }
         // get points of contact with platforms
         ContactPoint2D[] cps = new ContactPoint2D[2];
         collision.GetContacts(cps);
@@ -169,6 +173,10 @@ public class PlayerMovement : NetworkBehaviour {
 
     private void OnCollisionExit2D(Collision2D collision)
     {
+        if (!hasAuthority)
+        {
+            return;
+        }
         // set currentNormal to zero vector when leave a ground
         currentNormal = new Vector2(0, 0);
     }

@@ -102,7 +102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72e09efe47b468049ae89a8ba54ab469, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  facingRight: 1
+  facingRight: 0
 --- !u!114 &114268707513064214
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -147,7 +147,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1273918684993908}
-  attackRadius: 0.5
+  attackRadius: 0.75
   baseAttackForce: 40
   waitFrames: 20
   playerWidth: 0.5
