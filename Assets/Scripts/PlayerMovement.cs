@@ -173,10 +173,13 @@ public class PlayerMovement : NetworkBehaviour {
     /**
      * Collision Detector
      */ 
-   /*private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        
-    }*/
+        if(collision.gameObject.tag == "Player")
+        {
+            Physics2D.IgnoreCollision(collision.collider, gameObject.GetComponent<Collider2D>());
+        }
+    }
 
     private void OnCollisionStay2D(Collision2D collision)
     {
@@ -184,6 +187,7 @@ public class PlayerMovement : NetworkBehaviour {
         {
             return;
         }
+
         // get points of contact with platforms
         ContactPoint2D[] cps = new ContactPoint2D[2];
         collision.GetContacts(cps);
