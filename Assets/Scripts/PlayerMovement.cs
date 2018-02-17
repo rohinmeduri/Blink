@@ -5,11 +5,11 @@ using UnityEngine.Networking;
 
 public class PlayerMovement : NetworkBehaviour {
 
-    public int jumps = 0;
-    public bool canJump = false;
+    private int jumps = 0;
+    private bool canJump = false;
 
     [SyncVar]
-    private bool facingRight = true;
+    public bool facingRight = true;
 
     public const float GROUND_RUN_FORCE = 5; // How fast player can attain intended velocity on ground
     public const float AIR_RUN_FORCE = 1; // .... in air
@@ -23,8 +23,8 @@ public class PlayerMovement : NetworkBehaviour {
     public const float MAX_WJABLE_ANGLE = -Mathf.PI / 18; // largest negative angle of a wall where counts as walljump
     public const float MIN_WJ_RECOVERY_ANGLE = Mathf.PI / 18; // smallest angle of a wall where air jumps are recovered
 
-    public Rigidbody2D rb2D;
-    public Collider2D c2D;
+    private Rigidbody2D rb2D;
+    //private Collider2D c2D;
     
     private Vector2 currentNormal;
     
@@ -32,7 +32,7 @@ public class PlayerMovement : NetworkBehaviour {
     // Use this for initialization
     void Start () {
         rb2D = gameObject.GetComponent<Rigidbody2D>();
-        c2D = gameObject.GetComponent<Collider2D>();
+        //c2D = gameObject.GetComponent<Collider2D>();
         currentNormal = new Vector2(0, 0);
     }
 
@@ -93,7 +93,7 @@ public class PlayerMovement : NetworkBehaviour {
      */
     void jump()
     {
-        Debug.Log(jumps);
+        //Debug.Log(jumps);
 
         // checks if touching walls
         if (Input.GetAxis("Jump") > 0 && canJump) 
