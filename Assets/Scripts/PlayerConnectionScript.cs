@@ -20,10 +20,12 @@ public class PlayerConnectionScript : NetworkBehaviour {
     {
         GameObject player = Instantiate(PlayerPrefab);
         NetworkServer.SpawnWithClientAuthority(player, connectionToClient);
+        RpcSetLayer(player);
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+    [ClientRpc]
+    void RpcSetLayer(GameObject player)
+    {
+        player.GetComponent<PlayerMovement>().setLayer();
+    }
 }
