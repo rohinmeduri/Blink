@@ -65,13 +65,7 @@ public class PlayerAttacks : NetworkBehaviour {
                 RaycastHit2D hit = Physics2D.Raycast(origin: origin, direction: direction, distance: attackRadius, layerMask: mask.value);
                 if (hit.rigidbody != null && hit.rigidbody != player.GetComponent<Rigidbody2D>())
                 {
-                    Debug.Log("hit");
                     CmdKnockback(hit.rigidbody.gameObject, direction);
-                }
-                if(hit.rigidbody == player.GetComponent<Rigidbody2D>())
-                {
-                    Debug.Log("hit self");
-                    Debug.Log(player.layer);
                 }
                 canAttack = false;
             }
