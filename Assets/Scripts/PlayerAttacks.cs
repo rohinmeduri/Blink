@@ -8,13 +8,25 @@ public class PlayerAttacks : NetworkBehaviour {
     public GameObject player;
     public float attackRadius;
     public float baseAttackForce;
+    public int waitFrames;
+    private float waitedFrames = 0;
     public float playerWidth;
     public float playerHeight;
-
-    void Update () {
+    
+    void FixedUpdate () {
         if (!hasAuthority)
         {
             return;
+        }
+
+        if (!canAttack)
+        {
+            waitedFrames++;
+            if(waitedFrames == waitFrames)
+            {
+                canAttack = true;
+                waitedFrames = 0;
+            }
         }
 
         if (Input.GetAxis("Fire1") != 0)
@@ -26,7 +38,7 @@ public class PlayerAttacks : NetworkBehaviour {
         {
             if (attackButtonHeld == true && canAttack)
             {
-                Debug.Log("attack");
+                player.GetComponent<Rigidbody2D>().velocity = new Vector2 (0, 0);
                 float horizontalDirection;
                 if (Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0)
                 {
@@ -55,9 +67,9 @@ public class PlayerAttacks : NetworkBehaviour {
                     //hit.rigidbody.AddForce(direction * attackForce);
                     CmdKnockback(hit.rigidbody.gameObject, direction);
                 }
+                canAttack = false;
             }
             attackButtonHeld = false;
-            canAttack = false;
         }
 	}
 
