@@ -62,13 +62,13 @@ public class PlayerAttacks : NetworkBehaviour {
     [Command]
     void CmdKnockback(GameObject go, Vector2 dir)
     {
-        go.GetComponent<Rigidbody2D>().AddForce(dir * attackForce);
+        go.GetComponent<Rigidbody2D>().velocity = dir * attackForce;
         RpcKnockback(go, dir);
     }
 
     [ClientRpc]
     void RpcKnockback(GameObject go, Vector2 dir)
     {
-        go.GetComponent<Rigidbody2D>().AddForce(dir * attackForce);
+        go.GetComponent<Rigidbody2D>().velocity = dir * attackForce;
     }
 }
