@@ -148,7 +148,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1273918684993908}
   attackRadius: 0.5
-  attackForce: 50
+  baseAttackForce: 40
   playerWidth: 0.5
   playerHeight: 1
 --- !u!114 &114834900055569754

@@ -7,7 +7,7 @@ public class PlayerAttacks : NetworkBehaviour {
     private bool attackButtonHeld = false;
     public GameObject player;
     public float attackRadius;
-    public float attackForce;
+    public float baseAttackForce;
     public float playerWidth;
     public float playerHeight;
 
@@ -26,6 +26,7 @@ public class PlayerAttacks : NetworkBehaviour {
         {
             if (attackButtonHeld == true && canAttack)
             {
+                Debug.Log("attack");
                 float horizontalDirection;
                 if (Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0)
                 {
@@ -56,19 +57,22 @@ public class PlayerAttacks : NetworkBehaviour {
                 }
             }
             attackButtonHeld = false;
+            canAttack = false;
         }
 	}
 
     [Command]
     void CmdKnockback(GameObject go, Vector2 dir)
     {
-        go.GetComponent<Rigidbody2D>().velocity = dir * attackForce;
+        go.GetComponent<Rigidbody2D>().velocity = dir * baseAttackForce;
+        go.GetComponent<PlayerMovement>().hitStun();
         RpcKnockback(go, dir);
     }
 
     [ClientRpc]
     void RpcKnockback(GameObject go, Vector2 dir)
     {
-        go.GetComponent<Rigidbody2D>().velocity = dir * attackForce;
+        go.GetComponent<Rigidbody2D>().velocity = dir * baseAttackForce;
+        go.GetComponent<PlayerMovement>().hitStun();
     }
 }

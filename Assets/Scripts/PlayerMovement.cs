@@ -132,6 +132,15 @@ public class PlayerMovement : NetworkBehaviour {
             rb2D.velocity = new Vector2(rb2D.velocity.x, rb2D.velocity.y + FALL_FORCE * Mathf.Sign(fallSpeed - rb2D.velocity.y));
         }
     }
+
+    public void hitStun()
+    {
+        Debug.Log("hitstun");
+        if (!hasAuthority)
+        {
+            return;
+        }
+    }
     
     /**
      * Collision Detector
