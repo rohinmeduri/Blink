@@ -12,6 +12,7 @@ public class PlayerAttacks : NetworkBehaviour {
     private float waitedFrames = 0;
     public float playerWidth;
     public float playerHeight;
+    public LayerMask mask;
     
     void FixedUpdate () {
         if (!hasAuthority)
@@ -58,14 +59,19 @@ public class PlayerAttacks : NetworkBehaviour {
                     
                 Vector2 direction = new Vector2(horizontalDirection, Input.GetAxis("Vertical"));
                 direction.Normalize();
-                Vector2 origin = new Vector2(player.GetComponent<Transform>().position.x + playerWidth * direction.x, player.GetComponent<Transform>().position.y + playerHeight * direction.y);
+                Vector2 origin = new Vector2(player.GetComponent<Transform>().position.x, player.GetComponent<Transform>().position.y);
                 Debug.DrawRay(origin, direction * attackRadius, Color.blue, 1f);
-                RaycastHit2D hit = Physics2D.Raycast(origin: origin, direction: direction, distance: attackRadius);
+
+                RaycastHit2D hit = Physics2D.Raycast(origin: origin, direction: direction, distance: attackRadius, layerMask: mask.value);
                 if (hit.rigidbody != null && hit.rigidbody != player.GetComponent<Rigidbody2D>())
                 {
                     Debug.Log("hit");
-                    //hit.rigidbody.AddForce(direction * attackForce);
                     CmdKnockback(hit.rigidbody.gameObject, direction);
+                }
+                if(hit.rigidbody == player.GetComponent<Rigidbody2D>())
+                {
+                    Debug.Log("hit self");
+                    Debug.Log(player.layer);
                 }
                 canAttack = false;
             }

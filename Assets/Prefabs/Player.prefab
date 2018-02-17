@@ -147,11 +147,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1273918684993908}
-  attackRadius: 0.75
+  attackRadius: 1.25
   baseAttackForce: 40
   waitFrames: 20
   playerWidth: 0.5
   playerHeight: 1
+  mask:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!114 &114834900055569754
 MonoBehaviour:
   m_ObjectHideFlags: 1

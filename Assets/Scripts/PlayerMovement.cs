@@ -36,6 +36,14 @@ public class PlayerMovement : NetworkBehaviour {
         currentNormal = new Vector2(0, 0);
     }
 
+    public void setLayer()
+    {
+        if (hasAuthority)
+        {
+            gameObject.layer = 2;
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
