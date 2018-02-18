@@ -5,18 +5,22 @@ using UnityEngine.Networking;
 
 public class PlayerMovement : NetworkBehaviour {
 
-    // variables
+    // public variables
+    [SyncVar]
+    public bool facingRight = true;
+    public PhysicsMaterial2D regularMaterial;
+    public PhysicsMaterial2D stunMaterial;
+
+    // private variables
     private int jumps;
     private bool canJump;
     private Vector2 currentNormal;
     private int stickyWallTimer;
     private int stunTimer;
 
-    [SyncVar]
-    public bool facingRight = true;
 
     private Rigidbody2D rb2D;
-    //private Collider2D c2D;
+    private Collider2D c2D;
 
     // constants
     public const float GROUND_RUN_FORCE = 2; // How fast player can attain intended velocity on ground
@@ -43,7 +47,7 @@ public class PlayerMovement : NetworkBehaviour {
         stunTimer = 0;
 
         rb2D = gameObject.GetComponent<Rigidbody2D>();
-        //c2D = gameObject.GetComponent<Collider2D>();
+        c2D = gameObject.GetComponent<Collider2D>();
     }
 
     public void setLayer()
@@ -74,11 +78,13 @@ public class PlayerMovement : NetworkBehaviour {
 
         if (stunTimer == 0)
         {
+            rb2D.sharedMaterial = regularMaterial;
             run();
             jump();
         }
         else
         {
+            rb2D.sharedMaterial = stunMaterial;
             DI();
             stunTimer--;
         }
