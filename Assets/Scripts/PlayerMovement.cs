@@ -94,6 +94,20 @@ public class PlayerMovement : NetworkBehaviour {
         facingRight = facingRightNow;
     }
 
+    void jumpFlipSprite()
+    {
+        if (!hasAuthority || rb2D.velocity.x == 0)
+        {
+            return;
+        }
+        bool facingRightNow = rb2D.velocity.x > 0;
+        if(facingRightNow != facingRight)
+        {
+            CmdFlipSprite(facingRightNow);
+        }
+        facingRight = facingRightNow;
+    }
+
     /**
      * Script for Running
      */
@@ -163,7 +177,7 @@ public class PlayerMovement : NetworkBehaviour {
             {
                 jumps--;
             }
-
+            jumpFlipSprite();
             // cannot jump until release jump key
             canJump = false;
         }
