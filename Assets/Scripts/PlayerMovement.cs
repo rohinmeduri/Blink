@@ -33,7 +33,7 @@ public class PlayerMovement : NetworkBehaviour {
     public const float FALL_FORCE = 0.5F; // force of gravity
     public const float FALL_COEF = 2; // How much player can control fall speed. Smaller = more control (preferrably > 1 [see for yourself ;)])
     public const float MAX_WJABLE_ANGLE = -Mathf.PI / 18; // largest negative angle of a wall where counts as walljump
-    public const float MIN_JUMP_RECOVERY_ANGLE = Mathf.PI / 18; // smallest angle of a wall where air jumps are recovered
+    public const float MIN_JUMP_RECOVERY_ANGLE = Mathf.PI / 4; // smallest angle of a wall where air jumps are recovered
     public const int STICKY_WJ_DURATION = 15; // amount of frames that player sticks to a wall after touching it
     public const int STUN_DURATION = 100; // amount of frames that a player stays stunned
 
@@ -167,7 +167,7 @@ public class PlayerMovement : NetworkBehaviour {
             stickyWallTimer = 0;
         }
         // if touching a platform close enough to a walljumpable wall, start sticking
-        else if (currentNormal.y < Mathf.Sin(MIN_JUMP_RECOVERY_ANGLE) && currentNormal.y > Mathf.Sin(MAX_WJABLE_ANGLE) && stickyWallTimer == 0)
+        else if (isWall() && stickyWallTimer == 0)
         {
             stickyWallTimer = STICKY_WJ_DURATION;
         }
@@ -209,7 +209,10 @@ public class PlayerMovement : NetworkBehaviour {
             {
                 jumps--;
             }
-            jumpFlipSprite();
+            if (isWall()){
+                jumpFlipSprite();
+            }
+            
             // cannot jump until release jump key
             canJump = false;
         }
@@ -268,6 +271,12 @@ public class PlayerMovement : NetworkBehaviour {
         stunTimer = STUN_DURATION;
     }
     
+    bool isWall()
+    {
+         return currentNormal.y < Mathf.Sin(MIN_JUMP_RECOVERY_ANGLE) && currentNormal.y > Mathf.Sin(MAX_WJABLE_ANGLE);
+        
+    }
+
     /**
      * Collision Detector
      */ 
