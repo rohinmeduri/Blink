@@ -35,7 +35,8 @@ public class PlayerMovement : NetworkBehaviour {
 
 
     // Use this for initialization
-    void Start() {
+    void Start()
+    {
         jumps = 0;
         canJump = false;
         currentNormal = new Vector2(0, 0);
