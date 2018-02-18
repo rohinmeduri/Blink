@@ -11,18 +11,18 @@ public class PlayerMovement : NetworkBehaviour {
     [SyncVar]
     public bool facingRight = true;
 
-    public const float GROUND_RUN_FORCE = 5; // How fast player can attain intended velocity on ground
-    public const float AIR_RUN_FORCE = 1; // .... in air
+    public const float GROUND_RUN_FORCE = 2; // How fast player can attain intended velocity on ground
+    public const float AIR_RUN_FORCE = 0.5F; // .... in air
     public const float MAX_SPEED = 10; // maximum horizontal speed
-    public const float JUMP_SPEED = 15; // jump height
-    public const int JUMP_NUM = 1; // number of midair jumps without touching ground
-    public const float WALLJUMP_SPEED = 20; // horizontal speed gained from wall-jumps
-    public const float FALL_SPEED = -20; // maximum fall speed
-    public const float FALL_FORCE = 1; // force of gravity
+    public const float JUMP_SPEED = 10; // jump height
+    public const int JUMP_NUM = 0; // number of midair jumps without touching ground
+    public const float WALLJUMP_SPEED = 15; // horizontal speed gained from wall-jumps
+    public const float FALL_SPEED = -10; // maximum fall speed
+    public const float FALL_FORCE = 0.5F; // force of gravity
     public const float FALL_COEF = 2; // How much player can control fall speed. Smaller = more control (preferrably > 1 [see for yourself ;)])
     public const float MAX_WJABLE_ANGLE = -Mathf.PI / 18; // largest negative angle of a wall where counts as walljump
     public const float MIN_WJ_RECOVERY_ANGLE = Mathf.PI / 18; // smallest angle of a wall where air jumps are recovered
-    public const int STICKY_WJ_DURATION = 8; // amount of frames that player sticks to a wall after touching it
+    public const int STICKY_WJ_DURATION = 15; // amount of frames that player sticks to a wall after touching it
 
     private Rigidbody2D rb2D;
     //private Collider2D c2D;
@@ -103,10 +103,11 @@ public class PlayerMovement : NetworkBehaviour {
         float goalSpeed = 0;
         float runForce;
 
+        // THIS SHIT IS MESSY SMH
         Debug.Log(stickyWallTimer);
 
         // sets sticky wall timer
-        if (currentNormal.Equals(new Vector2(0, 0)))
+        if (currentNormal.Equals(new Vector2(0, 0)) || currentNormal.y >= Mathf.Sin(MIN_WJ_RECOVERY_ANGLE))
         {
             stickyWallTimer = 0;
         }
