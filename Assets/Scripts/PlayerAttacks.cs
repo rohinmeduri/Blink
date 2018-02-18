@@ -15,7 +15,7 @@ public class PlayerAttacks : NetworkBehaviour {
     public LayerMask mask;
     
     void FixedUpdate () {
-        Debug.Log(attackButtonHeld);
+        //Debug.Log(attackButtonHeld);
 
         if (!hasAuthority)
         {

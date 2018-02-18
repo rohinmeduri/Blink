@@ -16,24 +16,27 @@ public class PlayerMovement : NetworkBehaviour {
     public const float MAX_SPEED = 10; // maximum horizontal speed
     public const float JUMP_SPEED = 15; // jump height
     public const int JUMP_NUM = 1; // number of midair jumps without touching ground
-    public const float WALLJUMP_SPEED = 15; // horizontal speed gained from wall-jumps
+    public const float WALLJUMP_SPEED = 20; // horizontal speed gained from wall-jumps
     public const float FALL_SPEED = -20; // maximum fall speed
     public const float FALL_FORCE = 1; // force of gravity
     public const float FALL_COEF = 2; // How much player can control fall speed. Smaller = more control (preferrably > 1 [see for yourself ;)])
     public const float MAX_WJABLE_ANGLE = -Mathf.PI / 18; // largest negative angle of a wall where counts as walljump
     public const float MIN_WJ_RECOVERY_ANGLE = Mathf.PI / 18; // smallest angle of a wall where air jumps are recovered
+    public const int STICKY_WJ_DURATION = 8; // amount of frames that player sticks to a wall after touching it
 
     private Rigidbody2D rb2D;
     //private Collider2D c2D;
     
     private Vector2 currentNormal;
-    
+    private int stickyWallTimer;
+
 
     // Use this for initialization
     void Start () {
         rb2D = gameObject.GetComponent<Rigidbody2D>();
         //c2D = gameObject.GetComponent<Collider2D>();
         currentNormal = new Vector2(0, 0);
+        stickyWallTimer = 0;
     }
 
     public void setLayer()
@@ -96,11 +99,34 @@ public class PlayerMovement : NetworkBehaviour {
      */
     void run()
     {
-        
-
         // changes velocity gradually to a goal velocity determined by controls
-        float goalSpeed = MAX_SPEED * Input.GetAxis("Horizontal");
+        float goalSpeed = 0;
         float runForce;
+
+        Debug.Log(stickyWallTimer);
+
+        // sets sticky wall timer
+        if (currentNormal.Equals(new Vector2(0, 0)))
+        {
+            stickyWallTimer = 0;
+        }
+        else if (currentNormal.y < Mathf.Sin(MIN_WJ_RECOVERY_ANGLE) && currentNormal.y > Mathf.Sin(MAX_WJABLE_ANGLE) && stickyWallTimer == 0)
+        {
+            stickyWallTimer = STICKY_WJ_DURATION;
+        }
+
+        if (stickyWallTimer > 0)
+        {
+            goalSpeed = -MAX_SPEED * currentNormal.x;
+            if (Mathf.Sign(currentNormal.x) == Mathf.Sign(Input.GetAxis("Horizontal")))
+            {
+                stickyWallTimer--;
+            }
+        }
+        if(stickyWallTimer == 0)
+        {
+            goalSpeed = MAX_SPEED * Input.GetAxis("Horizontal");
+        }
 
         // determine whether should use ground acceleration or air acceleration
         if (currentNormal.Equals(new Vector2(0,0))) runForce = AIR_RUN_FORCE;
@@ -163,7 +189,7 @@ public class PlayerMovement : NetworkBehaviour {
 
     public void hitStun()
     {
-        Debug.Log("hitstun");
+        //Debug.Log("hitstun");
         if (!hasAuthority)
         {
             return;
@@ -179,6 +205,7 @@ public class PlayerMovement : NetworkBehaviour {
         {
             Physics2D.IgnoreCollision(collision.collider, gameObject.GetComponent<Collider2D>());
         }
+
     }
 
     private void OnCollisionStay2D(Collision2D collision)
@@ -201,6 +228,7 @@ public class PlayerMovement : NetworkBehaviour {
 
         // resets jump if the flattest ground is flat enough
         if (currentNormal.y > Mathf.Sin(MIN_WJ_RECOVERY_ANGLE)) jumps = JUMP_NUM;
+        
     }
 
     private void OnCollisionExit2D(Collision2D collision)
