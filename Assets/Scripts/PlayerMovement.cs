@@ -27,7 +27,7 @@ public class PlayerMovement : NetworkBehaviour {
     public const float AIR_RUN_FORCE = 0.5F; // .... in air
     public const float MAX_SPEED = 10; // maximum horizontal speed
     public const float JUMP_SPEED = 10; // jump height
-    public const int JUMP_NUM = 0; // number of midair jumps without touching ground
+    public const int JUMP_NUM = 1; // number of midair jumps without touching ground
     public const float WALLJUMP_SPEED = 15; // horizontal speed gained from wall-jumps
     public const float FALL_SPEED = -10; // maximum fall speed
     public const float FALL_FORCE = 0.5F; // force of gravity
