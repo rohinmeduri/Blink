@@ -442,7 +442,6 @@ public class PlayerScript: NetworkBehaviour {
     [Command]
     void CmdKnockback(GameObject go, Vector2 dir)
     {
-        go.GetComponent<Rigidbody2D>().velocity = dir * baseAttackForce;
         if (go.tag == "Player")
         {
             go.GetComponent<PlayerScript>().knockback(dir);
