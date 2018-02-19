@@ -15,9 +15,6 @@ public class PlayerScript: NetworkBehaviour {
     public GameObject player;
     public float attackRadius;
     public float baseAttackForce;
-    public int waitFrames;
-    public float playerWidth;
-    public float playerHeight;
     public LayerMask mask;
     public GameObject gloryPrefab;
     public Slider glorySlider;
@@ -34,7 +31,7 @@ public class PlayerScript: NetworkBehaviour {
     private Collider2D c2D;
     private bool canAttack = true;
     private bool attackButtonHeld = false;
-    private float waitedFrames = 0;
+    private float attackWaitedFrames = 0;
     private GameObject glory;
     private int gloryWaitFrames = 2;
     private int gloryWaitedFrames = 0;
@@ -52,6 +49,7 @@ public class PlayerScript: NetworkBehaviour {
     public const float MAX_WJABLE_ANGLE = -Mathf.PI / 18; // largest negative angle of a wall where counts as walljump
     public const float MIN_JUMP_RECOVERY_ANGLE = Mathf.PI / 4; // smallest angle of a wall where air jumps are recovered
     public const int STICKY_WJ_DURATION = 15; // amount of frames that player sticks to a wall after touching it
+    public const int ATTACK_WAIT_FRAMES = 20; // number of frames a player must wait between attacks
     public const int STUN_DURATION = 50; // amount of frames that a player stays stunned
 
 
@@ -134,6 +132,7 @@ public class PlayerScript: NetworkBehaviour {
             stunTimer--;
         }
         gravity();
+        attack();
     }
 
 
@@ -302,11 +301,11 @@ public class PlayerScript: NetworkBehaviour {
         //have elapsed since previous attack)
         if (!canAttack)
         {
-            waitedFrames++;
-            if (waitedFrames == waitFrames)
+            attackWaitedFrames++;
+            if (attackWaitedFrames == ATTACK_WAIT_FRAMES)
             {
                 canAttack = true;
-                waitedFrames = 0;
+                attackWaitedFrames = 0;
             }
         }
 
@@ -364,93 +363,12 @@ public class PlayerScript: NetworkBehaviour {
         }
     }
 
-    /**
-     * Script for Directional Influence
-     */
-    void DI()
-    {
-
-    }
-
-
-    /**
-     * Enter hit stun mode
-     */
-    public void knockback(Vector2 dir)
-    {
-        if (!hasAuthority)
-        {
-            return;
-        }
-
-        rb2D.velocity = dir * baseAttackForce;
-
-        stunTimer = STUN_DURATION;
-    }
-
-    public int getStunTimer()
-    {
-        return stunTimer;
-    }
-    
-    bool isWall()
-    {
-         return currentNormal.y < Mathf.Sin(MIN_JUMP_RECOVERY_ANGLE) && currentNormal.y > Mathf.Sin(MAX_WJABLE_ANGLE);
-        
-    }
-
-    /**
-     * Collision Detector
-     */ 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if(collision.gameObject.tag == "Player")
-        {
-            Physics2D.IgnoreCollision(collision.collider, gameObject.GetComponent<Collider2D>());
-        }
-
-    }
-
-    private void OnCollisionStay2D(Collision2D collision)
-    {
-        if (!hasAuthority)
-        {
-            return;
-        }
-
-        // get points of contact with platforms
-        ContactPoint2D[] cps = new ContactPoint2D[2];
-        collision.GetContacts(cps);
-        ContactPoint2D cp = cps[0];
-
-        // set currentNormal to be the normal of the flattest ground currently touching
-        if (Mathf.Abs(cp.normal.y) >= Mathf.Abs(currentNormal.y))
-        {
-            currentNormal = cp.normal;
-        }
-
-        // resets jump if the flattest ground is flat enough
-        if (currentNormal.y > Mathf.Sin(MIN_JUMP_RECOVERY_ANGLE)) jumps = JUMP_NUM;
-        
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (!hasAuthority)
-        {
-            return;
-        }
-        // set currentNormal to zero vector when leave a ground
-        currentNormal = new Vector2(0, 0);
-    }
-
     /*
      * Script for updating glory on the server
      */
     [Command]
     void CmdChangeGlory(GameObject otherPlayer)
     {
-
         //increase attacker glory
         if (numGlory + baseGloryGain > 100)
         {
@@ -510,5 +428,81 @@ public class PlayerScript: NetworkBehaviour {
         {
             go.GetComponent<PlayerScript>().knockback(dir);
         }
+    }
+
+    /**
+     * Enter hit stun mode
+     */
+    public void knockback(Vector2 dir)
+    {
+        if (!hasAuthority)
+        {
+            return;
+        }
+
+        //send player flying in direction of attack
+        rb2D.velocity = dir * baseAttackForce;
+
+        //stun player
+        stunTimer = STUN_DURATION;
+    }
+
+    /**
+    * Script for Directional Influence
+    */
+    void DI()
+    {
+
+    }
+
+    bool isWall()
+    {
+         return currentNormal.y < Mathf.Sin(MIN_JUMP_RECOVERY_ANGLE) && currentNormal.y > Mathf.Sin(MAX_WJABLE_ANGLE);
+        
+    }
+
+    /**
+     * Collision Detector
+     */ 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.tag == "Player")
+        {
+            Physics2D.IgnoreCollision(collision.collider, gameObject.GetComponent<Collider2D>());
+        }
+
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (!hasAuthority)
+        {
+            return;
+        }
+
+        // get points of contact with platforms
+        ContactPoint2D[] cps = new ContactPoint2D[2];
+        collision.GetContacts(cps);
+        ContactPoint2D cp = cps[0];
+
+        // set currentNormal to be the normal of the flattest ground currently touching
+        if (Mathf.Abs(cp.normal.y) >= Mathf.Abs(currentNormal.y))
+        {
+            currentNormal = cp.normal;
+        }
+
+        // resets jump if the flattest ground is flat enough
+        if (currentNormal.y > Mathf.Sin(MIN_JUMP_RECOVERY_ANGLE)) jumps = JUMP_NUM;
+        
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (!hasAuthority)
+        {
+            return;
+        }
+        // set currentNormal to zero vector when leave a ground
+        currentNormal = new Vector2(0, 0);
     }
 }
