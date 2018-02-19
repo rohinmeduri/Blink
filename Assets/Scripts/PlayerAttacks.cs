@@ -149,7 +149,7 @@ public class PlayerAttacks : NetworkBehaviour
     void CmdKnockback(GameObject go, Vector2 dir)
     {
         go.GetComponent<Rigidbody2D>().velocity = dir * baseAttackForce;
-        if (go.tag == "player")
+        if (go.tag == "Player")
         {
             go.GetComponent<PlayerMovement>().hitStun();
         }
@@ -161,7 +161,7 @@ public class PlayerAttacks : NetworkBehaviour
     void RpcKnockback(GameObject go, Vector2 dir)
     {
         go.GetComponent<Rigidbody2D>().velocity = dir * baseAttackForce;
-        if (go.tag == "player")
+        if (go.tag == "Player")
         {
             go.GetComponent<PlayerMovement>().hitStun();
         }

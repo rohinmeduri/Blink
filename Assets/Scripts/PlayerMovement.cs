@@ -263,7 +263,7 @@ public class PlayerMovement : NetworkBehaviour {
      */
     public void hitStun()
     {
-        //Debug.Log("hitstun");
+        Debug.Log("hitstun");
         if (!hasAuthority)
         {
             return;
