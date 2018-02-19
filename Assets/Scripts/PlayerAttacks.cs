@@ -15,7 +15,7 @@ public class PlayerAttacks : NetworkBehaviour
     public float playerHeight;
     public LayerMask mask;
     public GameObject gloryPrefab;
-    public GameObject glory;
+    private GameObject glory;
     private int gloryWaitFrames = 2;
     private int gloryWaitedFrames = 0;
 
@@ -24,6 +24,7 @@ public class PlayerAttacks : NetworkBehaviour
 
     public Slider glorySlider;
     public float baseGloryGain;
+    public float gloryLostOnHit;
 
     public void createMeter()
     {
@@ -114,7 +115,7 @@ public class PlayerAttacks : NetworkBehaviour
                 RaycastHit2D hit = Physics2D.Raycast(origin: origin, direction: direction, distance: attackRadius, layerMask: mask.value);
                 if (hit.rigidbody != null)
                 {
-                    CmdChangeGlory();
+                    CmdChangeGlory(hit.rigidbody.gameObject);
                     CmdKnockback(hit.rigidbody.gameObject, direction);
                 }
 
@@ -128,9 +129,30 @@ public class PlayerAttacks : NetworkBehaviour
     }
 
     [Command]
-    void CmdChangeGlory()
+    void CmdChangeGlory(GameObject otherPlayer)
     {
-        numGlory += baseGloryGain;
+        
+        //increase attacker glory
+        if (numGlory + baseGloryGain > 100)
+        {
+            numGlory = 100;
+        }
+        else
+        {
+            numGlory += baseGloryGain;
+        }
+        
+
+        //decrease hit person glory
+        if (otherPlayer.GetComponent<PlayerAttacks>().numGlory - gloryLostOnHit < 0)
+        {
+            otherPlayer.GetComponent<PlayerAttacks>().numGlory = 0;
+        }
+        else
+        {
+            otherPlayer.GetComponent<PlayerAttacks>().numGlory -= gloryLostOnHit;
+        }
+
     }
 
     void OnChangeGlory(float glory)
@@ -140,8 +162,6 @@ public class PlayerAttacks : NetworkBehaviour
         {
             glorySlider.value = glory;
         }
-
-        Debug.Log("change received glory is now: " + glory);
     }
 
     //apply knockback to attack recipient on the server
