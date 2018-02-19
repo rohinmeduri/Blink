@@ -21,7 +21,6 @@ GameObject:
   - component: {fileID: 4365196966651724}
   - component: {fileID: 212091731836323832}
   - component: {fileID: 114174269655759314}
-  - component: {fileID: 114283860850066742}
   - component: {fileID: 50859331604966228}
   - component: {fileID: 61408790411139706}
   - component: {fileID: 114268707513064214}
@@ -102,9 +101,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72e09efe47b468049ae89a8ba54ab469, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_SyncVarDirtyBits: 0
+  m_LastSendTime: 0
+  m_SyncVarGuard: 0
+  m_MyView: {fileID: 0}
+  glorySlider: {fileID: 0}
+  baseGloryGain: 0
+  gloryLostOnHit: 0
   facingRight: 0
+  numGlory: 0
   regularMaterial: {fileID: 6200000, guid: 17f5ae5846336db40a7e5488775cd87b, type: 2}
   stunMaterial: {fileID: 6200000, guid: 0ac2c177006bfca45a60b997751b7fd9, type: 2}
+  player: {fileID: 0}
+  attackRadius: 0
+  baseAttackForce: 0
+  waitFrames: 0
+  playerWidth: 0
+  playerHeight: 0
+  mask:
+    m_Bits: 0
+  gloryPrefab: {fileID: 0}
+  jumps: 0
+  canJump: 0
+  currentNormal: {x: 0, y: 0}
+  stickyWallTimer: 0
+  stunTimer: 0
+  rb2D: {fileID: 0}
+  c2D: {fileID: 0}
+  canAttack: 1
+  attackButtonHeld: 0
+  waitedFrames: 0
+  glory: {fileID: 0}
+  gloryWaitFrames: 2
+  gloryWaitedFrames: 0
 --- !u!114 &114268707513064214
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -137,32 +166,6 @@ MonoBehaviour:
     i15: 117
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 1
---- !u!114 &114283860850066742
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1273918684993908}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1cc0ce9b0c854c24e97bc43ee8a75493, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 1273918684993908}
-  attackRadius: 1.25
-  baseAttackForce: 10
-  waitFrames: 20
-  playerWidth: 0.5
-  playerHeight: 1
-  mask:
-    serializedVersion: 2
-    m_Bits: 1
-  gloryPrefab: {fileID: 1732290323307310, guid: ec57c344e826fbd409641a3eefccac12,
-    type: 2}
-  numGlory: 0
-  glorySlider: {fileID: 0}
-  baseGloryGain: 5
-  gloryLostOnHit: 3
 --- !u!114 &114834900055569754
 MonoBehaviour:
   m_ObjectHideFlags: 1

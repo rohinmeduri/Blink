@@ -26,6 +26,6 @@ public class PlayerConnectionScript : NetworkBehaviour {
     [ClientRpc]
     void RpcSetLayer(GameObject player)
     {
-        player.GetComponent<PlayerMovement>().setLayer();
+        player.GetComponent<PlayerScript>().setLayer();
     }
 }

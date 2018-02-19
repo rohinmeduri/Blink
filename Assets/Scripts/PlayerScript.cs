@@ -1,15 +1,28 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Networking;
 
-public class PlayerMovement : NetworkBehaviour {
-
+public class PlayerScript: NetworkBehaviour {
     // public variables
     [SyncVar]
     public bool facingRight = true;
+    [SyncVar(hook = "OnChangeGlory")]
+    public float numGlory = 0;
     public PhysicsMaterial2D regularMaterial;
     public PhysicsMaterial2D stunMaterial;
+    public GameObject player;
+    public float attackRadius;
+    public float baseAttackForce;
+    public int waitFrames;
+    public float playerWidth;
+    public float playerHeight;
+    public LayerMask mask;
+    public GameObject gloryPrefab;
+    public Slider glorySlider;
+    public float baseGloryGain;
+    public float gloryLostOnHit;
 
     // private variables
     private int jumps;
@@ -17,10 +30,14 @@ public class PlayerMovement : NetworkBehaviour {
     private Vector2 currentNormal;
     private int stickyWallTimer;
     private int stunTimer;
-
-
     private Rigidbody2D rb2D;
     private Collider2D c2D;
+    private bool canAttack = true;
+    private bool attackButtonHeld = false;
+    private float waitedFrames = 0;
+    private GameObject glory;
+    private int gloryWaitFrames = 2;
+    private int gloryWaitedFrames = 0;
 
     // constants
     public const float GROUND_RUN_FORCE = 2; // How fast player can attain intended velocity on ground
@@ -59,10 +76,37 @@ public class PlayerMovement : NetworkBehaviour {
         }
     }
 
+    public void createMeter()
+    {
+        glory = Instantiate(gloryPrefab);
+        var canvas = GameObject.Find("Canvas");
+        RectTransform gloryTransform = glory.GetComponent<RectTransform>();
+        gloryTransform.SetParent(canvas.transform);
+        if (!hasAuthority)
+        {
+            gloryTransform.anchorMin = new Vector2(1, 1);
+            gloryTransform.anchorMax = new Vector2(1, 1);
+            gloryTransform.pivot = new Vector2(1, 1);
+            gloryTransform.anchoredPosition = new Vector3(-100, 0, 0);
+        }
+        else
+        {
+            gloryTransform.anchoredPosition = new Vector3(0, 0, 0);
+        }
+        glorySlider = glory.transform.Find("Slider").gameObject.GetComponent<Slider>();
+    }
+
     // Update is called once per frame
     void Update()
     {
         flipSprite();
+
+        gloryWaitedFrames++;
+        if (gloryWaitedFrames == gloryWaitFrames)
+        {
+            createMeter();
+        }
+
         if (!hasAuthority)
         {
             return;
@@ -250,6 +294,77 @@ public class PlayerMovement : NetworkBehaviour {
     }
 
     /**
+     * Script for attacking
+     */
+    void attack()
+    {
+        //check to see if player can attack again (after "waitedFrames" num of frames 
+        //have elapsed since previous attack)
+        if (!canAttack)
+        {
+            waitedFrames++;
+            if (waitedFrames == waitFrames)
+            {
+                canAttack = true;
+                waitedFrames = 0;
+            }
+        }
+
+        //check to see if attack button is held down - attack occurs once the button is released
+        if (Input.GetAxis("Fire1") != 0)
+        {
+            attackButtonHeld = true;
+        }
+        else
+        {
+            //check that button was held in previous frame (meaning it was released this frame
+            //so attack should initiate)
+            if (attackButtonHeld && canAttack && stunTimer == 0)
+            {
+                //cancel attacker's momentum
+                rb2D.velocity = new Vector2(0, 0);
+
+                //determine horizontal component of attack's direction
+                float horizontalDirection;
+                //if attacker is not moving, attack direction is the direction they are facing
+                if (Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0)
+                {
+                    if (facingRight)
+                    {
+                        horizontalDirection = 1;
+                    }
+                    else
+                    {
+                        horizontalDirection = -1;
+                    }
+                }
+                else
+                {
+                    horizontalDirection = Input.GetAxis("Horizontal");
+                }
+
+                //raycast to see if someone is hit with the attack - mask out attacker's layer
+                Vector2 direction = new Vector2(horizontalDirection, Input.GetAxis("Vertical"));
+                direction.Normalize();
+                Vector2 origin = new Vector2(player.GetComponent<Transform>().position.x, player.GetComponent<Transform>().position.y);
+                Debug.DrawRay(origin, direction * attackRadius, Color.blue, 1f);
+                RaycastHit2D hit = Physics2D.Raycast(origin: origin, direction: direction, distance: attackRadius, layerMask: mask.value);
+                if (hit.rigidbody != null)
+                {
+                    CmdChangeGlory(hit.rigidbody.gameObject);
+                    CmdKnockback(hit.rigidbody.gameObject, direction);
+                }
+
+                //cannot attack immediately after launching an attack
+                canAttack = false;
+            }
+
+            //keep track that attack button wasn't held during this frame
+            attackButtonHeld = false;
+        }
+    }
+
+    /**
      * Script for Directional Influence
      */
     void DI()
@@ -261,16 +376,18 @@ public class PlayerMovement : NetworkBehaviour {
     /**
      * Enter hit stun mode
      */
-    public void hitStun()
+    public void knockback(Vector2 dir)
     {
-        Debug.Log("hitstun");
         if (!hasAuthority)
         {
             return;
         }
 
+        rb2D.velocity = dir * baseAttackForce;
+
         stunTimer = STUN_DURATION;
     }
+
     public int getStunTimer()
     {
         return stunTimer;
@@ -325,5 +442,73 @@ public class PlayerMovement : NetworkBehaviour {
         }
         // set currentNormal to zero vector when leave a ground
         currentNormal = new Vector2(0, 0);
+    }
+
+    /*
+     * Script for updating glory on the server
+     */
+    [Command]
+    void CmdChangeGlory(GameObject otherPlayer)
+    {
+
+        //increase attacker glory
+        if (numGlory + baseGloryGain > 100)
+        {
+            numGlory = 100;
+        }
+        else
+        {
+            numGlory += baseGloryGain;
+        }
+
+
+        //decrease hit person glory
+        if (otherPlayer.GetComponent<PlayerScript>().numGlory - gloryLostOnHit < 0)
+        {
+            otherPlayer.GetComponent<PlayerScript>().numGlory = 0;
+        }
+        else
+        {
+            otherPlayer.GetComponent<PlayerScript>().numGlory -= gloryLostOnHit;
+        }
+
+    }
+
+    /*
+     * Script that updates glory on the clients
+     */
+    void OnChangeGlory(float glory)
+    {
+        numGlory = glory;
+        if (glorySlider != null)
+        {
+            glorySlider.value = glory;
+        }
+    }
+
+    /*
+     * Script that applies knockback on the server
+     */
+    [Command]
+    void CmdKnockback(GameObject go, Vector2 dir)
+    {
+        go.GetComponent<Rigidbody2D>().velocity = dir * baseAttackForce;
+        if (go.tag == "Player")
+        {
+            go.GetComponent<PlayerScript>().knockback(dir);
+        }
+        RpcKnockback(go, dir);
+    }
+
+    /*
+     * Script that applies knockback on the clients
+     */
+    [ClientRpc]
+    void RpcKnockback(GameObject go, Vector2 dir)
+    {
+        if (go.tag == "Player")
+        {
+            go.GetComponent<PlayerScript>().knockback(dir);
+        }
     }
 }
