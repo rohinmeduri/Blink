@@ -105,6 +105,7 @@ public class PlayerScript: NetworkBehaviour {
 
         //assign slider to variable so it can be modified easily
         glorySlider = glory.transform.Find("Slider").gameObject.GetComponent<Slider>();
+        glorySlider.value = numGlory;
     }
 
     // Update is called once per frame
@@ -380,8 +381,6 @@ public class PlayerScript: NetworkBehaviour {
                     CmdChangeGlory(hit.rigidbody.gameObject, comboHits);
                     CmdKnockback(hit.rigidbody.gameObject, direction);
                     comboHitInterval = 0;
-                    Debug.Log(numGlory);
-                    Debug.Log(comboHits);
                 }
 
                 //cannot attack immediately after launching an attack
@@ -405,6 +404,7 @@ public class PlayerScript: NetworkBehaviour {
         if (numGlory + gloryIncrease >= 100)
         {
             numGlory = 100;
+            Debug.Log("Super unlocked");
         }
         else
         {
