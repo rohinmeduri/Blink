@@ -155,6 +155,12 @@ MonoBehaviour:
   mask:
     serializedVersion: 2
     m_Bits: 1
+  gloryPrefab: {fileID: 1732290323307310, guid: ec57c344e826fbd409641a3eefccac12,
+    type: 2}
+  glory: {fileID: 0}
+  numGlory: 0
+  glorySlider: {fileID: 0}
+  baseGloryGain: 0
 --- !u!114 &114834900055569754
 MonoBehaviour:
   m_ObjectHideFlags: 1
