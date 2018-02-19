@@ -56,6 +56,7 @@ public class PlayerScript: NetworkBehaviour {
     public const int ATTACK_WAIT_FRAMES = 20; // number of frames a player must wait between attacks
     public const int COMBO_HIT_TIMER = 100; //number of frames a player must land the next attack within to continue a combo
     public const int STUN_DURATION = 50; // amount of frames that a player stays stunned
+    public const float GROUND_KNOCKBACK_MODIFICATION = 0f; //amount increase to the y component of knockback velocity if player is on ground
 
 
     // Use this for initialization
@@ -469,6 +470,13 @@ public class PlayerScript: NetworkBehaviour {
         if (!hasAuthority)
         {
             return;
+        }
+
+        //send player slighty more upwards if they are on the ground
+        if (isGround() && dir.y < GROUND_KNOCKBACK_MODIFICATION)
+        {
+            dir.y += GROUND_KNOCKBACK_MODIFICATION;
+            dir.Normalize();
         }
 
         //send player flying in direction of attack
