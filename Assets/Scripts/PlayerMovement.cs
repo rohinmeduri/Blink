@@ -35,7 +35,7 @@ public class PlayerMovement : NetworkBehaviour {
     public const float MAX_WJABLE_ANGLE = -Mathf.PI / 18; // largest negative angle of a wall where counts as walljump
     public const float MIN_JUMP_RECOVERY_ANGLE = Mathf.PI / 4; // smallest angle of a wall where air jumps are recovered
     public const int STICKY_WJ_DURATION = 15; // amount of frames that player sticks to a wall after touching it
-    public const int STUN_DURATION = 100; // amount of frames that a player stays stunned
+    public const int STUN_DURATION = 50; // amount of frames that a player stays stunned
 
 
     // Use this for initialization
