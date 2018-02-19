@@ -160,7 +160,7 @@ MonoBehaviour:
   glory: {fileID: 0}
   numGlory: 0
   glorySlider: {fileID: 0}
-  baseGloryGain: 0
+  baseGloryGain: 5
 --- !u!114 &114834900055569754
 MonoBehaviour:
   m_ObjectHideFlags: 1
