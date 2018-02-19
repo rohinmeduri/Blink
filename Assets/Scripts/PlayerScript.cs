@@ -487,6 +487,17 @@ public class PlayerScript: NetworkBehaviour {
 
     }
 
+    /**
+     * returns if player is on ground
+     */
+     bool isGround()
+    {
+        return currentNormal.y >= Mathf.Sin(MIN_JUMP_RECOVERY_ANGLE);
+    }
+
+    /**
+     * returns if player is on a wall
+     */
     bool isWall()
     {
          return currentNormal.y < Mathf.Sin(MIN_JUMP_RECOVERY_ANGLE) && currentNormal.y > Mathf.Sin(MAX_WJABLE_ANGLE);
