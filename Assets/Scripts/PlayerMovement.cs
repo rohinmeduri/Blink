@@ -5,18 +5,22 @@ using UnityEngine.Networking;
 
 public class PlayerMovement : NetworkBehaviour {
 
-    // variables
+    // public variables
+    [SyncVar]
+    public bool facingRight = true;
+    public PhysicsMaterial2D regularMaterial;
+    public PhysicsMaterial2D stunMaterial;
+
+    // private variables
     private int jumps;
     private bool canJump;
     private Vector2 currentNormal;
     private int stickyWallTimer;
     private int stunTimer;
 
-    [SyncVar]
-    public bool facingRight = true;
 
     private Rigidbody2D rb2D;
-    //private Collider2D c2D;
+    private Collider2D c2D;
 
     // constants
     public const float GROUND_RUN_FORCE = 2; // How fast player can attain intended velocity on ground
@@ -29,7 +33,7 @@ public class PlayerMovement : NetworkBehaviour {
     public const float FALL_FORCE = 0.5F; // force of gravity
     public const float FALL_COEF = 2; // How much player can control fall speed. Smaller = more control (preferrably > 1 [see for yourself ;)])
     public const float MAX_WJABLE_ANGLE = -Mathf.PI / 18; // largest negative angle of a wall where counts as walljump
-    public const float MIN_JUMP_RECOVERY_ANGLE = Mathf.PI / 18; // smallest angle of a wall where air jumps are recovered
+    public const float MIN_JUMP_RECOVERY_ANGLE = Mathf.PI / 4; // smallest angle of a wall where air jumps are recovered
     public const int STICKY_WJ_DURATION = 15; // amount of frames that player sticks to a wall after touching it
     public const int STUN_DURATION = 100; // amount of frames that a player stays stunned
 
@@ -44,7 +48,7 @@ public class PlayerMovement : NetworkBehaviour {
         stunTimer = 0;
 
         rb2D = gameObject.GetComponent<Rigidbody2D>();
-        //c2D = gameObject.GetComponent<Collider2D>();
+        c2D = gameObject.GetComponent<Collider2D>();
     }
 
     public void setLayer()
@@ -75,11 +79,13 @@ public class PlayerMovement : NetworkBehaviour {
 
         if (stunTimer == 0)
         {
+            rb2D.sharedMaterial = regularMaterial;
             run();
             jump();
         }
         else
         {
+            rb2D.sharedMaterial = stunMaterial;
             DI();
             stunTimer--;
         }
@@ -162,7 +168,7 @@ public class PlayerMovement : NetworkBehaviour {
             stickyWallTimer = 0;
         }
         // if touching a platform close enough to a walljumpable wall, start sticking
-        else if (currentNormal.y < Mathf.Sin(MIN_JUMP_RECOVERY_ANGLE) && currentNormal.y > Mathf.Sin(MAX_WJABLE_ANGLE) && stickyWallTimer == 0)
+        else if (isWall() && stickyWallTimer == 0)
         {
             stickyWallTimer = STICKY_WJ_DURATION;
         }
@@ -204,7 +210,10 @@ public class PlayerMovement : NetworkBehaviour {
             {
                 jumps--;
             }
-            jumpFlipSprite();
+            if (isWall()){
+                jumpFlipSprite();
+            }
+            
             // cannot jump until release jump key
             canJump = false;
         }
@@ -263,6 +272,12 @@ public class PlayerMovement : NetworkBehaviour {
         stunTimer = STUN_DURATION;
     }
     
+    bool isWall()
+    {
+         return currentNormal.y < Mathf.Sin(MIN_JUMP_RECOVERY_ANGLE) && currentNormal.y > Mathf.Sin(MAX_WJABLE_ANGLE);
+        
+    }
+
     /**
      * Collision Detector
      */ 
