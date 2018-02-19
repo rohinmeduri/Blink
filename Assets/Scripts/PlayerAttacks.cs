@@ -28,7 +28,7 @@ public class PlayerAttacks : NetworkBehaviour
 
     public void createMeter()
     {
-        glory = (GameObject)Instantiate(gloryPrefab);
+        glory = Instantiate(gloryPrefab);
         var canvas = GameObject.Find("Canvas");
         RectTransform gloryTransform = glory.GetComponent<RectTransform>();
         gloryTransform.SetParent(canvas.transform);
