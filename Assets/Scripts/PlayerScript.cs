@@ -36,6 +36,10 @@ public class PlayerScript: NetworkBehaviour {
     private int gloryWaitFrames = 2;
     private int gloryWaitedFrames = 0;
 
+    [SyncVar]
+    private int comboHits = 0;
+    private int comboHitInterval = 0;
+
     // constants
     public const float GROUND_RUN_FORCE = 2; // How fast player can attain intended velocity on ground
     public const float AIR_RUN_FORCE = 0.5F; // .... in air
@@ -50,6 +54,7 @@ public class PlayerScript: NetworkBehaviour {
     public const float MIN_JUMP_RECOVERY_ANGLE = Mathf.PI / 4; // smallest angle of a wall where air jumps are recovered
     public const int STICKY_WJ_DURATION = 15; // amount of frames that player sticks to a wall after touching it
     public const int ATTACK_WAIT_FRAMES = 20; // number of frames a player must wait between attacks
+    public const int COMBO_HIT_TIMER = 100; //number of frames a player must land the next attack within to continue a combo
     public const int STUN_DURATION = 50; // amount of frames that a player stays stunned
 
 
@@ -74,12 +79,18 @@ public class PlayerScript: NetworkBehaviour {
         }
     }
 
+    /**
+     * Script for creating Glory meters
+     */
     public void createMeter()
     {
+        //instantiate UI element and place on canvas
         glory = Instantiate(gloryPrefab);
         var canvas = GameObject.Find("Canvas");
         RectTransform gloryTransform = glory.GetComponent<RectTransform>();
         gloryTransform.SetParent(canvas.transform);
+
+        //position meter appropriately depending on if it corresponds to local player or enemy player
         if (!hasAuthority)
         {
             gloryTransform.anchorMin = new Vector2(1, 1);
@@ -91,6 +102,8 @@ public class PlayerScript: NetworkBehaviour {
         {
             gloryTransform.anchoredPosition = new Vector3(0, 0, 0);
         }
+
+        //assign slider to variable so it can be modified easily
         glorySlider = glory.transform.Find("Slider").gameObject.GetComponent<Slider>();
     }
 
@@ -99,6 +112,7 @@ public class PlayerScript: NetworkBehaviour {
     {
         flipSprite();
 
+        //create glory meter after a couple frames so that client authority can be assigned
         gloryWaitedFrames++;
         if (gloryWaitedFrames == gloryWaitFrames)
         {
@@ -108,6 +122,16 @@ public class PlayerScript: NetworkBehaviour {
         if (!hasAuthority)
         {
             return;
+        }
+
+        if(comboHits > 0)
+        {
+            comboHitInterval++;
+            if(comboHitInterval == COMBO_HIT_TIMER)
+            {
+                comboHits = 0;
+                comboHitInterval = 0;
+            }
         }
     }
 
@@ -348,10 +372,16 @@ public class PlayerScript: NetworkBehaviour {
                 Vector2 origin = new Vector2(player.GetComponent<Transform>().position.x, player.GetComponent<Transform>().position.y);
                 Debug.DrawRay(origin, direction * attackRadius, Color.blue, 1f);
                 RaycastHit2D hit = Physics2D.Raycast(origin: origin, direction: direction, distance: attackRadius, layerMask: mask.value);
+
+                //if attack is successful:
                 if (hit.rigidbody != null)
                 {
-                    CmdChangeGlory(hit.rigidbody.gameObject);
+                    comboHits++;
+                    CmdChangeGlory(hit.rigidbody.gameObject, comboHits);
                     CmdKnockback(hit.rigidbody.gameObject, direction);
+                    comboHitInterval = 0;
+                    Debug.Log(numGlory);
+                    Debug.Log(comboHits);
                 }
 
                 //cannot attack immediately after launching an attack
@@ -367,16 +397,18 @@ public class PlayerScript: NetworkBehaviour {
      * Script for updating glory on the server
      */
     [Command]
-    void CmdChangeGlory(GameObject otherPlayer)
+    void CmdChangeGlory(GameObject otherPlayer, int hits)
     {
         //increase attacker glory
-        if (numGlory + baseGloryGain > 100)
+        comboHits = hits;
+        float gloryIncrease = baseGloryGain * (1.0f + comboHits / 10.0f);
+        if (numGlory + gloryIncrease >= 100)
         {
             numGlory = 100;
         }
         else
         {
-            numGlory += baseGloryGain;
+            numGlory += gloryIncrease;
         }
 
 

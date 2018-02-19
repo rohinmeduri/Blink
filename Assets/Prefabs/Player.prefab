@@ -108,15 +108,14 @@ MonoBehaviour:
   player: {fileID: 1273918684993908}
   attackRadius: 1.25
   baseAttackForce: 10
-  waitFrames: 20
   mask:
     serializedVersion: 2
     m_Bits: 1
   gloryPrefab: {fileID: 1732290323307310, guid: ec57c344e826fbd409641a3eefccac12,
     type: 2}
   glorySlider: {fileID: 0}
-  baseGloryGain: 5
-  gloryLostOnHit: 3
+  baseGloryGain: 3
+  gloryLostOnHit: 2
 --- !u!114 &114268707513064214
 MonoBehaviour:
   m_ObjectHideFlags: 1
