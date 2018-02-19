@@ -83,7 +83,7 @@ public class PlayerAttacks : NetworkBehaviour
         {
             //check that button was held in previous frame (meaning it was released this frame
             //so attack should initiate)
-            if (attackButtonHeld && canAttack)
+            if (attackButtonHeld && canAttack && player.GetComponent<PlayerMovement>().getStunTimer() == 0)
             {
                 //cancel attacker's momentum
                 player.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);

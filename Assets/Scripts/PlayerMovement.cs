@@ -271,6 +271,10 @@ public class PlayerMovement : NetworkBehaviour {
 
         stunTimer = STUN_DURATION;
     }
+    public int getStunTimer()
+    {
+        return stunTimer;
+    }
     
     bool isWall()
     {
