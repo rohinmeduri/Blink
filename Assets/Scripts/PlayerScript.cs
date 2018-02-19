@@ -231,7 +231,7 @@ public class PlayerScript: NetworkBehaviour {
     {
         float goalSpeed = 0;
         // If standing on flat enough ground or in air, reset sticky timer
-        if (currentNormal.Equals(new Vector2(0, 0)) || currentNormal.y >= Mathf.Sin(MIN_JUMP_RECOVERY_ANGLE))
+        if (currentNormal.Equals(new Vector2(0, 0)) || isGround())
         {
             stickyWallTimer = 0;
         }
@@ -534,7 +534,7 @@ public class PlayerScript: NetworkBehaviour {
         }
 
         // resets jump if the flattest ground is flat enough
-        if (currentNormal.y > Mathf.Sin(MIN_JUMP_RECOVERY_ANGLE)) jumps = JUMP_NUM;
+        if (isGround()) jumps = JUMP_NUM;
         
     }
 
