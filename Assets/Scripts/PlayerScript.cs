@@ -150,6 +150,7 @@ public class PlayerScript: NetworkBehaviour {
             rb2D.sharedMaterial = regularMaterial;
             run();
             jump();
+            gravity();
         }
         else
         {
@@ -157,7 +158,6 @@ public class PlayerScript: NetworkBehaviour {
             DI();
             stunTimer--;
         }
-        gravity();
         attack();
     }
 
