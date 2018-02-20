@@ -36,6 +36,7 @@ public class PlayerScript: NetworkBehaviour {
     private GameObject glory;
     private int gloryWaitFrames = 2;
     private int gloryWaitedFrames = 0;
+    private Animator animator;
 
     [SyncVar (hook = "OnChangeComboHits")]
     private int comboHits = 0;
@@ -73,6 +74,8 @@ public class PlayerScript: NetworkBehaviour {
 
         rb2D = gameObject.GetComponent<Rigidbody2D>();
         c2D = gameObject.GetComponent<Collider2D>();
+
+        animator = GetComponent<Animator>();
     }
 
     public void setLayer()
@@ -379,7 +382,7 @@ public class PlayerScript: NetworkBehaviour {
                 Vector2 origin = new Vector2(player.GetComponent<Transform>().position.x, player.GetComponent<Transform>().position.y);
                 Debug.DrawRay(origin, direction * attackRadius, Color.blue, 1f);
                 RaycastHit2D hit = Physics2D.Raycast(origin: origin, direction: direction, distance: attackRadius, layerMask: mask.value);
-
+                
                 //if attack is successful:
                 if (hit.rigidbody != null)
                 {
@@ -388,6 +391,12 @@ public class PlayerScript: NetworkBehaviour {
                     CmdChangeGlory(hit.rigidbody.gameObject, comboHits, trueHit);
                     CmdKnockback(hit.rigidbody.gameObject, direction, comboHits);
                     comboHitInterval = 0;
+                }
+
+                //trigger animation
+                if(Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+                {
+                    animator.SetTrigger("Fair");
                 }
 
                 //cannot attack immediately after launching an attack
