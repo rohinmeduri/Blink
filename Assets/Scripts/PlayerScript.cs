@@ -56,6 +56,7 @@ public class PlayerScript: NetworkBehaviour {
     public const int STICKY_WJ_DURATION = 15; // amount of frames that player sticks to a wall after touching it
     public const int ATTACK_WAIT_FRAMES = 20; // number of frames a player must wait between attacks
     public const int COMBO_HIT_TIMER = 100; //number of frames a player must land the next attack within to continue a combo
+    public const float TRUE_HIT_MULTIPLIER = 1.5f; //multiplier for glory increase for true hits 
     public const int STUN_DURATION = 50; // amount of frames that a player stays stunned
     public const float GROUND_KNOCKBACK_MODIFICATION = 0f; //amount increase to the y component of knockback velocity if player is on ground
     public const float KNOCKBACK_DAMPENING_COEF = 0.98F; // factor that knockback speed slows every frame
@@ -383,7 +384,8 @@ public class PlayerScript: NetworkBehaviour {
                 if (hit.rigidbody != null)
                 {
                     comboHits++;
-                    CmdChangeGlory(hit.rigidbody.gameObject, comboHits);
+                    var trueHit = (comboHitInterval <= STUN_DURATION) && (comboHits > 1);
+                    CmdChangeGlory(hit.rigidbody.gameObject, comboHits, trueHit);
                     CmdKnockback(hit.rigidbody.gameObject, direction, comboHits);
                     comboHitInterval = 0;
                 }
@@ -401,11 +403,17 @@ public class PlayerScript: NetworkBehaviour {
      * Script for updating glory on the server
      */
     [Command]
-    void CmdChangeGlory(GameObject otherPlayer, int hits)
+    void CmdChangeGlory(GameObject otherPlayer, int hits, bool trueHit)
     {
         //increase attacker glory
         comboHits = hits;
-        float gloryIncrease = baseGloryGain * (1.0f + comboHits / 10.0f);
+        float trueMultiplier = 1;
+        if (trueHit)
+        {
+            trueMultiplier = TRUE_HIT_MULTIPLIER;
+            Debug.Log("true");
+        }
+        float gloryIncrease = baseGloryGain * (1.0f + comboHits / 10.0f) * trueMultiplier;
         if (numGlory + gloryIncrease >= 100)
         {
             numGlory = 100;
