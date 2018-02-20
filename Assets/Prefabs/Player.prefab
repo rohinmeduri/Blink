@@ -106,14 +106,15 @@ MonoBehaviour:
   regularMaterial: {fileID: 6200000, guid: 17f5ae5846336db40a7e5488775cd87b, type: 2}
   stunMaterial: {fileID: 6200000, guid: 0ac2c177006bfca45a60b997751b7fd9, type: 2}
   player: {fileID: 1273918684993908}
-  attackRadius: 1.25
-  baseAttackForce: 10
+  attackRadius: 2
+  baseAttackForce: 5
   mask:
     serializedVersion: 2
     m_Bits: 1
   gloryPrefab: {fileID: 1732290323307310, guid: ec57c344e826fbd409641a3eefccac12,
     type: 2}
   glorySlider: {fileID: 0}
+  comboText: {fileID: 0}
   baseGloryGain: 3
   gloryLostOnHit: 2
 --- !u!114 &114268707513064214
