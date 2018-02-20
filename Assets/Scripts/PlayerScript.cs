@@ -107,7 +107,7 @@ public class PlayerScript: NetworkBehaviour {
             gloryTransform.anchoredPosition = new Vector3(0, 0, 0);
         }
 
-        //assign slider to variable so it can be modified easily
+        //assign slider and comboText to variables so they can be modified easily
         glorySlider = glory.transform.Find("Slider").gameObject.GetComponent<Slider>();
         comboText = glory.transform.Find("Combo Text").gameObject.GetComponent<Text>();
         glorySlider.value = numGlory;
