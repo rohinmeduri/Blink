@@ -58,7 +58,7 @@ public class PlayerScript: NetworkBehaviour {
     public const int COMBO_HIT_TIMER = 100; //number of frames a player must land the next attack within to continue a combo
     public const int STUN_DURATION = 50; // amount of frames that a player stays stunned
     public const float GROUND_KNOCKBACK_MODIFICATION = 0f; //amount increase to the y component of knockback velocity if player is on ground
-    public const float KNOCKBACK_DAMPENING_COEF = 0.95F; // factor that knockback speed slows every frame
+    public const float KNOCKBACK_DAMPENING_COEF = 0.995F; // factor that knockback speed slows every frame
     public const float DI_FORCE = 0.1F; // amount of influence of DI
 
     // Use this for initialization
