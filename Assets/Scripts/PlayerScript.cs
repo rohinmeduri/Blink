@@ -384,7 +384,7 @@ public class PlayerScript: NetworkBehaviour {
                 {
                     comboHits++;
                     CmdChangeGlory(hit.rigidbody.gameObject, comboHits);
-                    CmdKnockback(hit.rigidbody.gameObject, direction);
+                    CmdKnockback(hit.rigidbody.gameObject, direction, comboHits);
                     comboHitInterval = 0;
                 }
 
@@ -466,31 +466,31 @@ public class PlayerScript: NetworkBehaviour {
      * Script that applies knockback on the server
      */
     [Command]
-    void CmdKnockback(GameObject go, Vector2 dir)
+    void CmdKnockback(GameObject go, Vector2 dir, int hits)
     {
         if (go.tag == "Player")
         {
-            go.GetComponent<PlayerScript>().knockback(dir);
+            go.GetComponent<PlayerScript>().knockback(dir, hits);
         }
-        RpcKnockback(go, dir);
+        RpcKnockback(go, dir, hits);
     }
 
     /*
      * Script that applies knockback on the clients
      */
     [ClientRpc]
-    void RpcKnockback(GameObject go, Vector2 dir)
+    void RpcKnockback(GameObject go, Vector2 dir, int hits)
     {
         if (go.tag == "Player")
         {
-            go.GetComponent<PlayerScript>().knockback(dir);
+            go.GetComponent<PlayerScript>().knockback(dir, hits);
         }
     }
 
     /**
      * Enter hit stun mode
      */
-    public void knockback(Vector2 dir)
+    public void knockback(Vector2 dir, int hits)
     {
         if (!hasAuthority)
         {
@@ -505,7 +505,7 @@ public class PlayerScript: NetworkBehaviour {
         }
 
         //send player flying in direction of attack
-        rb2D.velocity = dir * baseAttackForce;
+        rb2D.velocity = dir * baseAttackForce * (1 + hits/4);
 
         //stun player
         stunTimer = STUN_DURATION;
