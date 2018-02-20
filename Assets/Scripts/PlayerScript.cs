@@ -394,9 +394,13 @@ public class PlayerScript: NetworkBehaviour {
                 }
 
                 //trigger animation
-                if(Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+                if(Mathf.Abs(direction.x) >= Mathf.Abs(direction.y))
                 {
                     animator.SetTrigger("Fair");
+                }
+                else if(Mathf.Abs(direction.x) < Mathf.Abs(direction.y) && direction.y >= 0)
+                {
+                    animator.SetTrigger("Uair");
                 }
 
                 //cannot attack immediately after launching an attack
