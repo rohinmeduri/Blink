@@ -18,6 +18,7 @@ public class PlayerScript: NetworkBehaviour {
     public LayerMask mask;
     public GameObject gloryPrefab;
     public Slider glorySlider;
+    public Text comboText;
     public float baseGloryGain;
     public float gloryLostOnHit;
 
@@ -36,7 +37,7 @@ public class PlayerScript: NetworkBehaviour {
     private int gloryWaitFrames = 2;
     private int gloryWaitedFrames = 0;
 
-    [SyncVar]
+    [SyncVar (hook = "OnChangeComboHits")]
     private int comboHits = 0;
     private int comboHitInterval = 0;
 
@@ -106,6 +107,7 @@ public class PlayerScript: NetworkBehaviour {
 
         //assign slider to variable so it can be modified easily
         glorySlider = glory.transform.Find("Slider").gameObject.GetComponent<Slider>();
+        comboText = glory.transform.Find("Combo Text").gameObject.GetComponent<Text>();
         glorySlider.value = numGlory;
     }
 
@@ -132,6 +134,7 @@ public class PlayerScript: NetworkBehaviour {
             if(comboHitInterval == COMBO_HIT_TIMER)
             {
                 comboHits = 0;
+                CmdChangeComboHits(comboHits);
                 comboHitInterval = 0;
             }
         }
@@ -422,8 +425,17 @@ public class PlayerScript: NetworkBehaviour {
         {
             otherPlayer.GetComponent<PlayerScript>().numGlory -= gloryLostOnHit;
         }
-
     }
+
+    /*
+     * Script for updating ComboHits on the Server
+     */ 
+    [Command]
+    void CmdChangeComboHits(int hits)
+    {
+        comboHits = hits;
+    }
+
 
     /*
      * Script that updates glory on the clients
@@ -434,6 +446,18 @@ public class PlayerScript: NetworkBehaviour {
         if (glorySlider != null)
         {
             glorySlider.value = glory;
+        }
+    }
+
+    /*
+     * Scipt that updates combo counter on clients
+     */
+    void OnChangeComboHits(int hits)
+    {
+        if (comboText != null)
+        {
+            comboHits = hits;
+            comboText.text = "Combo: " + hits;
         }
     }
 
