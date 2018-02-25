@@ -57,8 +57,8 @@ public class PlayerScript: NetworkBehaviour {
     public const float MAX_WJABLE_ANGLE = -Mathf.PI / 18; // largest negative angle of a wall where counts as walljump
     public const float MIN_JUMP_RECOVERY_ANGLE = Mathf.PI / 4; // smallest angle of a wall where air jumps are recovered
     public const int STICKY_WJ_DURATION = 15; // amount of frames that player sticks to a wall after touching it
-    public const int ATTACK_WAIT_FRAMES = 0; // number of frames a player must wait between attacks
-    public const int ATTACK_FREEZE_FRAMES = 10; //number of frames a player freezes while attacking
+    public const int ATTACK_WAIT_FRAMES = 20; // number of frames a player must wait between attacks
+    public const int ATTACK_FREEZE_FRAMES = 0; //number of frames a player freezes while attacking
     public const int COMBO_HIT_TIMER = 100; //number of frames a player must land the next attack within to continue a combo
     public const float TRUE_HIT_MULTIPLIER = 1.5f; //multiplier for glory increase for true hits 
     public const int STUN_DURATION = 50; // amount of frames that a player stays stunned
@@ -339,7 +339,7 @@ public class PlayerScript: NetworkBehaviour {
         {
             rb2D.velocity = new Vector2(0, 0);
             attackFrozeFrames++;
-            if(attackFrozeFrames == ATTACK_FREEZE_FRAMES)
+            if(attackFrozeFrames >= ATTACK_FREEZE_FRAMES)
             {
                 attackFrozeFrames = 0;
                 attacking = false;
