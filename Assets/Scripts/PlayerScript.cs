@@ -60,7 +60,7 @@ public class PlayerScript : NetworkBehaviour {
     public const float MIN_JUMP_RECOVERY_ANGLE = Mathf.PI / 4; // smallest angle of a wall where air jumps are recovered
     public const int STICKY_WJ_DURATION = 15; // amount of frames that player sticks to a wall after touching it
     public const int ATTACK_WAIT_FRAMES = 20; // number of frames a player must wait between attacks
-    public const int ATTACK_FREEZE_FRAMES = 0; //number of frames a player freezes while attacking
+    public const int ATTACK_FREEZE_FRAMES = 8; //number of frames a player freezes while attacking
     public const int COMBO_HIT_TIMER = 100; //number of frames a player must land the next attack within to continue a combo
     public const float TRUE_HIT_MULTIPLIER = 1.5f; //multiplier for glory increase for true hits 
     public const int STUN_DURATION = 50; // amount of frames that a player stays stunned
@@ -126,8 +126,16 @@ public class PlayerScript : NetworkBehaviour {
     // Update is called once per frame
     void Update()
     {
+        // Updates Animator variables
+        animator.SetFloat("xDir", Input.GetAxis("Horizontal"));
+        animator.SetFloat("yDir", Input.GetAxis("Vertical"));
+        animator.SetFloat("yVel", rb2D.velocity.normalized.y);
+        animator.SetBool("isMoving", Mathf.Abs(Input.GetAxis("Horizontal")) > 0);
+        animator.SetBool("isAirborn", isAirborn());
+        animator.SetBool("onWall", isWall());
+
         // Decreases stun timer
-        if(stunTimer > 0) stunTimer--;
+        if (stunTimer > 0) stunTimer--;
 
         flipSprite();
 
@@ -252,7 +260,7 @@ public class PlayerScript : NetworkBehaviour {
         float runForce;
 
         // determine whether should use ground acceleration or air acceleration
-        if (currentNormal.Equals(new Vector2(0, 0))) runForce = AIR_RUN_FORCE;
+        if (isAirborn()) runForce = AIR_RUN_FORCE;
         else runForce = GROUND_RUN_FORCE;
 
         // move to goal speed if possible; otherwise, approach it by "runForce"
@@ -274,7 +282,7 @@ public class PlayerScript : NetworkBehaviour {
     {
         float goalSpeed = 0;
         // If standing on flat enough ground or in air, reset sticky timer
-        if (currentNormal.Equals(new Vector2(0, 0)) || isGround())
+        if (isAirborn() || isGround())
         {
             stickyWallTimer = 0;
         }
@@ -312,12 +320,12 @@ public class PlayerScript : NetworkBehaviour {
         if (Input.GetAxis("Jump") > 0 && canJump)
         {
             // if have midair jumps or attempted jump isn't midair or on a wall that's too steep
-            if (jumps > 0 || !(currentNormal.y < Mathf.Sin(MAX_WJABLE_ANGLE) || currentNormal.Equals(new Vector2(0, 0))))
+            if (jumps > 0 || !(currentNormal.y < Mathf.Sin(MAX_WJABLE_ANGLE) || isAirborn()))
             {
                 rb2D.velocity = new Vector2(WALLJUMP_SPEED * currentNormal.x + rb2D.velocity.x, JUMP_SPEED);
             }
             // if jumping in midair or on a wall that's too steep
-            if (jumps > 0 && (currentNormal.y < Mathf.Sin(MAX_WJABLE_ANGLE) || currentNormal.Equals(new Vector2(0, 0))))
+            if (jumps > 0 && (currentNormal.y < Mathf.Sin(MAX_WJABLE_ANGLE) || isAirborn()))
             {
                 jumps--;
             }
@@ -418,21 +426,7 @@ public class PlayerScript : NetworkBehaviour {
                 }
 
                 //trigger animation
-                if(Mathf.Abs(direction.x) >= Mathf.Abs(direction.y))
-                {
-                    animator.SetTrigger("Fair");
-                }
-                else if(Mathf.Abs(direction.x) < Mathf.Abs(direction.y))
-                {
-                    if(direction.y >= 0)
-                    {
-                        animator.SetTrigger("Uair");
-                    }
-                    else
-                    {
-                        animator.SetTrigger("Dair");
-                    }
-                }
+                animator.SetTrigger("attacking");
 
                 //cannot attack immediately after launching an attack
                 canAttack = false;
@@ -574,7 +568,7 @@ public class PlayerScript : NetworkBehaviour {
     /**
      * returns if player is on ground
      */
-     bool isGround()
+    bool isGround()
     {
         return currentNormal.y >= Mathf.Sin(MIN_JUMP_RECOVERY_ANGLE);
     }
@@ -584,8 +578,13 @@ public class PlayerScript : NetworkBehaviour {
      */
     bool isWall()
     {
-         return currentNormal.y < Mathf.Sin(MIN_JUMP_RECOVERY_ANGLE) && currentNormal.y > Mathf.Sin(MAX_WJABLE_ANGLE);
+        return currentNormal.y < Mathf.Sin(MIN_JUMP_RECOVERY_ANGLE) && currentNormal.y > Mathf.Sin(MAX_WJABLE_ANGLE) && !isAirborn();
         
+    }
+
+    bool isAirborn()
+    {
+        return currentNormal.Equals(new Vector2(0, 0));
     }
 
     /**
@@ -598,6 +597,13 @@ public class PlayerScript : NetworkBehaviour {
             Physics2D.IgnoreCollision(collision.collider, gameObject.GetComponent<Collider2D>());
         }
 
+        setNormal(collision);
+
+        if (isGround())
+        {
+            animator.SetTrigger("hitGround");
+        }
+
     }
 
     private void OnCollisionStay2D(Collision2D collision)
@@ -607,16 +613,8 @@ public class PlayerScript : NetworkBehaviour {
             return;
         }
 
-        // get points of contact with platforms
-        ContactPoint2D[] cps = new ContactPoint2D[2];
-        collision.GetContacts(cps);
-        ContactPoint2D cp = cps[0];
+        setNormal(collision);
 
-        // set currentNormal to be the normal of the flattest ground currently touching
-        if (Mathf.Abs(cp.normal.y) >= Mathf.Abs(currentNormal.y))
-        {
-            currentNormal = cp.normal;
-        }
 
         // resets jump if the flattest ground is flat enough
         if (isGround()) jumps = JUMP_NUM;
@@ -631,5 +629,20 @@ public class PlayerScript : NetworkBehaviour {
         }
         // set currentNormal to zero vector when leave a ground
         currentNormal = new Vector2(0, 0);
+    }
+
+
+    private void setNormal(Collision2D collision)
+    {
+        // get points of contact with platforms
+        ContactPoint2D[] cps = new ContactPoint2D[2];
+        collision.GetContacts(cps);
+        ContactPoint2D cp = cps[0];
+
+        // set currentNormal to be the normal of the flattest ground currently touching
+        if (Mathf.Abs(cp.normal.y) >= Mathf.Abs(currentNormal.y))
+        {
+            currentNormal = cp.normal;
+        }
     }
 }
