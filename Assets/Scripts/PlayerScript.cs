@@ -39,6 +39,7 @@ public class PlayerScript : NetworkBehaviour {
     private bool canReversal = true;
     private int reversalWaitedFrames = 0;
     private bool reversaling = false;
+    private Vector2 reversalDirection;
     private GameObject glory;
     private int gloryWaitFrames = 2;
     private int gloryWaitedFrames = 0;
@@ -69,8 +70,9 @@ public class PlayerScript : NetworkBehaviour {
     public const float GROUND_KNOCKBACK_MODIFICATION = 0f; //amount increase to the y component of knockback velocity if player is on ground
     public const float KNOCKBACK_DAMPENING_COEF = 0.98F; // factor that knockback speed slows every frame
     public const float DI_FORCE = 0.1F; // amount of influence of DI
-    public const int REVERSAL_EFFECTIVE_TIME = 20; //number of frames in which a reversal is effective
+    public const int REVERSAL_EFFECTIVE_TIME = 80; //number of frames in which a reversal is effective
     public const int REVERSAL_DURATION = 80; //number of frames a reversal lasts (effective time + end lag)
+    public const float REVERSAL_SUCCESS_ANGLE = 90; //minimum angle between reversal and attack for reversal to be successful
 
     // Use this for initialization
     void Start()
@@ -173,6 +175,10 @@ public class PlayerScript : NetworkBehaviour {
         if (!canReversal)
         {
             reversalWaitedFrames++;
+            if(reversalWaitedFrames >= REVERSAL_EFFECTIVE_TIME)
+            {
+                reversaling = false;
+            }
             if (reversalWaitedFrames == REVERSAL_DURATION)
             {
                 canReversal = true;
@@ -388,7 +394,7 @@ public class PlayerScript : NetworkBehaviour {
         {
             //check that button was held in previous frame (meaning it was released this frame
             //so attack should initiate)
-            if (attackButtonHeld && canAttack && stunTimer == 0)
+            if (attackButtonHeld && canAttack && stunTimer == 0 && !reversaling)
             {
                 attacking = true;
 
@@ -405,7 +411,7 @@ public class PlayerScript : NetworkBehaviour {
                     comboHits++;
                     var trueHit = (comboHitInterval <= STUN_DURATION) && (comboHits > 1);
                     CmdChangeGlory(hit.rigidbody.gameObject, comboHits, trueHit);
-                    CmdKnockback(hit.rigidbody.gameObject, direction, comboHits);
+                    CmdKnockback(hit.rigidbody.gameObject, player, direction, comboHits);
                     comboHitInterval = 0;
                 }
 
@@ -436,14 +442,14 @@ public class PlayerScript : NetworkBehaviour {
     }
 
     /**
-     * Script for reversals
+     * Script to see if player is reversaling (actual impact is handled in knockback)
      */
     void reversal()
     {
         //check if player is pushing reversal button and can reversal
-        if (Input.GetAxis("Fire2") > 0 && canReversal)
+        if (Input.GetAxis("Fire2") > 0 && canReversal & !attacking)
         {
-            Debug.Log("reversal");
+            reversalDirection = getDirection();
             canReversal = false;
             reversaling = true;
         }
@@ -551,31 +557,31 @@ public class PlayerScript : NetworkBehaviour {
      * Script that applies knockback on the server
      */
     [Command]
-    void CmdKnockback(GameObject go, Vector2 dir, int hits)
+    void CmdKnockback(GameObject defender, GameObject attacker, Vector2 dir, int hits)
     {
-        if (go.tag == "Player")
+        if (defender.tag == "Player")
         {
-            go.GetComponent<PlayerScript>().knockback(dir, hits);
+            defender.GetComponent<PlayerScript>().knockback(attacker, dir, hits);
         }
-        RpcKnockback(go, dir, hits);
+        RpcKnockback(defender, attacker, dir, hits);
     }
 
     /*
      * Script that applies knockback on the clients
      */
     [ClientRpc]
-    void RpcKnockback(GameObject go, Vector2 dir, int hits)
+    void RpcKnockback(GameObject defender, GameObject attacker, Vector2 dir, int hits)
     {
-        if (go.tag == "Player")
+        if (defender.tag == "Player")
         {
-            go.GetComponent<PlayerScript>().knockback(dir, hits);
+            defender.GetComponent<PlayerScript>().knockback(attacker, dir, hits);
         }
     }
 
     /**
      * Enter hit stun mode
      */
-    public void knockback(Vector2 dir, int hits)
+    public void knockback(GameObject attacker, Vector2 dir, int hits)
     {
         if (!hasAuthority)
         {
@@ -589,11 +595,26 @@ public class PlayerScript : NetworkBehaviour {
             dir.Normalize();
         }
 
-        //send player flying in direction of attack
-        rb2D.velocity = dir * baseAttackForce * (1 + hits/4);
+        if (reversaling && Vector2.Angle(reversalDirection, dir) > 90f)
+        {
+            comboHits++;
+            CmdKnockback(attacker, player, reversalDirection, comboHits);
+            comboHitInterval = 0;
+        }
 
-        //stun player
-        stunTimer = STUN_DURATION;
+        else
+        {
+            //end combo if there is one
+            comboHits = 0;
+            CmdChangeComboHits(comboHits);
+            comboHitInterval = 0;
+
+            //send player flying in direction of attack
+            rb2D.velocity = dir * baseAttackForce * (1 + hits / 4);
+
+            //stun player
+            stunTimer = STUN_DURATION;
+        }
     }
 
     /**
