@@ -128,6 +128,9 @@ public class PlayerScript : NetworkBehaviour {
     // Update is called once per frame
     void Update()
     {
+        // Decreases stun timer
+        if(stunTimer > 0) stunTimer--;
+
         flipSprite();
 
         //create glory meter after a couple frames so that client authority can be assigned
@@ -209,7 +212,6 @@ public class PlayerScript : NetworkBehaviour {
         {
             rb2D.sharedMaterial = stunMaterial;
             DI();
-            stunTimer--;
         }
         attack();
         reversal();
