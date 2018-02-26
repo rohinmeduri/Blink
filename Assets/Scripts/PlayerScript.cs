@@ -4,8 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 
-public class PlayerScript: NetworkBehaviour {
+public class PlayerScript : NetworkBehaviour {
+    
     // public variables
+    
     [SyncVar]
     public bool facingRight = true;
     [SyncVar(hook = "OnChangeGlory")]
