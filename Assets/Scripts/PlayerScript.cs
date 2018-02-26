@@ -137,6 +137,12 @@ public class PlayerScript : NetworkBehaviour {
         animator.SetBool("isMoving", Mathf.Abs(Input.GetAxis("Horizontal")) > 0);
         animator.SetBool("isAirborn", isAirborn());
         animator.SetBool("onWall", isWall());
+        int attackNum = 0;
+        if (Mathf.Abs(Input.GetAxis("Vertical")) > Mathf.Abs(Input.GetAxis("Horizontal")))
+        {
+            attackNum = (int)Mathf.Sign(Input.GetAxis("Vertical"));
+        }
+        animator.SetInteger("attackNum", attackNum);
 
         // Decreases stun timer
         if (stunTimer > 0) stunTimer--;
