@@ -7,7 +7,6 @@ using UnityEngine.Networking;
 public class PlayerScript : NetworkBehaviour {
     
     // public variables
-    
     [SyncVar]
     public bool facingRight = true;
     [SyncVar(hook = "OnChangeGlory")]
@@ -37,6 +36,9 @@ public class PlayerScript : NetworkBehaviour {
     private float attackWaitedFrames = 0;
     private int attackFrozeFrames = 0;
     private bool attacking = false;
+    private bool canReversal = true;
+    private int reversalWaitedFrames = 0;
+    private bool reversaling = false;
     private GameObject glory;
     private int gloryWaitFrames = 2;
     private int gloryWaitedFrames = 0;
@@ -152,7 +154,7 @@ public class PlayerScript : NetworkBehaviour {
             }
         }
 
-        //check to see if player can attack again (after "waitedFrames" num of frames 
+        //check to see if player can attack again (after ATTACK_WAIT_FRAMES num of frames 
         //have elapsed since previous attack)
         if (!canAttack)
         {
@@ -161,6 +163,17 @@ public class PlayerScript : NetworkBehaviour {
             {
                 canAttack = true;
                 attackWaitedFrames = 0;
+            }
+        }
+
+        //check to see if player can reversal again
+        if (!canReversal)
+        {
+            reversalWaitedFrames++;
+            if (reversalWaitedFrames == REVERSAL_DURATION)
+            {
+                canReversal = true;
+                reversalWaitedFrames = 0;
             }
         }
 
@@ -199,6 +212,7 @@ public class PlayerScript : NetworkBehaviour {
             stunTimer--;
         }
         attack();
+        reversal();
     }
 
 
@@ -438,6 +452,20 @@ public class PlayerScript : NetworkBehaviour {
 
             //keep track that attack button wasn't held during this frame
             attackButtonHeld = false;
+        }
+    }
+
+    /**
+     * Script for reversals
+     */
+    void reversal()
+    {
+        //check if player is pushing reversal button and can reversal
+        if (Input.GetAxis("Fire2") > 0 && canReversal)
+        {
+            Debug.Log("reversal");
+            canReversal = false;
+            reversaling = true;
         }
     }
 
