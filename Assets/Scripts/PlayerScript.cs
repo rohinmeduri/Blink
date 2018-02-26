@@ -392,30 +392,8 @@ public class PlayerScript : NetworkBehaviour {
             {
                 attacking = true;
 
-                //cancel attacker's momentum
-                rb2D.velocity = new Vector2(0, 0);
-
-                //determine horizontal component of attack's direction
-                float horizontalDirection;
-                //if attacker is not moving, attack direction is the direction they are facing
-                if (Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0)
-                {
-                    if (facingRight)
-                    {
-                        horizontalDirection = 1;
-                    }
-                    else
-                    {
-                        horizontalDirection = -1;
-                    }
-                }
-                else
-                {
-                    horizontalDirection = Input.GetAxis("Horizontal");
-                }
-
                 //raycast to see if someone is hit with the attack - mask out attacker's layer
-                Vector2 direction = new Vector2(horizontalDirection, Input.GetAxis("Vertical"));
+                Vector2 direction = getDirection();
                 direction.Normalize();
                 Vector2 origin = new Vector2(player.GetComponent<Transform>().position.x, player.GetComponent<Transform>().position.y);
                 Debug.DrawRay(origin, direction * attackRadius, Color.blue, 1f);
@@ -469,6 +447,33 @@ public class PlayerScript : NetworkBehaviour {
             canReversal = false;
             reversaling = true;
         }
+    }
+
+    /**
+     * Script for determining direction of player actions (attacks, reversals, and blinks)
+     */
+    private Vector2 getDirection()
+    {
+        //determine horizontal component of attack's direction
+        float horizontalDirection;
+        //if attacker is not moving, attack direction is the direction they are facing
+        if (Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0)
+        {
+            if (facingRight)
+            {
+                horizontalDirection = 1;
+            }
+            else
+            {
+                horizontalDirection = -1;
+            }
+        }
+        else
+        {
+            horizontalDirection = Input.GetAxis("Horizontal");
+        }
+        Vector2 direction = new Vector2(horizontalDirection, Input.GetAxis("Vertical"));
+        return direction;
     }
 
     /*
