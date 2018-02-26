@@ -559,10 +559,6 @@ public class PlayerScript : NetworkBehaviour {
     [Command]
     void CmdKnockback(GameObject defender, GameObject attacker, Vector2 dir, int hits)
     {
-        if (defender.tag == "Player")
-        {
-            defender.GetComponent<PlayerScript>().knockback(attacker, dir, hits);
-        }
         RpcKnockback(defender, attacker, dir, hits);
     }
 
@@ -605,6 +601,7 @@ public class PlayerScript : NetworkBehaviour {
         else
         {
             //end combo if there is one
+            Debug.Log("ending combo");
             comboHits = 0;
             CmdChangeComboHits(comboHits);
             comboHitInterval = 0;
