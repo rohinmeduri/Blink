@@ -65,6 +65,8 @@ public class PlayerScript: NetworkBehaviour {
     public const float GROUND_KNOCKBACK_MODIFICATION = 0f; //amount increase to the y component of knockback velocity if player is on ground
     public const float KNOCKBACK_DAMPENING_COEF = 0.98F; // factor that knockback speed slows every frame
     public const float DI_FORCE = 0.1F; // amount of influence of DI
+    public const int REVERSAL_EFFECTIVE_TIME = 20; //number of frames in which a reversal is effective
+    public const int REVERSAL_DURATION = 80; //number of frames a reversal lasts (effective time + end lag)
 
     // Use this for initialization
     void Start()
@@ -136,6 +138,7 @@ public class PlayerScript: NetworkBehaviour {
             return;
         }
 
+        //keep a timer for between hits in a combo
         if(comboHits > 0)
         {
             comboHitInterval++;
@@ -144,6 +147,30 @@ public class PlayerScript: NetworkBehaviour {
                 comboHits = 0;
                 CmdChangeComboHits(comboHits);
                 comboHitInterval = 0;
+            }
+        }
+
+        //check to see if player can attack again (after "waitedFrames" num of frames 
+        //have elapsed since previous attack)
+        if (!canAttack)
+        {
+            attackWaitedFrames++;
+            if (attackWaitedFrames == ATTACK_WAIT_FRAMES)
+            {
+                canAttack = true;
+                attackWaitedFrames = 0;
+            }
+        }
+
+        //freeze player if they are mid-attack
+        if (attacking)
+        {
+            rb2D.velocity = new Vector2(0, 0);
+            attackFrozeFrames++;
+            if (attackFrozeFrames >= ATTACK_FREEZE_FRAMES)
+            {
+                attackFrozeFrames = 0;
+                attacking = false;
             }
         }
     }
@@ -334,30 +361,6 @@ public class PlayerScript: NetworkBehaviour {
      */
     void attack()
     {
-        //freeze player if they are mid-attack
-        if (attacking)
-        {
-            rb2D.velocity = new Vector2(0, 0);
-            attackFrozeFrames++;
-            if(attackFrozeFrames >= ATTACK_FREEZE_FRAMES)
-            {
-                attackFrozeFrames = 0;
-                attacking = false;
-            }
-        }
-
-        //check to see if player can attack again (after "waitedFrames" num of frames 
-        //have elapsed since previous attack)
-        if (!canAttack)
-        {
-            attackWaitedFrames++;
-            if (attackWaitedFrames == ATTACK_WAIT_FRAMES)
-            {
-                canAttack = true;
-                attackWaitedFrames = 0;
-            }
-        }
-
         //check to see if attack button is held down - attack occurs once the button is released
         if (Input.GetAxis("Fire1") != 0)
         {
