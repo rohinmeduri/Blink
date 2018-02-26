@@ -141,6 +141,7 @@ public class PlayerScript : NetworkBehaviour {
         // Decreases stun timer
         if (stunTimer > 0) stunTimer--;
 
+        // flips sprite only when not clinging to a wall
         if(stickyWallTimer == 0)
         {
             flipSprite();
@@ -626,6 +627,7 @@ public class PlayerScript : NetworkBehaviour {
     {
         return currentNormal.y >= Mathf.Sin(MIN_JUMP_RECOVERY_ANGLE);
     }
+    // general check if any normal qualifies as on ground
     bool isGround(Vector2 normal)
     {
         return normal.y >= Mathf.Sin(MIN_JUMP_RECOVERY_ANGLE);
@@ -638,11 +640,15 @@ public class PlayerScript : NetworkBehaviour {
     {
         return currentNormal.y < Mathf.Sin(MIN_JUMP_RECOVERY_ANGLE) && currentNormal.y > Mathf.Sin(MAX_WJABLE_ANGLE) && !isAirborn();
     }
+    // general check if any normal qualifies as on wall
     bool isWall(Vector2 normal)
     {
         return normal.y < Mathf.Sin(MIN_JUMP_RECOVERY_ANGLE) && normal.y > Mathf.Sin(MAX_WJABLE_ANGLE);
     }
 
+    /**
+     * returns if player is in air
+     */
     bool isAirborn()
     {
         return currentNormal.Equals(new Vector2(0, 0));
@@ -658,9 +664,10 @@ public class PlayerScript : NetworkBehaviour {
             Physics2D.IgnoreCollision(collision.collider, gameObject.GetComponent<Collider2D>());
         }
         
-
+        // set player normal
         setPlayerNormal(collision);
 
+        // triggers landing animation if landed on ground
         if (isGround() && !isWall(getNormal(collision)))
         {
             animator.SetTrigger("hitGround");
@@ -675,8 +682,8 @@ public class PlayerScript : NetworkBehaviour {
             return;
         }
 
+        // set player normal
         setPlayerNormal(collision);
-
 
         // resets jump if the flattest ground is flat enough
         if (isGround()) jumps = JUMP_NUM;
@@ -693,7 +700,9 @@ public class PlayerScript : NetworkBehaviour {
         currentNormal = new Vector2(0, 0);
     }
 
-
+    /**
+     * Method to set the player's normal with any platforms it is touching
+     */
     private void setPlayerNormal(Collision2D collision)
     {
         Vector2 normal = getNormal(collision);
@@ -704,6 +713,9 @@ public class PlayerScript : NetworkBehaviour {
         }
     }
 
+    /**
+     * Method to get the normal of a Collision2D object
+     */
     private Vector2 getNormal(Collision2D collision)
     {
         // get points of contact with platforms
