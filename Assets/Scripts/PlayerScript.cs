@@ -141,7 +141,10 @@ public class PlayerScript : NetworkBehaviour {
         // Decreases stun timer
         if (stunTimer > 0) stunTimer--;
 
-        flipSprite();
+        if(stickyWallTimer == 0)
+        {
+            flipSprite();
+        }
 
         //create glory meter after a couple frames so that client authority can be assigned
         gloryWaitedFrames++;
@@ -623,6 +626,10 @@ public class PlayerScript : NetworkBehaviour {
     {
         return currentNormal.y >= Mathf.Sin(MIN_JUMP_RECOVERY_ANGLE);
     }
+    bool isGround(Vector2 normal)
+    {
+        return normal.y >= Mathf.Sin(MIN_JUMP_RECOVERY_ANGLE);
+    }
 
     /**
      * returns if player is on a wall
@@ -630,7 +637,10 @@ public class PlayerScript : NetworkBehaviour {
     bool isWall()
     {
         return currentNormal.y < Mathf.Sin(MIN_JUMP_RECOVERY_ANGLE) && currentNormal.y > Mathf.Sin(MAX_WJABLE_ANGLE) && !isAirborn();
-        
+    }
+    bool isWall(Vector2 normal)
+    {
+        return normal.y < Mathf.Sin(MIN_JUMP_RECOVERY_ANGLE) && normal.y > Mathf.Sin(MAX_WJABLE_ANGLE);
     }
 
     bool isAirborn()
@@ -647,10 +657,11 @@ public class PlayerScript : NetworkBehaviour {
         {
             Physics2D.IgnoreCollision(collision.collider, gameObject.GetComponent<Collider2D>());
         }
+        
 
-        setNormal(collision);
+        setPlayerNormal(collision);
 
-        if (isGround())
+        if (isGround() && !isWall(getNormal(collision)))
         {
             animator.SetTrigger("hitGround");
         }
@@ -664,7 +675,7 @@ public class PlayerScript : NetworkBehaviour {
             return;
         }
 
-        setNormal(collision);
+        setPlayerNormal(collision);
 
 
         // resets jump if the flattest ground is flat enough
@@ -683,17 +694,22 @@ public class PlayerScript : NetworkBehaviour {
     }
 
 
-    private void setNormal(Collision2D collision)
+    private void setPlayerNormal(Collision2D collision)
+    {
+        Vector2 normal = getNormal(collision);
+        // set currentNormal to be the normal of the flattest ground currently touching
+        if (Mathf.Abs(normal.y) >= Mathf.Abs(currentNormal.y))
+        {
+            currentNormal = normal;
+        }
+    }
+
+    private Vector2 getNormal(Collision2D collision)
     {
         // get points of contact with platforms
         ContactPoint2D[] cps = new ContactPoint2D[2];
         collision.GetContacts(cps);
         ContactPoint2D cp = cps[0];
-
-        // set currentNormal to be the normal of the flattest ground currently touching
-        if (Mathf.Abs(cp.normal.y) >= Mathf.Abs(currentNormal.y))
-        {
-            currentNormal = cp.normal;
-        }
+        return cp.normal;
     }
 }
