@@ -7,7 +7,6 @@ using UnityEngine.Networking;
 public class PlayerScript : NetworkBehaviour {
     
     // public variables
-    
     [SyncVar]
     public bool facingRight = true;
     [SyncVar(hook = "OnChangeGlory")]
@@ -37,6 +36,10 @@ public class PlayerScript : NetworkBehaviour {
     private float attackWaitedFrames = 0;
     private int attackFrozeFrames = 0;
     private bool attacking = false;
+    private bool canReversal = true;
+    private int reversalWaitedFrames = 0;
+    private bool reversaling = false;
+    private Vector2 reversalDirection;
     private GameObject glory;
     private int gloryWaitFrames = 2;
     private int gloryWaitedFrames = 0;
@@ -67,8 +70,9 @@ public class PlayerScript : NetworkBehaviour {
     public const float GROUND_KNOCKBACK_MODIFICATION = 0f; //amount increase to the y component of knockback velocity if player is on ground
     public const float KNOCKBACK_DAMPENING_COEF = 0.98F; // factor that knockback speed slows every frame
     public const float DI_FORCE = 0.1F; // amount of influence of DI
-    public const int REVERSAL_EFFECTIVE_TIME = 20; //number of frames in which a reversal is effective
+    public const int REVERSAL_EFFECTIVE_TIME = 80; //number of frames in which a reversal is effective
     public const int REVERSAL_DURATION = 80; //number of frames a reversal lasts (effective time + end lag)
+    public const float REVERSAL_SUCCESS_ANGLE = 90; //minimum angle between reversal and attack for reversal to be successful
 
     // Use this for initialization
     void Start()
@@ -163,7 +167,7 @@ public class PlayerScript : NetworkBehaviour {
             }
         }
 
-        //check to see if player can attack again (after "waitedFrames" num of frames 
+        //check to see if player can attack again (after ATTACK_WAIT_FRAMES num of frames 
         //have elapsed since previous attack)
         if (!canAttack)
         {
@@ -172,6 +176,21 @@ public class PlayerScript : NetworkBehaviour {
             {
                 canAttack = true;
                 attackWaitedFrames = 0;
+            }
+        }
+
+        //check to see if player can reversal again
+        if (!canReversal)
+        {
+            reversalWaitedFrames++;
+            if(reversalWaitedFrames >= REVERSAL_EFFECTIVE_TIME)
+            {
+                reversaling = false;
+            }
+            if (reversalWaitedFrames == REVERSAL_DURATION)
+            {
+                canReversal = true;
+                reversalWaitedFrames = 0;
             }
         }
 
@@ -209,6 +228,7 @@ public class PlayerScript : NetworkBehaviour {
             DI();
         }
         attack();
+        reversal();
     }
 
 
@@ -382,34 +402,12 @@ public class PlayerScript : NetworkBehaviour {
         {
             //check that button was held in previous frame (meaning it was released this frame
             //so attack should initiate)
-            if (attackButtonHeld && canAttack && stunTimer == 0)
+            if (attackButtonHeld && canAttack && stunTimer == 0 && !reversaling)
             {
                 attacking = true;
 
-                //cancel attacker's momentum
-                rb2D.velocity = new Vector2(0, 0);
-
-                //determine horizontal component of attack's direction
-                float horizontalDirection;
-                //if attacker is not moving, attack direction is the direction they are facing
-                if (Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0)
-                {
-                    if (facingRight)
-                    {
-                        horizontalDirection = 1;
-                    }
-                    else
-                    {
-                        horizontalDirection = -1;
-                    }
-                }
-                else
-                {
-                    horizontalDirection = Input.GetAxis("Horizontal");
-                }
-
                 //raycast to see if someone is hit with the attack - mask out attacker's layer
-                Vector2 direction = new Vector2(horizontalDirection, Input.GetAxis("Vertical"));
+                Vector2 direction = getDirection();
                 direction.Normalize();
                 Vector2 origin = new Vector2(player.GetComponent<Transform>().position.x, player.GetComponent<Transform>().position.y);
                 Debug.DrawRay(origin, direction * attackRadius, Color.blue, 1f);
@@ -421,7 +419,7 @@ public class PlayerScript : NetworkBehaviour {
                     comboHits++;
                     var trueHit = (comboHitInterval <= STUN_DURATION) && (comboHits > 1);
                     CmdChangeGlory(hit.rigidbody.gameObject, comboHits, trueHit);
-                    CmdKnockback(hit.rigidbody.gameObject, direction, comboHits);
+                    CmdKnockback(hit.rigidbody.gameObject, player, direction, comboHits);
                     comboHitInterval = 0;
                 }
 
@@ -435,6 +433,47 @@ public class PlayerScript : NetworkBehaviour {
             //keep track that attack button wasn't held during this frame
             attackButtonHeld = false;
         }
+    }
+
+    /**
+     * Script to see if player is reversaling (actual impact is handled in knockback)
+     */
+    void reversal()
+    {
+        //check if player is pushing reversal button and can reversal
+        if (Input.GetAxis("Fire2") > 0 && canReversal & !attacking)
+        {
+            reversalDirection = getDirection();
+            canReversal = false;
+            reversaling = true;
+        }
+    }
+
+    /**
+     * Script for determining direction of player actions (attacks, reversals, and blinks)
+     */
+    private Vector2 getDirection()
+    {
+        //determine horizontal component of attack's direction
+        float horizontalDirection;
+        //if attacker is not moving, attack direction is the direction they are facing
+        if (Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0)
+        {
+            if (facingRight)
+            {
+                horizontalDirection = 1;
+            }
+            else
+            {
+                horizontalDirection = -1;
+            }
+        }
+        else
+        {
+            horizontalDirection = Input.GetAxis("Horizontal");
+        }
+        Vector2 direction = new Vector2(horizontalDirection, Input.GetAxis("Vertical"));
+        return direction;
     }
 
     /*
@@ -512,31 +551,27 @@ public class PlayerScript : NetworkBehaviour {
      * Script that applies knockback on the server
      */
     [Command]
-    void CmdKnockback(GameObject go, Vector2 dir, int hits)
+    void CmdKnockback(GameObject defender, GameObject attacker, Vector2 dir, int hits)
     {
-        if (go.tag == "Player")
-        {
-            go.GetComponent<PlayerScript>().knockback(dir, hits);
-        }
-        RpcKnockback(go, dir, hits);
+        RpcKnockback(defender, attacker, dir, hits);
     }
 
     /*
      * Script that applies knockback on the clients
      */
     [ClientRpc]
-    void RpcKnockback(GameObject go, Vector2 dir, int hits)
+    void RpcKnockback(GameObject defender, GameObject attacker, Vector2 dir, int hits)
     {
-        if (go.tag == "Player")
+        if (defender.tag == "Player")
         {
-            go.GetComponent<PlayerScript>().knockback(dir, hits);
+            defender.GetComponent<PlayerScript>().knockback(attacker, dir, hits);
         }
     }
 
     /**
      * Enter hit stun mode
      */
-    public void knockback(Vector2 dir, int hits)
+    public void knockback(GameObject attacker, Vector2 dir, int hits)
     {
         if (!hasAuthority)
         {
@@ -550,11 +585,27 @@ public class PlayerScript : NetworkBehaviour {
             dir.Normalize();
         }
 
-        //send player flying in direction of attack
-        rb2D.velocity = dir * baseAttackForce * (1 + hits/4);
+        if (reversaling && Vector2.Angle(reversalDirection, dir) > 90f)
+        {
+            comboHits++;
+            CmdKnockback(attacker, player, reversalDirection, comboHits);
+            comboHitInterval = 0;
+        }
 
-        //stun player
-        stunTimer = STUN_DURATION;
+        else
+        {
+            //end combo if there is one
+            Debug.Log("ending combo");
+            comboHits = 0;
+            CmdChangeComboHits(comboHits);
+            comboHitInterval = 0;
+
+            //send player flying in direction of attack
+            rb2D.velocity = dir * baseAttackForce * (1 + hits / 4);
+
+            //stun player
+            stunTimer = STUN_DURATION;
+        }
     }
 
     /**
