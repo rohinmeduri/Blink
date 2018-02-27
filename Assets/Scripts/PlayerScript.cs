@@ -130,23 +130,6 @@ public class PlayerScript : NetworkBehaviour {
     // Update is called once per frame
     void Update()
     {
-        // Updates Animator variables
-        animator.SetFloat("xDir", Input.GetAxis("Horizontal"));
-        animator.SetFloat("yDir", Input.GetAxis("Vertical"));
-        animator.SetFloat("yVel", rb2D.velocity.normalized.y);
-        animator.SetBool("isMoving", Mathf.Abs(Input.GetAxis("Horizontal")) > 0);
-        animator.SetBool("isAirborn", isAirborn());
-        animator.SetBool("onWall", isWall());
-        int attackNum = 0;
-        if (Mathf.Abs(Input.GetAxis("Vertical")) > Mathf.Abs(Input.GetAxis("Horizontal")))
-        {
-            attackNum = (int)Mathf.Sign(Input.GetAxis("Vertical"));
-        }
-        animator.SetInteger("attackNum", attackNum);
-
-        // Decreases stun timer
-        if (stunTimer > 0) stunTimer--;
-
         // flips sprite only when not clinging to a wall
         if(stickyWallTimer == 0)
         {
@@ -165,8 +148,26 @@ public class PlayerScript : NetworkBehaviour {
             return;
         }
 
+        // Updates Animator variables
+        animator.SetFloat("xDir", Input.GetAxis("Horizontal"));
+        animator.SetFloat("yDir", Input.GetAxis("Vertical"));
+        animator.SetFloat("yVel", rb2D.velocity.normalized.y);
+        animator.SetBool("isMoving", Mathf.Abs(Input.GetAxis("Horizontal")) > 0);
+        animator.SetBool("isAirborn", isAirborn());
+        animator.SetBool("onWall", isWall());
+        int attackNum = 0;
+        if (Mathf.Abs(Input.GetAxis("Vertical")) > Mathf.Abs(Input.GetAxis("Horizontal")))
+        {
+            attackNum = (int)Mathf.Sign(Input.GetAxis("Vertical"));
+        }
+        animator.SetInteger("attackNum", attackNum);
+
+        // Decreases stun timer
+        if (stunTimer > 0) stunTimer--;
+
+
         //keep a timer for between hits in a combo
-        if(comboHits > 0)
+        if (comboHits > 0)
         {
             comboHitInterval++;
             if(comboHitInterval == COMBO_HIT_TIMER)
