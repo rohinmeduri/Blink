@@ -636,10 +636,24 @@ public class PlayerScript : NetworkBehaviour {
         comboHits = hits;
 
         //increase reversal-er glory
-        numGlory += reversalGloryGain + gloryLostOnHit;
+        if (numGlory + reversalGloryGain + gloryLostOnHit >= 100)
+        {
+            numGlory = 100;
+        }
+        else
+        {
+            numGlory += reversalGloryGain + gloryLostOnHit;
+        }
 
         //decrease attacker glory
-        attacker.GetComponent<PlayerScript>().numGlory -= attacker.GetComponent<PlayerScript>().lastGloryIncrease;
+        if (attacker.GetComponent<PlayerScript>().numGlory - attacker.GetComponent<PlayerScript>().lastGloryIncrease < 0)
+        {
+            attacker.GetComponent<PlayerScript>().numGlory = 0;
+        }
+        else
+        {
+            attacker.GetComponent<PlayerScript>().numGlory -= attacker.GetComponent<PlayerScript>().lastGloryIncrease;
+        }
     }
 
     /**
