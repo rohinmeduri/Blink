@@ -136,6 +136,7 @@ MonoBehaviour:
   comboText: {fileID: 0}
   baseGloryGain: 3
   gloryLostOnHit: 2
+  reversalGloryGain: 12
 --- !u!114 &114268707513064214
 MonoBehaviour:
   m_ObjectHideFlags: 1

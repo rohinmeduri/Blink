@@ -22,6 +22,7 @@ public class PlayerScript : NetworkBehaviour {
     public Text comboText;
     public float baseGloryGain;
     public float gloryLostOnHit;
+    public float reversalGloryGain;
 
     // private variables
     private int jumps;
@@ -36,6 +37,7 @@ public class PlayerScript : NetworkBehaviour {
     private float attackWaitedFrames = 0;
     private int attackFrozeFrames = 0;
     private bool attacking = false;
+    private float lastGloryIncrease = 0;
     private bool canReversal = true;
     private int reversalWaitedFrames = 0;
     private bool reversaling = false;
@@ -429,7 +431,7 @@ public class PlayerScript : NetworkBehaviour {
                 {
                     comboHits++;
                     var trueHit = (comboHitInterval <= STUN_DURATION) && (comboHits > 1);
-                    CmdChangeGlory(hit.rigidbody.gameObject, comboHits, trueHit);
+                    CmdAttackGloryUpdate(hit.rigidbody.gameObject, comboHits, trueHit);
                     CmdKnockback(hit.rigidbody.gameObject, player, direction, comboHits);
                     comboHitInterval = 0;
                 }
@@ -488,10 +490,10 @@ public class PlayerScript : NetworkBehaviour {
     }
 
     /*
-     * Script for updating glory on the server
+     * Script for updating glory after an attack on the server
      */
     [Command]
-    void CmdChangeGlory(GameObject otherPlayer, int hits, bool trueHit)
+    void CmdAttackGloryUpdate(GameObject otherPlayer, int hits, bool trueHit)
     {
         //increase attacker glory
         comboHits = hits;
@@ -499,19 +501,18 @@ public class PlayerScript : NetworkBehaviour {
         if (trueHit)
         {
             trueMultiplier = TRUE_HIT_MULTIPLIER;
-            Debug.Log("true");
         }
         float gloryIncrease = baseGloryGain * (1.0f + comboHits / 10.0f) * trueMultiplier;
         if (numGlory + gloryIncrease >= 100)
         {
+            lastGloryIncrease = (100 - numGlory);
             numGlory = 100;
-            Debug.Log("Super unlocked");
         }
         else
         {
             numGlory += gloryIncrease;
+            lastGloryIncrease = gloryIncrease;
         }
-
 
         //decrease hit person glory
         if (otherPlayer.GetComponent<PlayerScript>().numGlory - gloryLostOnHit < 0)
@@ -526,7 +527,7 @@ public class PlayerScript : NetworkBehaviour {
 
     /*
      * Script for updating ComboHits on the Server
-     */ 
+     */
     [Command]
     void CmdChangeComboHits(int hits)
     {
@@ -589,24 +590,26 @@ public class PlayerScript : NetworkBehaviour {
             return;
         }
 
-        //send player slighty more upwards if they are on the ground
-        if (isGround() && dir.y < GROUND_KNOCKBACK_MODIFICATION)
-        {
-            dir.y += GROUND_KNOCKBACK_MODIFICATION;
-            dir.Normalize();
-        }
-
+        //check if reversaling correctly
         if (reversaling && Vector2.Angle(reversalDirection, dir) > 90f)
         {
             comboHits++;
             CmdKnockback(attacker, player, reversalDirection, comboHits);
+            CmdReversalGloryUpdate(attacker);
             comboHitInterval = 0;
         }
 
+        //otherwise, take the hit
         else
         {
+            //send player slighty more upwards if they are on the ground
+            if (isGround() && dir.y < GROUND_KNOCKBACK_MODIFICATION)
+            {
+                dir.y += GROUND_KNOCKBACK_MODIFICATION;
+                dir.Normalize();
+            }
+
             //end combo if there is one
-            Debug.Log("ending combo");
             comboHits = 0;
             CmdChangeComboHits(comboHits);
             comboHitInterval = 0;
@@ -617,6 +620,22 @@ public class PlayerScript : NetworkBehaviour {
             //stun player
             stunTimer = STUN_DURATION;
         }
+    }
+
+
+
+    /**
+     * Script for updating glory on server after successful reversal
+     * 
+     */
+    [Command]
+    void CmdReversalGloryUpdate(GameObject attacker)
+    {
+        //increase reversal-er glory
+        numGlory += reversalGloryGain + gloryLostOnHit;
+
+        //decrease attacker glory
+        attacker.GetComponent<PlayerScript>().numGlory -= attacker.GetComponent<PlayerScript>().lastGloryIncrease;
     }
 
     /**
