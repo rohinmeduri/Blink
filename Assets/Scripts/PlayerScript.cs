@@ -589,30 +589,32 @@ public class PlayerScript : NetworkBehaviour {
         {
             return;
         }
-
         //check if reversaling correctly
         if (reversaling && Vector2.Angle(reversalDirection, dir) > 90f)
         {
             comboHits++;
+            CmdReversalGloryUpdate(attacker, comboHits);
             CmdKnockback(attacker, player, reversalDirection, comboHits);
-            CmdReversalGloryUpdate(attacker);
             comboHitInterval = 0;
         }
 
         //otherwise, take the hit
         else
         {
+            attacking = false;
+            reversaling = false;
+
+            //end combo if there is one
+            comboHits = 0;
+            CmdChangeComboHits(comboHits);
+            comboHitInterval = 0;
+
             //send player slighty more upwards if they are on the ground
             if (isGround() && dir.y < GROUND_KNOCKBACK_MODIFICATION)
             {
                 dir.y += GROUND_KNOCKBACK_MODIFICATION;
                 dir.Normalize();
             }
-
-            //end combo if there is one
-            comboHits = 0;
-            CmdChangeComboHits(comboHits);
-            comboHitInterval = 0;
 
             //send player flying in direction of attack
             rb2D.velocity = dir * baseAttackForce * (1 + hits / 4);
@@ -629,8 +631,10 @@ public class PlayerScript : NetworkBehaviour {
      * 
      */
     [Command]
-    void CmdReversalGloryUpdate(GameObject attacker)
+    void CmdReversalGloryUpdate(GameObject attacker, int hits)
     {
+        comboHits = hits;
+
         //increase reversal-er glory
         numGlory += reversalGloryGain + gloryLostOnHit;
 
