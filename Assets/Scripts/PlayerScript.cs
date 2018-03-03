@@ -60,6 +60,7 @@ public class PlayerScript : NetworkBehaviour {
     public const float JUMP_SPEED = 10; // jump height
     public const int JUMP_NUM = 1; // number of midair jumps without touching ground
     public const float WALLJUMP_SPEED = 15; // horizontal speed gained from wall-jumps
+    public const float WALL_FALL_SPEED = -5; // maximum fall speed when on wall
     public const float FALL_SPEED = -10; // maximum fall speed
     public const float FALL_FORCE = 0.5F; // force of gravity
     public const float FALL_COEF = 2; // How much player can control fall speed. Smaller = more control (preferrably > 1 [see for yourself ;)])
@@ -387,6 +388,14 @@ public class PlayerScript : NetworkBehaviour {
 
         // set falling terminal velocity
         float fallSpeed = FALL_SPEED;
+        if(stickyWallTimer == 0)
+        {
+            fallSpeed = FALL_SPEED;
+        }
+        else
+        {
+            fallSpeed = WALL_FALL_SPEED;
+        }
         if(stunTimer == 0)
         {
             fallSpeed *= (1 - Input.GetAxis("Vertical") / FALL_COEF);
