@@ -135,11 +135,9 @@ public class PlayerScript : NetworkBehaviour {
     // Update is called once per frame
     void Update()
     {
-        // flips sprite only when not clinging to a wall
-        if(stickyWallTimer == 0)
-        {
-            flipSprite();
-        }
+        // flips sprite
+        flipSprite();
+        
 
         //create glory meter after a couple frames so that client authority can be assigned
         gloryWaitedFrames++;
