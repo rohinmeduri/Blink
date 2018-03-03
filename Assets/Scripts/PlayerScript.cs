@@ -244,8 +244,7 @@ public class PlayerScript : NetworkBehaviour {
         attack();
         reversal();
     }
-
-
+    
     /**
      * Scripts for flipping the sprite
      */
@@ -769,9 +768,7 @@ public class PlayerScript : NetworkBehaviour {
 
 
     }
-
-
-
+    
     /**
      * Method to set the player's normal with any platforms it is touching
      */
