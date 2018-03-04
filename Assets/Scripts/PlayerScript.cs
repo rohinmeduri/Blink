@@ -393,6 +393,9 @@ public class PlayerScript: NetworkBehaviour {
         }
     }
 
+	void blink{
+		
+	}
     /*
      * Script for updating glory on the server
      */
