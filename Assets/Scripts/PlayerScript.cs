@@ -37,6 +37,7 @@ public class PlayerScript : NetworkBehaviour {
     private int actionWaitedFrames = 0;
     private bool attackButtonHeld = false;
     private int attackFrozeFrames = 0;
+	private bool canBlink = false;
     private float lastGloryIncrease = 0;
     private bool reversalEffective = false;
     private Vector2 reversalDirection;
@@ -462,6 +463,9 @@ public class PlayerScript : NetworkBehaviour {
     }
 
 	void blink(){
+		if (numGlory == 100 && actionLock) {
+			canBlink = true;
+		}
 		
 	}
 
