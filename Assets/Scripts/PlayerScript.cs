@@ -35,7 +35,6 @@ public class PlayerScript : NetworkBehaviour {
     private bool actionLock = false;
     private int actionWaitFrames;
     private int actionWaitedFrames = 0;
-    private bool canAction = true;
     private bool attackButtonHeld = false;
     private float attackWaitedFrames = 0;
     private int attackFrozeFrames = 0;
@@ -191,7 +190,6 @@ public class PlayerScript : NetworkBehaviour {
             if(actionWaitedFrames == actionWaitFrames)
             {
                 actionLock = false;
-                canAction = true;
                 actionWaitedFrames = 0;
             }
         }
