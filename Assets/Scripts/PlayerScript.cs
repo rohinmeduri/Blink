@@ -48,6 +48,8 @@ public class PlayerScript : NetworkBehaviour {
     [SyncVar]
     private bool hasSuper = false;
     private Animator animator;
+    private List<GameObject> touchingObjects = new List<GameObject>();
+    private List<Vector2> touchingNormals = new List<Vector2>();
 
     [SyncVar (hook = "OnChangeComboHits")]
     private int comboHits = 0;
@@ -60,6 +62,7 @@ public class PlayerScript : NetworkBehaviour {
     public const float JUMP_SPEED = 10; // jump height
     public const int JUMP_NUM = 1; // number of midair jumps without touching ground
     public const float WALLJUMP_SPEED = 15; // horizontal speed gained from wall-jumps
+    public const float WALL_FALL_SPEED = -5; // maximum fall speed when on wall
     public const float FALL_SPEED = -10; // maximum fall speed
     public const float FALL_FORCE = 0.5F; // force of gravity
     public const float FALL_COEF = 2; // How much player can control fall speed. Smaller = more control (preferrably > 1 [see for yourself ;)])
@@ -67,7 +70,7 @@ public class PlayerScript : NetworkBehaviour {
     public const float MIN_JUMP_RECOVERY_ANGLE = Mathf.PI / 4; // smallest angle of a wall where air jumps are recovered
     public const int STICKY_WJ_DURATION = 15; // amount of frames that player sticks to a wall after touching it
     public const int ATTACK_WAIT_FRAMES = 20; // number of frames a player must wait between attacks
-    public const int ATTACK_FREEZE_FRAMES = 8; //number of frames a player freezes while attacking
+    public const int ATTACK_FREEZE_FRAMES = 12; //number of frames a player freezes while attacking
     public const int COMBO_HIT_TIMER = 100; //number of frames a player must land the next attack within to continue a combo
     public const float TRUE_HIT_MULTIPLIER = 1.5f; //multiplier for glory increase for true hits 
     public const int STUN_DURATION = 50; // amount of frames that a player stays stunned
@@ -136,11 +139,9 @@ public class PlayerScript : NetworkBehaviour {
     // Update is called once per frame
     void Update()
     {
-        // flips sprite only when not clinging to a wall
-        if(stickyWallTimer == 0)
-        {
-            flipSprite();
-        }
+        // flips sprite
+        flipSprite();
+        
 
         //create glory meter after a couple frames so that client authority can be assigned
         gloryWaitedFrames++;
@@ -247,8 +248,7 @@ public class PlayerScript : NetworkBehaviour {
         reversal();
         super();
     }
-
-
+    
     /**
      * Scripts for flipping the sprite
      */
@@ -389,6 +389,14 @@ public class PlayerScript : NetworkBehaviour {
 
         // set falling terminal velocity
         float fallSpeed = FALL_SPEED;
+        if(stickyWallTimer == 0)
+        {
+            fallSpeed = FALL_SPEED;
+        }
+        else
+        {
+            fallSpeed = WALL_FALL_SPEED;
+        }
         if(stunTimer == 0)
         {
             fallSpeed *= (1 - Input.GetAxis("Vertical") / FALL_COEF);
@@ -752,15 +760,24 @@ public class PlayerScript : NetworkBehaviour {
         {
             Physics2D.IgnoreCollision(collision.collider, gameObject.GetComponent<Collider2D>());
         }
-        
-        // set player normal
-        setPlayerNormal(collision);
-
-        // triggers landing animation if landed on ground
-        if (isGround() && !isWall(getNormal(collision)))
+        else
         {
-            animator.SetTrigger("hitGround");
+
+            // add collided object to list
+            touchingNormals.Add(getNormal(collision));
+            touchingObjects.Add(collision.gameObject);
+
+
+            // set player normal
+            setPlayerNormal();
+            
+            // triggers landing animation if landed on ground
+            if (isGround() && !isWall(getNormal(collision)))
+            {
+                animator.SetTrigger("hitGround");
+            }
         }
+        
 
     }
 
@@ -772,7 +789,8 @@ public class PlayerScript : NetworkBehaviour {
         }
 
         // set player normal
-        setPlayerNormal(collision);
+        setPlayerNormal();
+
 
         // resets jump if the flattest ground is flat enough
         if (isGround()) jumps = JUMP_NUM;
@@ -785,20 +803,39 @@ public class PlayerScript : NetworkBehaviour {
         {
             return;
         }
-        // set currentNormal to zero vector when leave a ground
-        currentNormal = new Vector2(0, 0);
-    }
 
+        // remove object from list of objects touched
+        touchingNormals.RemoveAt(touchingObjects.IndexOf(collision.gameObject));
+        touchingObjects.RemoveAt(touchingObjects.IndexOf(collision.gameObject));
+
+        // set player normal
+        setPlayerNormal();
+
+
+    }
+    
     /**
      * Method to set the player's normal with any platforms it is touching
      */
-    private void setPlayerNormal(Collision2D collision)
+    private void setPlayerNormal()
     {
-        Vector2 normal = getNormal(collision);
-        // set currentNormal to be the normal of the flattest ground currently touching
-        if (Mathf.Abs(normal.y) >= Mathf.Abs(currentNormal.y))
+        // set currentNormal to zero vector when leave a ground
+        if (touchingNormals.Count == 0)
         {
-            currentNormal = normal;
+            currentNormal = new Vector2(0, 0);
+        }
+        else
+        {
+            // set normal to most upwards-pointing (flattest ground)
+            Vector2 newNormal = new Vector2(0, -1);
+            foreach (Vector2 normal in touchingNormals)
+            {
+                if (newNormal.y < normal.y)
+                {
+                    newNormal = normal;
+                }
+            }
+            currentNormal = newNormal;
         }
     }
 
