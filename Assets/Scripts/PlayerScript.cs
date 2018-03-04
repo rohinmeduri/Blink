@@ -238,15 +238,15 @@ public class PlayerScript : NetworkBehaviour {
             run();
             jump();
             gravity();
+            attack();
+            reversal();
+            super();
         }
         else
         {
             rb2D.sharedMaterial = stunMaterial;
             DI();
         }
-        attack();
-        reversal();
-        super();
     }
     
     /**
@@ -275,6 +275,7 @@ public class PlayerScript : NetworkBehaviour {
 
     void jumpFlipSprite()
     {
+        Debug.Log("jump flip sprite");
         if (!hasAuthority || rb2D.velocity.x == 0)
         {
             return;
@@ -468,6 +469,7 @@ public class PlayerScript : NetworkBehaviour {
         //check if player is pushing reversal button and can reversal
         if (Input.GetAxis("Fire2") > 0 && canReversal & !attacking)
         {
+            Debug.Log("reversal");
             reversalDirection = getDirection();
             canReversal = false;
             reversaling = true;
