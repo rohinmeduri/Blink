@@ -461,7 +461,7 @@ public class PlayerScript : NetworkBehaviour {
         }
     }
 
-	void blink{
+	void blink(){
 		
 	}
 
