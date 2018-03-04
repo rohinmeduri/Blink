@@ -273,7 +273,7 @@ public class PlayerScript : NetworkBehaviour {
         facingRight = facingRightNow;
     }
 
-    void jumpFlipSprite()
+    void wallJumpFlipSprite()
     {
         Debug.Log("jump flip sprite");
         if (!hasAuthority || rb2D.velocity.x == 0)
@@ -368,7 +368,7 @@ public class PlayerScript : NetworkBehaviour {
                 jumps--;
             }
             if (isWall()){
-                jumpFlipSprite();
+                wallJumpFlipSprite();
             }
             
             // cannot jump until release jump key
