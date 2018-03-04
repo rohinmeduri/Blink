@@ -226,7 +226,7 @@ public class PlayerScript : NetworkBehaviour {
             }
         }
     }
-
+    
     void FixedUpdate()
     {
 
