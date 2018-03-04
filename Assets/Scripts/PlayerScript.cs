@@ -33,16 +33,15 @@ public class PlayerScript : NetworkBehaviour {
     private Rigidbody2D rb2D;
     private Collider2D c2D;
     private bool actionLock = false;
-    private int actionWaitFrames = 0;
-    private bool canAttack = true;
+    private int actionWaitFrames;
+    private int actionWaitedFrames = 0;
+    private bool canAction = true;
     private bool attackButtonHeld = false;
     private float attackWaitedFrames = 0;
     private int attackFrozeFrames = 0;
-    private bool attacking = false;
     private float lastGloryIncrease = 0;
-    private bool canReversal = true;
     private int reversalWaitedFrames = 0;
-    private bool reversaling = false;
+    private bool reversalEffective = false;
     private Vector2 reversalDirection;
     private GameObject glory;
     private int gloryWaitFrames = 2;
@@ -185,37 +184,26 @@ public class PlayerScript : NetworkBehaviour {
             }
         }
 
-        //check to see if player can attack again (after ATTACK_WAIT_FRAMES num of frames 
-        //have elapsed since previous attack)
-        if (!canAttack)
+        //check to see if player can perform an action again (blink, reversal, attack, super)
+        if (actionLock)
         {
-            attackWaitedFrames++;
-            if (attackWaitedFrames == ATTACK_WAIT_FRAMES)
+            actionWaitedFrames++;
+            if(actionWaitedFrames == actionWaitFrames)
             {
-                canAttack = true;
                 actionLock = false;
-                attackWaitedFrames = 0;
+                canAction = true;
+                actionWaitedFrames = 0;
             }
         }
 
-        //check to see if player can reversal again
-        if (!canReversal)
+        //check to see if player's reversal is still effective
+        if (reversalEffective && actionWaitedFrames >= REVERSAL_EFFECTIVE_TIME)
         {
-            reversalWaitedFrames++;
-            if(reversalWaitedFrames >= REVERSAL_EFFECTIVE_TIME)
-            {
-                reversaling = false;
-            }
-            if (reversalWaitedFrames == REVERSAL_DURATION)
-            {
-                canReversal = true;
-                actionLock = false;
-                reversalWaitedFrames = 0;
-            }
+            reversalEffective = false;
         }
 
         //freeze player if they are mid-attack
-        if (attacking)
+        /*if (attacking)
         {
             rb2D.velocity = new Vector2(0, 0);
             attackFrozeFrames++;
@@ -224,7 +212,7 @@ public class PlayerScript : NetworkBehaviour {
                 attackFrozeFrames = 0;
                 attacking = false;
             }
-        }
+        }*/
     }
     
     void FixedUpdate()
@@ -442,9 +430,8 @@ public class PlayerScript : NetworkBehaviour {
         {
             //check that button was held in previous frame (meaning it was released this frame
             //so attack should initiate)
-            if (attackButtonHeld && canAttack && stunTimer == 0 && !actionLock)
+            if (attackButtonHeld && stunTimer == 0 && !actionLock)
             {
-                attacking = true;
                 actionLock = true;
 
                 //raycast to see if someone is hit with the attack - mask out attacker's layer
@@ -468,7 +455,8 @@ public class PlayerScript : NetworkBehaviour {
                 animator.SetTrigger("attacking");
 
                 //cannot attack immediately after launching an attack
-                canAttack = false;
+                actionLock = true;
+                actionWaitFrames = ATTACK_WAIT_FRAMES;
             }
 
             //keep track that attack button wasn't held during this frame
@@ -482,13 +470,13 @@ public class PlayerScript : NetworkBehaviour {
     void reversal()
     {
         //check if player is pushing reversal button and can reversal
-        if (Input.GetAxis("Fire2") > 0 && canReversal & !actionLock)
+        if (Input.GetAxis("Fire2") > 0 && !actionLock)
         {
             Debug.Log("reversal");
             reversalDirection = getDirection();
-            canReversal = false;
-            reversaling = true;
             actionLock = true;
+            reversalEffective = true;
+            actionWaitFrames = REVERSAL_DURATION;
         }
     }
     
@@ -661,7 +649,7 @@ public class PlayerScript : NetworkBehaviour {
             return;
         }
         //check if reversaling correctly
-        if (reversaling && Vector2.Angle(reversalDirection, dir) > 90f)
+        if (reversalEffective && Vector2.Angle(reversalDirection, dir) > 90f)
         {
             comboHits++;
             CmdReversalGloryUpdate(attacker, comboHits);
@@ -672,8 +660,7 @@ public class PlayerScript : NetworkBehaviour {
         //otherwise, take the hit
         else
         {
-            attacking = false;
-            reversaling = false;
+            reversalEffective = false;
 
             //end combo if there is one
             comboHits = 0;
@@ -692,6 +679,8 @@ public class PlayerScript : NetworkBehaviour {
 
             //stun player
             stunTimer = STUN_DURATION;
+            actionLock = true;
+            actionWaitFrames = STUN_DURATION;
         }
     }
 
