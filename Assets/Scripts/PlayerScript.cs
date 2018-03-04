@@ -36,10 +36,8 @@ public class PlayerScript : NetworkBehaviour {
     private int actionWaitFrames;
     private int actionWaitedFrames = 0;
     private bool attackButtonHeld = false;
-    private float attackWaitedFrames = 0;
     private int attackFrozeFrames = 0;
     private float lastGloryIncrease = 0;
-    private int reversalWaitedFrames = 0;
     private bool reversalEffective = false;
     private Vector2 reversalDirection;
     private GameObject glory;
@@ -186,19 +184,22 @@ public class PlayerScript : NetworkBehaviour {
         //check to see if player can perform an action again (blink, reversal, attack, super)
         if (actionLock)
         {
+            //check to see if player's reversal is still effective
+            if (reversalEffective && actionWaitedFrames >= REVERSAL_EFFECTIVE_TIME)
+            {
+                reversalEffective = false;
+            }
+
             actionWaitedFrames++;
             if(actionWaitedFrames == actionWaitFrames)
             {
                 actionLock = false;
+                reversalEffective = false;
                 actionWaitedFrames = 0;
             }
         }
 
-        //check to see if player's reversal is still effective
-        if (reversalEffective && actionWaitedFrames >= REVERSAL_EFFECTIVE_TIME)
-        {
-            reversalEffective = false;
-        }
+
 
         //freeze player if they are mid-attack
         /*if (attacking)
@@ -428,10 +429,8 @@ public class PlayerScript : NetworkBehaviour {
         {
             //check that button was held in previous frame (meaning it was released this frame
             //so attack should initiate)
-            if (attackButtonHeld && stunTimer == 0 && !actionLock)
+            if (attackButtonHeld && !actionLock)
             {
-                actionLock = true;
-
                 //raycast to see if someone is hit with the attack - mask out attacker's layer
                 Vector2 direction = getDirection();
                 direction.Normalize();
