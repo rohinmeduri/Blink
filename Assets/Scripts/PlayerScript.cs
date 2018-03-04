@@ -265,17 +265,20 @@ public class PlayerScript : NetworkBehaviour {
         {
             return;
         }
-        bool facingRightNow = Input.GetAxis("Horizontal") > 0 || (Input.GetAxis("Horizontal") == 0 && facingRight);
-        if (facingRightNow != facingRight)
-        {
-            CmdFlipSprite(facingRightNow);
+
+        //flip sprite based on player inut if they are not wall hugging
+        if (stickyWallTimer == 0){
+            bool facingRightNow = Input.GetAxis("Horizontal") > 0 || (Input.GetAxis("Horizontal") == 0 && facingRight);
+            if (facingRightNow != facingRight)
+            {
+                CmdFlipSprite(facingRightNow);
+                facingRight = facingRightNow;
+            }
         }
-        facingRight = facingRightNow;
     }
 
     void wallJumpFlipSprite()
     {
-        Debug.Log("jump flip sprite");
         if (!hasAuthority || rb2D.velocity.x == 0)
         {
             return;
@@ -330,9 +333,17 @@ public class PlayerScript : NetworkBehaviour {
             stickyWallTimer = STICKY_WJ_DURATION;
         }
 
-        // if still sticking, run into wall and decrease timer
+        // if still sticking, flip sprite appropriately, run into wall and decrease timer
         if (stickyWallTimer > 0)
         {
+            //flip sprite away from wall
+            bool facingRightNow = currentNormal.x > 0;
+            if (facingRightNow != facingRight)
+            {
+                CmdFlipSprite(facingRightNow);
+                facingRight = facingRightNow;
+            }
+
             goalSpeed = -MAX_SPEED * currentNormal.x;
             if (Mathf.Sign(currentNormal.x) == Mathf.Sign(Input.GetAxis("Horizontal")))
             {
