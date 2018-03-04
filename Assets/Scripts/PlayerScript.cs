@@ -45,6 +45,8 @@ public class PlayerScript : NetworkBehaviour {
     private GameObject glory;
     private int gloryWaitFrames = 2;
     private int gloryWaitedFrames = 0;
+    [SyncVar]
+    private bool hasSuper = false;
     private Animator animator;
     private List<GameObject> touchingObjects = new List<GameObject>();
     private List<Vector2> touchingNormals = new List<Vector2>();
@@ -78,6 +80,8 @@ public class PlayerScript : NetworkBehaviour {
     public const int REVERSAL_EFFECTIVE_TIME = 80; //number of frames in which a reversal is effective
     public const int REVERSAL_DURATION = 80; //number of frames a reversal lasts (effective time + end lag)
     public const float REVERSAL_SUCCESS_ANGLE = 90; //minimum angle between reversal and attack for reversal to be successful
+    public const float SUPER_LOSS_GLORY = 85; //glory at which super is lost if player falls below
+    public const float GLORY_ON_SUPER_MISS = 75; //glory player drops to for losing super
 
     // Use this for initialization
     void Start()
@@ -168,7 +172,6 @@ public class PlayerScript : NetworkBehaviour {
         // Decreases stun timer
         if (stunTimer > 0) stunTimer--;
 
-
         //keep a timer for between hits in a combo
         if (comboHits > 0)
         {
@@ -235,14 +238,15 @@ public class PlayerScript : NetworkBehaviour {
             run();
             jump();
             gravity();
+            attack();
+            reversal();
+            super();
         }
         else
         {
             rb2D.sharedMaterial = stunMaterial;
             DI();
         }
-        attack();
-        reversal();
     }
     
     /**
@@ -269,8 +273,9 @@ public class PlayerScript : NetworkBehaviour {
         facingRight = facingRightNow;
     }
 
-    void jumpFlipSprite()
+    void wallJumpFlipSprite()
     {
+        Debug.Log("jump flip sprite");
         if (!hasAuthority || rb2D.velocity.x == 0)
         {
             return;
@@ -363,7 +368,7 @@ public class PlayerScript : NetworkBehaviour {
                 jumps--;
             }
             if (isWall()){
-                jumpFlipSprite();
+                wallJumpFlipSprite();
             }
             
             // cannot jump until release jump key
@@ -464,10 +469,34 @@ public class PlayerScript : NetworkBehaviour {
         //check if player is pushing reversal button and can reversal
         if (Input.GetAxis("Fire2") > 0 && canReversal & !attacking)
         {
+            Debug.Log("reversal");
             reversalDirection = getDirection();
             canReversal = false;
             reversaling = true;
         }
+    }
+    
+    /**
+     * 
+     */
+    void super()
+    {
+        //check if can super and is super-ing
+        if (hasSuper && !attacking && !reversaling && Input.GetAxis("Fire3") > 0)
+        {
+            CmdChangeHasSuper(false);
+            CmdSetGlory(75);
+            Debug.Log("super-ing");
+        }
+    }
+
+    /**
+     * Script to change hasSuper on server
+     */ 
+    [Command]
+    void CmdChangeHasSuper(bool super)
+    {
+        hasSuper = super;
     }
 
     /**
@@ -534,6 +563,14 @@ public class PlayerScript : NetworkBehaviour {
     }
 
     /*
+     * Script for setting glory to specific value on server
+     */
+     void CmdSetGlory(float glory)
+    {
+        numGlory = glory;
+    }
+
+    /*
      * Script for updating ComboHits on the Server
      */
     [Command]
@@ -552,6 +589,16 @@ public class PlayerScript : NetworkBehaviour {
         if (glorySlider != null)
         {
             glorySlider.value = glory;
+        }
+
+        //check if player has super or not
+        if(numGlory == 100)
+        {
+            hasSuper = true;
+        }
+        else if (hasSuper && numGlory < SUPER_LOSS_GLORY)
+        {
+            hasSuper = false;
         }
     }
 
