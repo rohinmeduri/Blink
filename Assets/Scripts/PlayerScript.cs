@@ -32,6 +32,8 @@ public class PlayerScript : NetworkBehaviour {
     private int stunTimer;
     private Rigidbody2D rb2D;
     private Collider2D c2D;
+    private bool actionLock = false;
+    private int actionWaitFrames = 0;
     private bool canAttack = true;
     private bool attackButtonHeld = false;
     private float attackWaitedFrames = 0;
@@ -142,7 +144,6 @@ public class PlayerScript : NetworkBehaviour {
         // flips sprite
         flipSprite();
         
-
         //create glory meter after a couple frames so that client authority can be assigned
         gloryWaitedFrames++;
         if (gloryWaitedFrames == gloryWaitFrames)
@@ -192,6 +193,7 @@ public class PlayerScript : NetworkBehaviour {
             if (attackWaitedFrames == ATTACK_WAIT_FRAMES)
             {
                 canAttack = true;
+                actionLock = false;
                 attackWaitedFrames = 0;
             }
         }
@@ -207,6 +209,7 @@ public class PlayerScript : NetworkBehaviour {
             if (reversalWaitedFrames == REVERSAL_DURATION)
             {
                 canReversal = true;
+                actionLock = false;
                 reversalWaitedFrames = 0;
             }
         }
@@ -266,7 +269,7 @@ public class PlayerScript : NetworkBehaviour {
             return;
         }
 
-        //flip sprite based on player inut if they are not wall hugging
+        //flip sprite based on player input if they are not wall hugging
         if (stickyWallTimer == 0){
             bool facingRightNow = Input.GetAxis("Horizontal") > 0 || (Input.GetAxis("Horizontal") == 0 && facingRight);
             if (facingRightNow != facingRight)
@@ -439,9 +442,10 @@ public class PlayerScript : NetworkBehaviour {
         {
             //check that button was held in previous frame (meaning it was released this frame
             //so attack should initiate)
-            if (attackButtonHeld && canAttack && stunTimer == 0 && !reversaling)
+            if (attackButtonHeld && canAttack && stunTimer == 0 && !actionLock)
             {
                 attacking = true;
+                actionLock = true;
 
                 //raycast to see if someone is hit with the attack - mask out attacker's layer
                 Vector2 direction = getDirection();
@@ -478,12 +482,13 @@ public class PlayerScript : NetworkBehaviour {
     void reversal()
     {
         //check if player is pushing reversal button and can reversal
-        if (Input.GetAxis("Fire2") > 0 && canReversal & !attacking)
+        if (Input.GetAxis("Fire2") > 0 && canReversal & !actionLock)
         {
             Debug.Log("reversal");
             reversalDirection = getDirection();
             canReversal = false;
             reversaling = true;
+            actionLock = true;
         }
     }
     
@@ -493,7 +498,7 @@ public class PlayerScript : NetworkBehaviour {
     void super()
     {
         //check if can super and is super-ing
-        if (hasSuper && !attacking && !reversaling && Input.GetAxis("Fire3") > 0)
+        if (hasSuper && !actionLock && Input.GetAxis("Fire3") > 0)
         {
             CmdChangeHasSuper(false);
             CmdSetGlory(75);
