@@ -156,7 +156,7 @@ public class PlayerScript : NetworkBehaviour {
         // Updates Animator variables
         animator.SetFloat("xDir", Input.GetAxis("Horizontal"));
         animator.SetFloat("yDir", Input.GetAxis("Vertical"));
-        animator.SetFloat("yVel", rb2D.velocity.normalized.y);
+        animator.SetFloat("yVel", rb2D.velocity.y / -FALL_SPEED);
         animator.SetBool("isMoving", Mathf.Abs(Input.GetAxis("Horizontal")) > 0);
         animator.SetBool("isAirborn", isAirborn());
         animator.SetBool("onWall", isWall());
