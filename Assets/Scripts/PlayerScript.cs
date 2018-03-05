@@ -86,8 +86,8 @@ public class PlayerScript : NetworkBehaviour {
     public const float GLORY_ON_SUPER_MISS = 75; //glory player drops to for losing super
     // if turn speed to 1 or -1 with a change of at least the threshold in at most timelimit number of frames, boost applied
     public const int BOOST_TIMELIMIT = 2; 
-    public const float BOOST_THRESHOLD = 0.9f;
-    public const float BOOST_SPEED = 15; // speed of boost
+    public const float BOOST_THRESHOLD = 0.75f;
+    public const float BOOST_SPEED = 20; // speed of boost
 
     // Use this for initialization
     void Start()
