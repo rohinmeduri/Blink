@@ -49,6 +49,9 @@ public class PlayerScript : NetworkBehaviour {
     private Animator animator;
     private List<GameObject> touchingObjects = new List<GameObject>();
     private List<Vector2> touchingNormals = new List<Vector2>();
+    private float[] xVelTracker;
+    private float[] xInputTracker;
+    private bool boosting = false;
 
     [SyncVar (hook = "OnChangeComboHits")]
     private int comboHits = 0;
@@ -56,14 +59,14 @@ public class PlayerScript : NetworkBehaviour {
 
     // constants
     public const float GROUND_RUN_FORCE = 2; // How fast player can attain intended velocity on ground
-    public const float AIR_RUN_FORCE = 0.5F; // .... in air
+    public const float AIR_RUN_FORCE = 0.5f; // .... in air
     public const float MAX_SPEED = 10; // maximum horizontal speed
     public const float JUMP_SPEED = 10; // jump height
     public const int JUMP_NUM = 1; // number of midair jumps without touching ground
     public const float WALLJUMP_SPEED = 15; // horizontal speed gained from wall-jumps
     public const float WALL_FALL_SPEED = -5; // maximum fall speed when on wall
     public const float FALL_SPEED = -10; // maximum fall speed
-    public const float FALL_FORCE = 0.5F; // force of gravity
+    public const float FALL_FORCE = 0.5f; // force of gravity
     public const float FALL_COEF = 2; // How much player can control fall speed. Smaller = more control (preferrably > 1 [see for yourself ;)])
     public const float MAX_WJABLE_ANGLE = -Mathf.PI / 18; // largest negative angle of a wall where counts as walljump
     public const float MIN_JUMP_RECOVERY_ANGLE = Mathf.PI / 4; // smallest angle of a wall where air jumps are recovered
@@ -74,13 +77,17 @@ public class PlayerScript : NetworkBehaviour {
     public const float TRUE_HIT_MULTIPLIER = 1.5f; //multiplier for glory increase for true hits 
     public const int STUN_DURATION = 50; // amount of frames that a player stays stunned
     public const float GROUND_KNOCKBACK_MODIFICATION = 0f; //amount increase to the y component of knockback velocity if player is on ground
-    public const float KNOCKBACK_DAMPENING_COEF = 0.98F; // factor that knockback speed slows every frame
-    public const float DI_FORCE = 0.1F; // amount of influence of DI
+    public const float KNOCKBACK_DAMPENING_COEF = 0.98f; // factor that knockback speed slows every frame
+    public const float DI_FORCE = 0.1f; // amount of influence of DI
     public const int REVERSAL_EFFECTIVE_TIME = 80; //number of frames in which a reversal is effective
     public const int REVERSAL_DURATION = 80; //number of frames a reversal lasts (effective time + end lag)
     public const float REVERSAL_SUCCESS_ANGLE = 90; //minimum angle between reversal and attack for reversal to be successful
     public const float SUPER_LOSS_GLORY = 85; //glory at which super is lost if player falls below
     public const float GLORY_ON_SUPER_MISS = 75; //glory player drops to for losing super
+    // if turn speed to 1 or -1 with a change of at least the threshold in at most timelimit number of frames, boost applied
+    public const int BOOST_TIMELIMIT = 2; 
+    public const float BOOST_THRESHOLD = 0.9f;
+    public const float BOOST_SPEED = 15; // speed of boost
 
     // Use this for initialization
     void Start()
@@ -90,6 +97,8 @@ public class PlayerScript : NetworkBehaviour {
         currentNormal = new Vector2(0, 0);
         stickyWallTimer = 0;
         stunTimer = 0;
+        xVelTracker = new float[BOOST_TIMELIMIT + 1];
+        xInputTracker = new float[BOOST_TIMELIMIT + 1];
 
         rb2D = gameObject.GetComponent<Rigidbody2D>();
         c2D = gameObject.GetComponent<Collider2D>();
@@ -137,8 +146,8 @@ public class PlayerScript : NetworkBehaviour {
 
     // Update is called once per frame
     void Update()
-    {
         // flips sprite
+    {
         flipSprite();
         
         //create glory meter after a couple frames so that client authority can be assigned
@@ -154,16 +163,16 @@ public class PlayerScript : NetworkBehaviour {
         }
 
         // Updates Animator variables
-        animator.SetFloat("xDir", Input.GetAxis("Horizontal"));
-        animator.SetFloat("yDir", Input.GetAxis("Vertical"));
+        animator.SetFloat("xDir", Input.GetAxisRaw("Horizontal"));
+        animator.SetFloat("yDir", Input.GetAxisRaw("Vertical"));
         animator.SetFloat("yVel", rb2D.velocity.y / -FALL_SPEED);
-        animator.SetBool("isMoving", Mathf.Abs(Input.GetAxis("Horizontal")) > 0);
+        animator.SetBool("isMoving", Mathf.Abs(Input.GetAxisRaw("Horizontal")) > 0);
         animator.SetBool("isAirborn", isAirborn());
         animator.SetBool("onWall", isWall());
         int attackNum = 0;
-        if (Mathf.Abs(Input.GetAxis("Vertical")) > Mathf.Abs(Input.GetAxis("Horizontal")))
+        if (Mathf.Abs(Input.GetAxisRaw("Vertical")) > Mathf.Abs(Input.GetAxisRaw("Horizontal")))
         {
-            attackNum = (int)Mathf.Sign(Input.GetAxis("Vertical"));
+            attackNum = (int)Mathf.Sign(Input.GetAxisRaw("Vertical"));
         }
         animator.SetInteger("attackNum", attackNum);
 
@@ -223,9 +232,11 @@ public class PlayerScript : NetworkBehaviour {
             return;
         }
 
+        //Debug.Log(Input.GetAxisRaw("Horizontal"));
         if (stunTimer == 0)
         {
             rb2D.sharedMaterial = regularMaterial;
+            boost();
             run();
             jump();
             gravity();
@@ -259,7 +270,7 @@ public class PlayerScript : NetworkBehaviour {
 
         //flip sprite based on player input if they are not wall hugging
         if (stickyWallTimer == 0){
-            bool facingRightNow = Input.GetAxis("Horizontal") > 0 || (Input.GetAxis("Horizontal") == 0 && facingRight);
+            bool facingRightNow = Input.GetAxisRaw("Horizontal") > 0 || (Input.GetAxisRaw("Horizontal") == 0 && facingRight);
             if (facingRightNow != facingRight)
             {
                 CmdFlipSprite(facingRightNow);
@@ -336,7 +347,7 @@ public class PlayerScript : NetworkBehaviour {
             }
 
             goalSpeed = -MAX_SPEED * currentNormal.x;
-            if (Mathf.Sign(currentNormal.x) == Mathf.Sign(Input.GetAxis("Horizontal")))
+            if (Mathf.Sign(currentNormal.x) == Mathf.Sign(Input.GetAxisRaw("Horizontal")))
             {
                 stickyWallTimer--;
             }
@@ -345,10 +356,44 @@ public class PlayerScript : NetworkBehaviour {
         // once timer is out, resume normal movement
         if (stickyWallTimer == 0)
         {
-            goalSpeed = MAX_SPEED * Input.GetAxis("Horizontal");
+            goalSpeed = MAX_SPEED * Input.GetAxisRaw("Horizontal");
         }
 
         return goalSpeed;
+    }
+
+    /**
+     * Script for boosting
+     */
+    void boost()
+    {
+        for(int i = xVelTracker.Length - 1; i >= 1; i--)
+        {
+            xVelTracker[i] = xVelTracker[i - 1];
+            xInputTracker[i] = xInputTracker[i - 1];
+        }
+        xVelTracker[0] = rb2D.velocity.x;
+        xInputTracker[0] = Input.GetAxisRaw("Horizontal");
+
+        if(Mathf.Abs(xInputTracker[0]) == 1 && Mathf.Abs(xInputTracker[0] - xInputTracker[xInputTracker.Length-1]) > BOOST_THRESHOLD)
+        {
+            boosting = true;
+        }
+        else if(Mathf.Abs(xInputTracker[0]) != 1)
+        {
+            boosting = false;
+        }
+        if (!isGround())
+        {
+            boosting = false;
+        }
+        if (xVelTracker[xVelTracker.Length-1]*xVelTracker[xVelTracker.Length-2] <= 0 && boosting)
+        {
+            rb2D.velocity = new Vector2(xInputTracker[0] * BOOST_SPEED, rb2D.velocity.y);
+            // goalSpeed = rb2D.velocity.x; (maybe not necessary)
+            boosting = false;
+            Debug.Log("boosting");
+        }
     }
 
     /**
@@ -357,7 +402,7 @@ public class PlayerScript : NetworkBehaviour {
     void jump()
     {
         // checks if touching walls
-        if (Input.GetAxis("Jump") > 0 && canJump)
+        if (Input.GetAxisRaw("Jump") > 0 && canJump)
         {
             // if have midair jumps or attempted jump isn't midair or on a wall that's too steep
             if (jumps > 0 || !(currentNormal.y < Mathf.Sin(MAX_WJABLE_ANGLE) || isAirborn()))
@@ -378,7 +423,7 @@ public class PlayerScript : NetworkBehaviour {
         }
 
         // resets jump
-        if (Input.GetAxis("Jump") == 0)
+        if (Input.GetAxisRaw("Jump") == 0)
         {
             canJump = true;
         }
@@ -402,7 +447,7 @@ public class PlayerScript : NetworkBehaviour {
         }
         if(stunTimer == 0)
         {
-            fallSpeed *= (1 - Input.GetAxis("Vertical") / FALL_COEF);
+            fallSpeed *= (1 - Input.GetAxisRaw("Vertical") / FALL_COEF);
         }
 
         // simulate gravity
@@ -422,7 +467,7 @@ public class PlayerScript : NetworkBehaviour {
     void attack()
     {
         //check to see if attack button is held down - attack occurs once the button is released
-        if (Input.GetAxis("Fire1") != 0)
+        if (Input.GetAxisRaw("Fire1") != 0)
         {
             attackButtonHeld = true;
         }
@@ -475,7 +520,7 @@ public class PlayerScript : NetworkBehaviour {
     void reversal()
     {
         //check if player is pushing reversal button and can reversal
-        if (Input.GetAxis("Fire2") > 0 && !actionLock)
+        if (Input.GetAxisRaw("Fire2") > 0 && !actionLock)
         {
             Debug.Log("reversal");
             reversalDirection = getDirection();
@@ -491,7 +536,7 @@ public class PlayerScript : NetworkBehaviour {
     void super()
     {
         //check if can super and is super-ing
-        if (hasSuper && !actionLock && Input.GetAxis("Fire3") > 0)
+        if (hasSuper && !actionLock && Input.GetAxisRaw("Fire3") > 0)
         {
             CmdChangeHasSuper(false);
             CmdSetGlory(75);
@@ -516,7 +561,7 @@ public class PlayerScript : NetworkBehaviour {
         //determine horizontal component of attack's direction
         float horizontalDirection;
         //if attacker is not moving, attack direction is the direction they are facing
-        if (Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0)
+        if (Input.GetAxisRaw("Horizontal") == 0 && Input.GetAxisRaw("Vertical") == 0)
         {
             if (facingRight)
             {
@@ -529,9 +574,9 @@ public class PlayerScript : NetworkBehaviour {
         }
         else
         {
-            horizontalDirection = Input.GetAxis("Horizontal");
+            horizontalDirection = Input.GetAxisRaw("Horizontal");
         }
-        Vector2 direction = new Vector2(horizontalDirection, Input.GetAxis("Vertical"));
+        Vector2 direction = new Vector2(horizontalDirection, Input.GetAxisRaw("Vertical"));
         return direction;
     }
 
@@ -727,7 +772,7 @@ public class PlayerScript : NetworkBehaviour {
     */
     void DI()
     {
-        rb2D.velocity = new Vector2(rb2D.velocity.x * KNOCKBACK_DAMPENING_COEF + DI_FORCE * Input.GetAxis("Horizontal"), rb2D.velocity.y * KNOCKBACK_DAMPENING_COEF + DI_FORCE * Input.GetAxis("Vertical"));
+        rb2D.velocity = new Vector2(rb2D.velocity.x * KNOCKBACK_DAMPENING_COEF + DI_FORCE * Input.GetAxisRaw("Horizontal"), rb2D.velocity.y * KNOCKBACK_DAMPENING_COEF + DI_FORCE * Input.GetAxisRaw("Vertical"));
     }
 
     /**
