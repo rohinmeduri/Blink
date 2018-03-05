@@ -691,7 +691,6 @@ public class PlayerScript : NetworkBehaviour {
     }
 
 
-
     /**
      * Script for updating glory on server after successful reversal
      * 
