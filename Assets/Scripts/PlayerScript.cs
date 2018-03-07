@@ -146,10 +146,10 @@ public class PlayerScript : NetworkBehaviour {
 
     // Update is called once per frame
     void Update()
-        // flips sprite
     {
-        flipSprite();
-        
+        //flips sprite if necessary (on all clients)
+        gameObject.GetComponent<SpriteRenderer>().flipX = !facingRight;
+
         //create glory meter after a couple frames so that client authority can be assigned
         gloryWaitedFrames++;
         if (gloryWaitedFrames == gloryWaitFrames)
@@ -209,8 +209,6 @@ public class PlayerScript : NetworkBehaviour {
             }
         }
 
-
-
         //freeze player if they are mid-attack
         /*if (attacking)
         {
@@ -236,13 +234,17 @@ public class PlayerScript : NetworkBehaviour {
         if (stunTimer == 0)
         {
             rb2D.sharedMaterial = regularMaterial;
-            boost();
-            run();
-            jump();
             gravity();
-            attack();
-            reversal();
-            super();
+            if (!actionLock)
+            {
+                jump();
+                run();
+                boost();
+                flipSprite();
+                attack();
+                reversal();
+                super();
+            }
         }
         else
         {
@@ -262,7 +264,6 @@ public class PlayerScript : NetworkBehaviour {
 
     void flipSprite()
     {
-        gameObject.GetComponent<SpriteRenderer>().flipX = !facingRight;
         if (!hasAuthority)
         {
             return;
@@ -475,8 +476,11 @@ public class PlayerScript : NetworkBehaviour {
         {
             //check that button was held in previous frame (meaning it was released this frame
             //so attack should initiate)
-            if (attackButtonHeld && !actionLock)
+            if (attackButtonHeld)
             {
+                //cancel attacker's momentum
+                rb2D.velocity = Vector2.zero;
+
                 //raycast to see if someone is hit with the attack - mask out attacker's layer
                 Vector2 direction = getDirection();
                 direction.Normalize();
@@ -520,8 +524,11 @@ public class PlayerScript : NetworkBehaviour {
     void reversal()
     {
         //check if player is pushing reversal button and can reversal
-        if (Input.GetAxisRaw("Fire2") > 0 && !actionLock)
+        if (Input.GetAxisRaw("Fire2") > 0)
         {
+            //cancel momentum
+            rb2D.velocity = Vector2.zero;
+
             Debug.Log("reversal");
             reversalDirection = getDirection();
             actionLock = true;
@@ -536,8 +543,12 @@ public class PlayerScript : NetworkBehaviour {
     void super()
     {
         //check if can super and is super-ing
-        if (hasSuper && !actionLock && Input.GetAxisRaw("Fire3") > 0)
+        if (hasSuper && Input.GetAxisRaw("Fire3") > 0)
         {
+            //cancel momentum
+            rb2D.velocity = Vector2.zero;
+
+            //update super status on all clients
             CmdChangeHasSuper(false);
             CmdSetGlory(75);
             Debug.Log("super-ing");
