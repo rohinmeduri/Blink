@@ -375,7 +375,7 @@ public class PlayerScript : NetworkBehaviour {
         xVelTracker[0] = rb2D.velocity.x;
         xInputTracker[0] = Input.GetAxisRaw("Horizontal");
 
-        if(Mathf.Abs(xInputTracker[0]) == 1 && Mathf.Abs(xInputTracker[0] - xInputTracker[xInputTracker.Length-1]) > BOOST_THRESHOLD)
+        if(Mathf.Abs(xInputTracker[0]) >= 0.8f && Mathf.Abs(xInputTracker[0] - xInputTracker[xInputTracker.Length-1]) > BOOST_THRESHOLD)
         {
             boosting = true;
         }
