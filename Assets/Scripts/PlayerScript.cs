@@ -529,6 +529,8 @@ public class PlayerScript : NetworkBehaviour {
             //cancel momentum
             rb2D.velocity = Vector2.zero;
 
+            animator.SetTrigger("reversaling");
+
             Debug.Log("reversal");
             reversalDirection = getDirection();
             actionLock = true;
