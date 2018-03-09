@@ -127,6 +127,7 @@ MonoBehaviour:
   player: {fileID: 1273918684993908}
   attackRadius: 2
   baseAttackForce: 5
+  superRadius: 2
   mask:
     serializedVersion: 2
     m_Bits: 1

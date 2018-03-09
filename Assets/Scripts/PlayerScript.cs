@@ -16,6 +16,7 @@ public class PlayerScript : NetworkBehaviour {
     public GameObject player;
     public float attackRadius;
     public float baseAttackForce;
+    public float superRadius;
     public LayerMask mask;
     public GameObject gloryPrefab;
     public Slider glorySlider;
@@ -46,7 +47,9 @@ public class PlayerScript : NetworkBehaviour {
     private int gloryWaitedFrames = 0;
     [SyncVar]
     private bool hasSuper = false;
+    private bool startedSuper = false;
     private Animator animator;
+    private NetworkAnimator networkAnimator;
     private List<GameObject> touchingObjects = new List<GameObject>();
     private List<Vector2> touchingNormals = new List<Vector2>();
     private float[] xVelTracker;
@@ -71,7 +74,7 @@ public class PlayerScript : NetworkBehaviour {
     public const float MAX_WJABLE_ANGLE = -Mathf.PI / 18; // largest negative angle of a wall where counts as walljump
     public const float MIN_JUMP_RECOVERY_ANGLE = Mathf.PI / 4; // smallest angle of a wall where air jumps are recovered
     public const int STICKY_WJ_DURATION = 15; // amount of frames that player sticks to a wall after touching it
-    public const int ATTACK_WAIT_FRAMES = 20; // number of frames a player must wait between attacks
+    public const int ATTACK_WAIT_FRAMES = 30; // number of frames a player must wait between attacks
     public const int ATTACK_FREEZE_FRAMES = 12; //number of frames a player freezes while attacking
     public const int COMBO_HIT_TIMER = 100; //number of frames a player must land the next attack within to continue a combo
     public const float TRUE_HIT_MULTIPLIER = 1.5f; //multiplier for glory increase for true hits 
@@ -83,7 +86,8 @@ public class PlayerScript : NetworkBehaviour {
     public const int REVERSAL_DURATION = 80; //number of frames a reversal lasts (effective time + end lag)
     public const float REVERSAL_SUCCESS_ANGLE = 90; //minimum angle between reversal and attack for reversal to be successful
     public const float SUPER_LOSS_GLORY = 85; //glory at which super is lost if player falls below
-    public const float GLORY_ON_SUPER_MISS = 75; //glory player drops to for losing super
+    public const int SUPER_CHARGE_FRAMES = 50; //number of frames a super takes to charge
+    public const int SUPER_END_LAG = 50; //number of frames player stalls without doing anything after a super
     // if turn speed to 1 or -1 with a change of at least the threshold in at most timelimit number of frames, boost applied
     public const int BOOST_TIMELIMIT = 2; 
     public const float BOOST_THRESHOLD = 0.75f;
@@ -104,6 +108,7 @@ public class PlayerScript : NetworkBehaviour {
         c2D = gameObject.GetComponent<Collider2D>();
 
         animator = GetComponent<Animator>();
+        networkAnimator = GetComponent<NetworkAnimator>();
     }
 
     public void setLayer()
@@ -169,6 +174,7 @@ public class PlayerScript : NetworkBehaviour {
         animator.SetBool("isMoving", Mathf.Abs(Input.GetAxisRaw("Horizontal")) > 0);
         animator.SetBool("isAirborn", isAirborn());
         animator.SetBool("onWall", isWall());
+        animator.SetInteger("StunTimer", stunTimer);
         int attackNum = 0;
         if (Mathf.Abs(Input.GetAxisRaw("Vertical")) > Mathf.Abs(Input.GetAxisRaw("Horizontal")))
         {
@@ -199,9 +205,16 @@ public class PlayerScript : NetworkBehaviour {
             {
                 reversalEffective = false;
             }
+            
+            //check to see if player has started super and charge time has elapsed
+            if(startedSuper && actionWaitedFrames >= SUPER_CHARGE_FRAMES)
+            {
+                launchSuper();
+            }
 
+            //see if action lock duration has expired - if so, escape action lock
             actionWaitedFrames++;
-            if(actionWaitedFrames == actionWaitFrames)
+            if(actionWaitedFrames >= actionWaitFrames)
             {
                 actionLock = false;
                 reversalEffective = false;
@@ -234,16 +247,20 @@ public class PlayerScript : NetworkBehaviour {
         if (stunTimer == 0)
         {
             rb2D.sharedMaterial = regularMaterial;
-            gravity();
             if (!actionLock)
             {
+                gravity();
                 jump();
                 run();
                 boost();
                 flipSprite();
                 attack();
                 reversal();
-                super();
+                StartSuper();
+            }
+            else if (actionWaitedFrames >= 20)
+            {
+                gravity();
             }
         }
         else
@@ -468,7 +485,7 @@ public class PlayerScript : NetworkBehaviour {
     void attack()
     {
         //check to see if attack button is held down - attack occurs once the button is released
-        if (Input.GetAxisRaw("Fire1") != 0)
+        if (Input.GetAxisRaw("Attack") != 0)
         {
             attackButtonHeld = true;
         }
@@ -524,7 +541,7 @@ public class PlayerScript : NetworkBehaviour {
     void reversal()
     {
         //check if player is pushing reversal button and can reversal
-        if (Input.GetAxisRaw("Fire2") > 0)
+        if (Input.GetAxisRaw("Reversal") > 0)
         {
             //cancel momentum
             rb2D.velocity = Vector2.zero;
@@ -536,30 +553,75 @@ public class PlayerScript : NetworkBehaviour {
             actionLock = true;
             reversalEffective = true;
             actionWaitFrames = REVERSAL_DURATION;
+
+            //trigger animation
+            networkAnimator.SetTrigger("reversaling");
+
+            if (NetworkServer.active)
+                animator.ResetTrigger("reversaling");
         }
     }
     
     /**
-     * 
+     * Script for StartinSuper
      */
-    void super()
+    void StartSuper()
     {
         //check if can super and is super-ing
-        if (hasSuper && Input.GetAxisRaw("Fire3") > 0)
+        if (hasSuper && Input.GetAxisRaw("Super") > 0)
         {
+            Debug.Log("super");
             //cancel momentum
             rb2D.velocity = Vector2.zero;
-
-            //update super status on all clients
-            CmdChangeHasSuper(false);
-            CmdSetGlory(75);
-            Debug.Log("super-ing");
+            actionLock = true;
+            actionWaitFrames = SUPER_CHARGE_FRAMES + SUPER_END_LAG;
+            startedSuper = true;
         }
     }
 
     /**
-     * Script to change hasSuper on server
+     * Script for firing super
+     */
+    void launchSuper()
+    {
+        if (startedSuper && actionWaitedFrames >= SUPER_CHARGE_FRAMES)
+        {
+            //circlecast to see if someone is hit with the super - mask out attacker's layer
+            Vector2 direction = getDirection();
+            direction.Normalize();
+            Vector2 origin = new Vector2(player.GetComponent<Transform>().position.x, player.GetComponent<Transform>().position.y);
+            RaycastHit2D hit = Physics2D.CircleCast(origin: origin, radius: superRadius, direction: direction, distance: Mathf.Infinity, layerMask: mask.value);
+
+            if (hit.rigidbody != null && hit.rigidbody.tag == "Player")
+            {
+                Debug.Log("hit");
+                CmdKillPlayer(hit.rigidbody.gameObject);
+            }
+            startedSuper = false;
+        }
+    }
+
+    /**
+     * Script that tells server to kill player on clients
      */ 
+    [Command]
+    void CmdKillPlayer(GameObject player)
+    {
+        RpcKillPlayer(player);
+    }
+
+    /**
+     * Script that kills a player on all clients
+     */
+    [ClientRpc]
+    void RpcKillPlayer(GameObject player)
+    {
+        Destroy(player);
+    }
+
+    /**
+     * Script to change hasSuper on server
+     */
     [Command]
     void CmdChangeHasSuper(bool super)
     {
@@ -635,18 +697,19 @@ public class PlayerScript : NetworkBehaviour {
      */
      void CmdSetGlory(float glory)
     {
-        numGlory = glory;
+        if(glory > 100)
+        {
+            numGlory = 100;
+        }
+        else if(glory < 0)
+        {
+            numGlory = 0;
+        }
+        else
+        {
+            numGlory = glory;
+        }
     }
-
-    /*
-     * Script for updating ComboHits on the Server
-     */
-    [Command]
-    void CmdChangeComboHits(int hits)
-    {
-        comboHits = hits;
-    }
-
 
     /*
      * Script that updates glory on the clients
@@ -668,6 +731,15 @@ public class PlayerScript : NetworkBehaviour {
         {
             hasSuper = false;
         }
+    }
+
+    /*
+     * Script for updating ComboHits on the Server
+     */
+    [Command]
+    void CmdChangeComboHits(int hits)
+    {
+        comboHits = hits;
     }
 
     /*
@@ -719,12 +791,14 @@ public class PlayerScript : NetworkBehaviour {
             CmdReversalGloryUpdate(attacker, comboHits);
             CmdKnockback(attacker, player, reversalDirection, comboHits);
             comboHitInterval = 0;
+            actionWaitFrames = 0;
         }
 
         //otherwise, take the hit
         else
         {
             reversalEffective = false;
+            startedSuper = false;
 
             //end combo if there is one
             comboHits = 0;
