@@ -49,6 +49,7 @@ public class PlayerScript : NetworkBehaviour {
     private bool hasSuper = false;
     private bool startedSuper = false;
     private Animator animator;
+    private NetworkAnimator networkAnimator;
     private List<GameObject> touchingObjects = new List<GameObject>();
     private List<Vector2> touchingNormals = new List<Vector2>();
     private float[] xVelTracker;
@@ -107,6 +108,7 @@ public class PlayerScript : NetworkBehaviour {
         c2D = gameObject.GetComponent<Collider2D>();
 
         animator = GetComponent<Animator>();
+        networkAnimator = GetComponent<NetworkAnimator>();
     }
 
     public void setLayer()
@@ -551,7 +553,10 @@ public class PlayerScript : NetworkBehaviour {
             actionWaitFrames = REVERSAL_DURATION;
 
             //trigger animation
-            animator.SetTrigger("reversaling");
+            networkAnimator.SetTrigger("reversaling");
+
+            if (NetworkServer.active)
+                animator.ResetTrigger("reversaling");
         }
     }
     
