@@ -862,6 +862,7 @@ public class PlayerScript : NetworkBehaviour {
     void DI()
     {
         rb2D.velocity = new Vector2(rb2D.velocity.x * KNOCKBACK_DAMPENING_COEF + DI_FORCE * Input.GetAxisRaw("Horizontal"), rb2D.velocity.y * KNOCKBACK_DAMPENING_COEF + DI_FORCE * Input.GetAxisRaw("Vertical"));
+        GetComponent<Transform>().eulerAngles = new Vector3(0, 0, rb2D.velocity.x);
     }
 
     /**
