@@ -172,11 +172,7 @@ public class PlayerScript : NetworkBehaviour {
         animator.SetBool("isMoving", Mathf.Abs(Input.GetAxisRaw("Horizontal")) > 0);
         animator.SetBool("isAirborn", isAirborn());
         animator.SetBool("onWall", isWall());
-        animator.SetBool("HitstunBool", stunTimer != 0);
-        if(stunTimer == STUN_DURATION)
-        {
-            animator.SetTrigger("Hitstun");
-        }
+        animator.SetInteger("StunTimer", stunTimer);
         int attackNum = 0;
         if (Mathf.Abs(Input.GetAxisRaw("Vertical")) > Mathf.Abs(Input.GetAxisRaw("Horizontal")))
         {
