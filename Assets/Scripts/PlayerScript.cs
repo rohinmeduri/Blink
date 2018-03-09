@@ -73,7 +73,7 @@ public class PlayerScript : NetworkBehaviour {
     public const float MAX_WJABLE_ANGLE = -Mathf.PI / 18; // largest negative angle of a wall where counts as walljump
     public const float MIN_JUMP_RECOVERY_ANGLE = Mathf.PI / 4; // smallest angle of a wall where air jumps are recovered
     public const int STICKY_WJ_DURATION = 15; // amount of frames that player sticks to a wall after touching it
-    public const int ATTACK_WAIT_FRAMES = 20; // number of frames a player must wait between attacks
+    public const int ATTACK_WAIT_FRAMES = 30; // number of frames a player must wait between attacks
     public const int ATTACK_FREEZE_FRAMES = 12; //number of frames a player freezes while attacking
     public const int COMBO_HIT_TIMER = 100; //number of frames a player must land the next attack within to continue a combo
     public const float TRUE_HIT_MULTIPLIER = 1.5f; //multiplier for glory increase for true hits 
@@ -254,6 +254,10 @@ public class PlayerScript : NetworkBehaviour {
                 attack();
                 reversal();
                 StartSuper();
+            }
+            else if (actionWaitedFrames >= 20)
+            {
+                gravity();
             }
         }
         else
@@ -478,7 +482,7 @@ public class PlayerScript : NetworkBehaviour {
     void attack()
     {
         //check to see if attack button is held down - attack occurs once the button is released
-        if (Input.GetAxisRaw("Fire1") != 0)
+        if (Input.GetAxisRaw("Attack") != 0)
         {
             attackButtonHeld = true;
         }
@@ -534,7 +538,7 @@ public class PlayerScript : NetworkBehaviour {
     void reversal()
     {
         //check if player is pushing reversal button and can reversal
-        if (Input.GetAxisRaw("Fire2") > 0)
+        if (Input.GetAxisRaw("Reversal") > 0)
         {
             //cancel momentum
             rb2D.velocity = Vector2.zero;
@@ -553,7 +557,7 @@ public class PlayerScript : NetworkBehaviour {
     void StartSuper()
     {
         //check if can super and is super-ing
-        if (hasSuper && Input.GetAxisRaw("Fire3") > 0)
+        if (hasSuper && Input.GetAxisRaw("Super") > 0)
         {
             Debug.Log("super");
             //cancel momentum
