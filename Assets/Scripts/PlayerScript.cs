@@ -172,6 +172,11 @@ public class PlayerScript : NetworkBehaviour {
         animator.SetBool("isMoving", Mathf.Abs(Input.GetAxisRaw("Horizontal")) > 0);
         animator.SetBool("isAirborn", isAirborn());
         animator.SetBool("onWall", isWall());
+        animator.SetBool("HitstunBool", stunTimer != 0);
+        if(stunTimer == STUN_DURATION)
+        {
+            animator.SetTrigger("Hitstun");
+        }
         int attackNum = 0;
         if (Mathf.Abs(Input.GetAxisRaw("Vertical")) > Mathf.Abs(Input.GetAxisRaw("Horizontal")))
         {
@@ -211,7 +216,7 @@ public class PlayerScript : NetworkBehaviour {
 
             //see if action lock duration has expired - if so, escape action lock
             actionWaitedFrames++;
-            if(actionWaitedFrames == actionWaitFrames)
+            if(actionWaitedFrames >= actionWaitFrames)
             {
                 actionLock = false;
                 reversalEffective = false;
@@ -548,6 +553,9 @@ public class PlayerScript : NetworkBehaviour {
             actionLock = true;
             reversalEffective = true;
             actionWaitFrames = REVERSAL_DURATION;
+
+            //trigger animation
+            animator.SetTrigger("reversaling");
         }
     }
     
@@ -780,6 +788,7 @@ public class PlayerScript : NetworkBehaviour {
             CmdReversalGloryUpdate(attacker, comboHits);
             CmdKnockback(attacker, player, reversalDirection, comboHits);
             comboHitInterval = 0;
+            actionWaitFrames = 0;
         }
 
         //otherwise, take the hit
