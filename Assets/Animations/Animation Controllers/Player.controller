@@ -581,8 +581,8 @@ AnimatorStateTransition:
   m_PrefabInternal: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 6
-    m_ConditionEvent: StunTimer
+  - m_ConditionMode: 1
+    m_ConditionEvent: Hitstun
     m_EventTreshold: 50
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102941785659742046}

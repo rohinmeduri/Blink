@@ -817,6 +817,11 @@ public class PlayerScript : NetworkBehaviour {
             stunTimer = STUN_DURATION;
             actionLock = true;
             actionWaitFrames = STUN_DURATION;
+
+            //trigger animation
+            networkAnimator.SetTrigger("Hitstun");
+            if (NetworkServer.active)
+                animator.ResetTrigger("Hitstun");
         }
     }
 
