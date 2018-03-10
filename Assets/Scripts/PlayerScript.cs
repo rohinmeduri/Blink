@@ -81,6 +81,7 @@ public class PlayerScript : NetworkBehaviour {
     public const float REVERSAL_SUCCESS_ANGLE = 90; //minimum angle between reversal and attack for reversal to be successful
     public const float SUPER_LOSS_GLORY = 85; //glory at which super is lost if player falls below
     public const float GLORY_ON_SUPER_MISS = 75; //glory player drops to for losing super
+	public const float BLINK_VELOCITY = 100;
 
     // Use this for initialization
     void Start()
@@ -463,8 +464,12 @@ public class PlayerScript : NetworkBehaviour {
     }
 
 	void blink(){
-		if (numGlory == 100 && actionLock) {
+		if (actionLock == false) {
 			canBlink = true;
+		}
+
+		if (canBlink && Input.GetAxis("Blink") != 0) {
+			rb2D.velocity = new Vector2(BLINK_VELOCITY,rb2D.velocity.y);
 		}
 		
 	}
