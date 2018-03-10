@@ -247,6 +247,8 @@ public class PlayerScript : NetworkBehaviour {
         if (stunTimer == 0)
         {
             rb2D.sharedMaterial = regularMaterial;
+            GetComponent<Transform>().eulerAngles = new Vector3(0, 0, 0);
+
             if (!actionLock)
             {
                 gravity();
@@ -813,6 +815,22 @@ public class PlayerScript : NetworkBehaviour {
             //send player flying in direction of attack
             rb2D.velocity = dir * baseAttackForce * (1 + hits / 4);
 
+            //rotate player perpendicular to attack
+            bool facingRightNow = dir.x < 0;
+            if(facingRightNow != facingRight)
+            {
+                CmdFlipSprite(facingRightNow);
+                facingRight = facingRightNow;
+            }
+            if (!facingRightNow)
+            {
+                GetComponent<Transform>().eulerAngles = new Vector3(0, 0, Mathf.Rad2Deg * Mathf.Atan2(dir.y, dir.x));
+            }
+            else
+            {
+                GetComponent<Transform>().eulerAngles = new Vector3(0, 0, Mathf.Rad2Deg * Mathf.Atan2(dir.y, dir.x) - 180);
+            }
+
             //stun player
             stunTimer = STUN_DURATION;
             actionLock = true;
@@ -862,7 +880,6 @@ public class PlayerScript : NetworkBehaviour {
     void DI()
     {
         rb2D.velocity = new Vector2(rb2D.velocity.x * KNOCKBACK_DAMPENING_COEF + DI_FORCE * Input.GetAxisRaw("Horizontal"), rb2D.velocity.y * KNOCKBACK_DAMPENING_COEF + DI_FORCE * Input.GetAxisRaw("Vertical"));
-        GetComponent<Transform>().eulerAngles = new Vector3(0, 0, rb2D.velocity.x);
     }
 
     /**
