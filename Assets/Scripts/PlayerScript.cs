@@ -247,7 +247,7 @@ public class PlayerScript : NetworkBehaviour {
         if (stunTimer == 0)
         {
             rb2D.sharedMaterial = regularMaterial;
-            GetComponent<Transform>().eulerAngles = new Vector3(0, 0, 0);
+            CmdSyncRotation(Vector3.zero);
 
             if (!actionLock)
             {
@@ -824,11 +824,11 @@ public class PlayerScript : NetworkBehaviour {
             }
             if (!facingRightNow)
             {
-                GetComponent<Transform>().eulerAngles = new Vector3(0, 0, Mathf.Rad2Deg * Mathf.Atan2(dir.y, dir.x));
+               CmdSyncRotation(new Vector3(0, 0, Mathf.Rad2Deg * Mathf.Atan2(dir.y, dir.x)));
             }
             else
             {
-                GetComponent<Transform>().eulerAngles = new Vector3(0, 0, Mathf.Rad2Deg * Mathf.Atan2(dir.y, dir.x) - 180);
+               CmdSyncRotation(new Vector3(0, 0, Mathf.Rad2Deg * Mathf.Atan2(dir.y, dir.x) - 180));
             }
 
             //stun player
@@ -843,10 +843,26 @@ public class PlayerScript : NetworkBehaviour {
         }
     }
 
+    /*
+     * Script for syncing rotation on server
+     */ 
+    [Command]
+    void CmdSyncRotation(Vector3 rotation)
+    {
+        RpcSyncRotation(rotation);
+    }
+
+    /*
+     * Script for syncing rotation on clients
+     */
+    [ClientRpc]
+    void RpcSyncRotation(Vector3 rotation)
+    {
+        GetComponent<Transform>().eulerAngles = rotation;
+    }
 
     /**
      * Script for updating glory on server after successful reversal
-     * 
      */
     [Command]
     void CmdReversalGloryUpdate(GameObject attacker, int hits)
@@ -940,6 +956,12 @@ public class PlayerScript : NetworkBehaviour {
             if (isGround() && !isWall(getNormal(collision)))
             {
                 animator.SetTrigger("hitGround");
+            }
+
+            //rotate the player if in hitstun
+            if(stunTimer != 0)
+            {
+                Debug.Log(Vector2.SignedAngle(rb2D.velocity, currentNormal));
             }
         }
         
