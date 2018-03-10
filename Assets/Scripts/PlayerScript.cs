@@ -38,9 +38,8 @@ public class PlayerScript : NetworkBehaviour {
     private int actionWaitedFrames = 0;
     private bool attackButtonHeld = false;
     private int attackFrozeFrames = 0;
-	private bool canBlink = true;
 	private int blinkFrames = 0;
-	private int blinkCount = 0;
+	private int blinkTimer = 0;
     private float lastGloryIncrease = 0;
     private bool reversalEffective = false;
     private Vector2 reversalDirection;
@@ -91,6 +90,8 @@ public class PlayerScript : NetworkBehaviour {
 
     public const float GLORY_ON_SUPER_MISS = 75; //glory player drops to for losing super
 	public const int BLINK_VELOCITY = 30;
+	public const int BLINK_TIME = 10;
+	public const int BLINK_FRAMES = 80;
     public const int SUPER_CHARGE_FRAMES = 50; //number of frames a super takes to charge
     public const int SUPER_END_LAG = 50; //number of frames player stalls without doing anything after a super
     // if turn speed to 1 or -1 with a change of at least the threshold in at most timelimit number of frames, boost applied
@@ -226,6 +227,7 @@ public class PlayerScript : NetworkBehaviour {
                 reversalEffective = false;
                 actionWaitedFrames = 0;
             }
+
         }
 
         //freeze player if they are mid-attack
@@ -249,34 +251,39 @@ public class PlayerScript : NetworkBehaviour {
             return;
         }
 
+		Debug.Log (blinkTimer);
         //Debug.Log(Input.GetAxisRaw("Horizontal"));
         if (stunTimer == 0)
         {
             rb2D.sharedMaterial = regularMaterial;
             CmdSyncRotation(Vector3.zero);
 
-            if (!actionLock)
-            {
-                gravity();
-                jump();
-                run();
-                boost();
-                flipSprite();
-                attack();
-                reversal();
-                StartSuper();
+			if (blinkTimer == 0) {
+				if (!actionLock) {
+					startBlink ();
+					gravity ();
+					jump ();
+					run ();
+					boost ();
+					flipSprite ();
+					attack ();
+					reversal ();
+					StartSuper ();
+				} else if (actionWaitedFrames >= 20) {
+					gravity ();
+				}
+			} else {
 				blink ();
-            }
-            else if (actionWaitedFrames >= 20)
-            {
-                gravity();
-            }
+			}
+            
         }
         else
         {
             rb2D.sharedMaterial = stunMaterial;
             DI();
         }
+
+	
     }
     
     /**
@@ -540,31 +547,28 @@ public class PlayerScript : NetworkBehaviour {
 	/**
      * Script for blinking (velocity boost)
      */
+	void startBlink(){
+		if (Input.GetAxis ("Blink") != 0 && blinkFrames == 0) { //currently set to 'b'
+			blinkTimer = BLINK_TIME;
+			blinkFrames = BLINK_FRAMES;
+		}
+		if (blinkFrames > 0) {
+			blinkFrames--;
+		}
+		if (blinkFrames == BLINK_FRAMES - BLINK_TIME) {
+			rb2D.velocity = new Vector2 (0, 0);
+		}
+	}
+
 	void blink(){
-		if (blinkCount > 2) { //can't blink more than twice
-			canBlink = false;
+		blinkTimer--;
+		if (Input.GetAxis ("Blink") != 0) { //currently set to 'b'
+			rb2D.velocity = new Vector2 (BLINK_VELOCITY * getDirection ().x, BLINK_VELOCITY * getDirection ().y);
+		} else {
+			rb2D.velocity = new Vector2 (0, 0);
+			blinkTimer = 0;
 		}
-		else {
-			canBlink = true;
-		}
-		if (canBlink && Input.GetAxis("Blink") != 0) { //currently set to 'b
-			rb2D.velocity = new Vector2(BLINK_VELOCITY * getDirection().x,FALL_SPEED);
-			if (blinkFrames < 20) {
-				actionLock = true;
-				//if the button is held for more than one frame it registers as multiple blinks somehow
-				//don't think this should be necessary but I think it fixes it.
-				if (blinkFrames < 20) { 
-					canBlink = false;
-				}
-				blinkFrames++;
-			}
-			else{
-				actionLock = false;
-				blinkFrames = 0;
-			}
-			blinkCount++;
-		}
-		
+
 	}
 
     /**
