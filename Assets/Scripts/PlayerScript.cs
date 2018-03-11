@@ -563,7 +563,7 @@ public class PlayerScript : NetworkBehaviour {
 	void blink(){
 		blinkTimer--;
 		if (Input.GetAxis ("Blink") != 0) { //currently set to 'b'
-			rb2D.velocity = new Vector2 (BLINK_VELOCITY * getDirection ().x, BLINK_VELOCITY * getDirection ().y);
+			rb2D.velocity = BLINK_VELOCITY * getDirection();
 		} else {
 			rb2D.velocity = new Vector2 (0, 0);
 			blinkTimer = 0;
