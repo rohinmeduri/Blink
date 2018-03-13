@@ -541,6 +541,7 @@ public class PlayerScript : NetworkBehaviour {
                     CmdAttackGloryUpdate(hit.rigidbody.gameObject, comboHits, trueHit);
                     CmdKnockback(hit.rigidbody.gameObject, player, direction, comboHits);
                     comboHitInterval = 0;
+                    blinkFrames = 0;
                 }
 
                 //trigger animation
@@ -872,6 +873,7 @@ public class PlayerScript : NetworkBehaviour {
             CmdKnockback(attacker, player, reversalDirection, comboHits);
             comboHitInterval = 0;
             actionWaitFrames = 0;
+            blinkFrames = 0;
         }
 
         //otherwise, take the hit
