@@ -26,7 +26,8 @@ public class PlayerScript : NetworkBehaviour {
     public float reversalGloryGain;
 
     // private variables
-    private int jumps;
+	private int characterSelection = 2;
+	private int jumps;
     private bool canJump;
     private Vector2 currentNormal;
     private int stickyWallTimer;
@@ -40,6 +41,7 @@ public class PlayerScript : NetworkBehaviour {
     private int attackFrozeFrames = 0;
 	private int blinkFrames = 0;
 	private int blinkTimer = 0;
+	private bool teleported = false;
     private float lastGloryIncrease = 0;
     private bool reversalEffective = false;
     private Vector2 reversalDirection;
@@ -89,9 +91,12 @@ public class PlayerScript : NetworkBehaviour {
     public const float SUPER_LOSS_GLORY = 85; //glory at which super is lost if player falls below
 
     public const float GLORY_ON_SUPER_MISS = 75; //glory player drops to for losing super
-	public const int BLINK_VELOCITY = 30;
-	public const int BLINK_TIME = 10;
-	public const int BLINK_FRAMES = 80;
+	public const int BLINK_VELOCITY = 30; //target blink speed
+	public const int BLINK_TIME = 5; //how long the velocity blink lasts
+	public const int BLINK_FRAMES = 80; //how long the player needs to wait until velocity blinking again
+	public const int TELEPORT_DISTANCE = 6; //teleport distance
+	public const int TELEPORT_FRAMES = 100; //frames until teleportation can happen again
+	public const int TELEPORT_TIME = 10; //frames until player can move again
     public const int SUPER_CHARGE_FRAMES = 50; //number of frames a super takes to charge
     public const int SUPER_END_LAG = 50; //number of frames player stalls without doing anything after a super
     // if turn speed to 1 or -1 with a change of at least the threshold in at most timelimit number of frames, boost applied
@@ -251,14 +256,14 @@ public class PlayerScript : NetworkBehaviour {
             return;
         }
 
-		Debug.Log (blinkTimer);
+		//Debug.Log (blinkTimer);
         //Debug.Log(Input.GetAxisRaw("Horizontal"));
         if (stunTimer == 0)
         {
             rb2D.sharedMaterial = regularMaterial;
             CmdSyncRotation(Vector3.zero);
 
-			if (blinkTimer == 0) {
+			if (blinkTimer == 0) { //blinkTimer is the amount of time the blink takes to complete, not the amount of frames until next blink
 				if (!actionLock) {
 					startBlink ();
 					gravity ();
@@ -272,9 +277,16 @@ public class PlayerScript : NetworkBehaviour {
 				} else if (actionWaitedFrames >= 20) {
 					gravity ();
 				}
-			} else {
+			} 
+
+			else if (characterSelection == 1) {
 				blink ();
+			} 
+
+			else if (characterSelection == 2) {
+				teleport ();
 			}
+
             
         }
         else
@@ -545,21 +557,36 @@ public class PlayerScript : NetworkBehaviour {
     }
 
 	/**
-     * Script for blinking (velocity boost)
+     * Script for intiaiting all blink processes
      */
 	void startBlink(){
-		if (Input.GetAxis ("Blink") != 0 && blinkFrames == 0) { //currently set to 'b'
-			blinkTimer = BLINK_TIME;
-			blinkFrames = BLINK_FRAMES;
+		if (characterSelection == 1) {
+			if (Input.GetAxis ("Blink") != 0 && blinkFrames == 0) { //currently set to 'b'
+				blinkTimer = BLINK_TIME;
+				blinkFrames = BLINK_FRAMES;
+			}
+			if (blinkFrames > 0) {
+				blinkFrames--;
+			}
+			if (blinkFrames == BLINK_FRAMES - BLINK_TIME) {
+				rb2D.velocity = new Vector2 (0, 0);
+			}
 		}
-		if (blinkFrames > 0) {
-			blinkFrames--;
-		}
-		if (blinkFrames == BLINK_FRAMES - BLINK_TIME) {
-			rb2D.velocity = new Vector2 (0, 0);
+
+		if (characterSelection == 2) {
+			if (Input.GetAxis ("Blink") != 0 && blinkFrames == 0) { //currently set to 'b'
+				blinkTimer = TELEPORT_TIME;
+				blinkFrames = TELEPORT_FRAMES;
+			}
+			if (blinkFrames > 0) {
+				blinkFrames--;
+			}
 		}
 	}
 
+	/**
+     * Script for velocity boost
+     */
 	void blink(){
 		blinkTimer--;
 		if (Input.GetAxis ("Blink") != 0) { //currently set to 'b'
@@ -569,6 +596,25 @@ public class PlayerScript : NetworkBehaviour {
 			blinkTimer = 0;
 		}
 
+	}
+
+	/**
+     * Script for teleporting
+     */
+	void teleport(){
+		blinkTimer--;
+
+		//bool teleported is to prevent the user from simply hold down the button
+		if (Input.GetAxis ("Blink") != 0 && !teleported) {//currently set to 'b'
+			rb2D.position = new Vector2 (rb2D.position.x + TELEPORT_DISTANCE * getDirection ().x, 
+				rb2D.position.y + TELEPORT_DISTANCE * getDirection().y);
+
+			teleported = true;
+		} else {
+			rb2D.velocity = new Vector2 (0, 0);
+			blinkTimer = 0; 
+			teleported = false;
+		}
 	}
 
     /**
