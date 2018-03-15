@@ -167,6 +167,9 @@ public class PlayerAI : MonoBehaviour
         Vector2 input = (enemyTransform.position - myTransform.position);
         Vector2 directionInput = input;
         directionInput.Normalize();
+        directionInput.x += Random.Range(-0.25f, 0.25f);
+        directionInput.y += Random.Range(-0.25f, 0.25f);
+        directionInput.Normalize();
         directionInputX = directionInput.x;
         directionInputY = directionInput.y;
 
@@ -593,8 +596,20 @@ public class PlayerAI : MonoBehaviour
         //bool teleported is to prevent the user from simply hold down the button
         if (blinkInput && !teleported)
         {//currently set to 'b'
-            rb2D.position = new Vector2(rb2D.position.x + TELEPORT_DISTANCE * getDirection().x,
-                rb2D.position.y + TELEPORT_DISTANCE * getDirection().y);
+            float distance = TELEPORT_DISTANCE;
+
+            //make sure not to teleport through wall
+            int layerMask = LayerMask.GetMask("Ignore Raycast");
+            Vector2 direction = getDirection();
+            Vector2 origin = new Vector2(player.GetComponent<Transform>().position.x, player.GetComponent<Transform>().position.y);
+            RaycastHit2D hit = Physics2D.Raycast(origin: origin, direction: direction, distance: TELEPORT_DISTANCE, layerMask: layerMask);
+            if (hit.collider != null)
+            {
+                distance = hit.distance;
+            }
+
+            rb2D.position = new Vector2(rb2D.position.x + distance * getDirection().x,
+                rb2D.position.y + distance * getDirection().y);
 
             teleported = true;
         }

@@ -552,8 +552,19 @@ public class LocalPlayerScript : MonoBehaviour {
 
 		//bool teleported is to prevent the user from simply hold down the button
 		if (Input.GetAxis ("Blink") != 0 && !teleported) {//currently set to 'b'
-			rb2D.position = new Vector2 (rb2D.position.x + TELEPORT_DISTANCE * getDirection ().x, 
-				rb2D.position.y + TELEPORT_DISTANCE * getDirection().y);
+            float distance = TELEPORT_DISTANCE;
+
+            int layerMask = LayerMask.GetMask("Ignore Raycast");
+            Vector2 direction = getDirection();
+            Vector2 origin = new Vector2(player.GetComponent<Transform>().position.x, player.GetComponent<Transform>().position.y);
+            RaycastHit2D hit = Physics2D.Raycast(origin: origin, direction: direction, distance: TELEPORT_DISTANCE, layerMask: layerMask);
+            if(hit.collider != null)
+            {
+                distance = hit.distance;
+            }
+
+            rb2D.position = new Vector2 (rb2D.position.x + distance * getDirection ().x, 
+				rb2D.position.y + distance * getDirection().y);
 
 			teleported = true;
 		} else {
