@@ -800,7 +800,7 @@ public class LocalPlayerScript : MonoBehaviour {
             }
 
             //send player flying in direction of attack
-            rb2D.velocity = dir * baseAttackForce * (1 + hits / 4);
+            rb2D.velocity = dir * baseAttackForce * (1.0f + hits / 4.0f);
 
             //rotate player perpendicular to attack
             facingRight= dir.x < 0;

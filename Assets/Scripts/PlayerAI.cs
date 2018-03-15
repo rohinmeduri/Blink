@@ -56,6 +56,8 @@ public class PlayerAI : MonoBehaviour
     private int comboHitInterval = 0;
     private float inputX = 0;
     private float inputY = 0;
+    private float directionInputX = 0;
+    private float directionInputY = 0;
     private bool jumpInput = false;
     private bool reversalInput = false;
     private bool attackInput = false;
@@ -163,14 +165,18 @@ public class PlayerAI : MonoBehaviour
         Transform enemyTransform = enemy.GetComponent<Transform>();
         Transform myTransform = GetComponent<Transform>();
         Vector2 input = (enemyTransform.position - myTransform.position);
+        Vector2 directionInput = input;
+        directionInput.Normalize();
+        directionInputX = directionInput.x;
+        directionInputY = directionInput.y;
+
         blinkInput = input.magnitude > attackRadius;
-        jumpInput = (!blinkInput || blinkTimer == 0) && input.y > attackRadius;
+        jumpInput = input.y > attackRadius;
         if (input.magnitude < attackRadius)
         {
             facingRight = input.x >= 0;
             input = Vector2.zero;
             attackInput = true;
-            Debug.Log(attackInput);
         }
         else
         {
@@ -672,7 +678,7 @@ public class PlayerAI : MonoBehaviour
         //determine horizontal component of attack's direction
         float horizontalDirection;
         //if attacker is not moving, attack direction is the direction they are facing
-        if (inputX == 0 && inputY == 0)
+        if (directionInputX == 0 && directionInputY == 0)
         {
             if (facingRight)
             {
@@ -685,9 +691,9 @@ public class PlayerAI : MonoBehaviour
         }
         else
         {
-            horizontalDirection = inputX;
+            horizontalDirection = directionInputX;
         }
-        Vector2 direction = new Vector2(horizontalDirection, inputY);
+        Vector2 direction = new Vector2(horizontalDirection, directionInputY);
         return direction;
     }
 
@@ -814,7 +820,7 @@ public class PlayerAI : MonoBehaviour
             }
 
             //send player flying in direction of attack
-            rb2D.velocity = dir * baseAttackForce * (1 + hits / 4);
+            rb2D.velocity = dir * baseAttackForce * (1.0f + hits / 4.0f);
 
             //rotate player perpendicular to attack
             facingRight = dir.x < 0;
