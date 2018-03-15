@@ -7,7 +7,7 @@ public class PlayerAI : MonoBehaviour
 {
 
     // public variables
-    public bool facingRight = true;
+    public bool facingRight = false;
     public float numGlory = 0;
     public PhysicsMaterial2D regularMaterial;
     public PhysicsMaterial2D stunMaterial;
@@ -62,6 +62,7 @@ public class PlayerAI : MonoBehaviour
     private bool reversalInput = false;
     private bool attackInput = false;
     private bool blinkInput = false;
+    private GameObject enemy;
 
     // constants
     public const float GROUND_RUN_FORCE = 2; // How fast player can attain intended velocity on ground
@@ -158,10 +159,20 @@ public class PlayerAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Player");
+        for (var i = 0; i < enemies.Length; i++)
+        {
+            if (enemies[i] != gameObject)
+            {
+                enemy = enemies[i];
+                break;
+            }
+        }
+
         //flips sprite if necessary
         gameObject.GetComponent<SpriteRenderer>().flipX = !facingRight;
 
-        GameObject enemy = GameObject.FindWithTag("Player");
+        //determine movement and input based on enemy position
         Transform enemyTransform = enemy.GetComponent<Transform>();
         Transform myTransform = GetComponent<Transform>();
         Vector2 input = (enemyTransform.position - myTransform.position);
@@ -516,8 +527,15 @@ public class PlayerAI : MonoBehaviour
                     comboHits++;
                     var trueHit = (comboHitInterval <= STUN_DURATION) && (comboHits > 1);
                     attackGloryUpdate(hit.rigidbody.gameObject, comboHits, trueHit);
-                    hit.rigidbody.gameObject.GetComponent<LocalPlayerScript>().knockback(player, direction, comboHits);
-                    comboHitInterval = 0;
+                    if (hit.rigidbody.gameObject.tag == "Player")
+                    {
+                        hit.rigidbody.gameObject.GetComponent<LocalPlayerScript>().knockback(player, direction, comboHits);
+                    }
+                    else if (hit.rigidbody.gameObject.tag == "PlayerAI")
+                    {
+                        hit.rigidbody.gameObject.GetComponent<PlayerAI>().knockback(player, direction, comboHits);
+                    }
+                comboHitInterval = 0;
                     blinkFrames = 0;
                 }
 
@@ -738,13 +756,27 @@ public class PlayerAI : MonoBehaviour
         }
 
         //decrease hit person glory
-        if (otherPlayer.GetComponent<LocalPlayerScript>().numGlory - gloryLostOnHit < 0)
+        if (otherPlayer.tag == "Player")
         {
-            otherPlayer.GetComponent<LocalPlayerScript>().numGlory = 0;
+            if (otherPlayer.GetComponent<LocalPlayerScript>().numGlory - gloryLostOnHit < 0)
+            {
+                otherPlayer.GetComponent<LocalPlayerScript>().numGlory = 0;
+            }
+            else
+            {
+                otherPlayer.GetComponent<LocalPlayerScript>().numGlory -= gloryLostOnHit;
+            }
         }
-        else
+        else if(otherPlayer.tag == "PlayerAI")
         {
-            otherPlayer.GetComponent<LocalPlayerScript>().numGlory -= gloryLostOnHit;
+            if (otherPlayer.GetComponent<PlayerAI>().numGlory - gloryLostOnHit < 0)
+            {
+                otherPlayer.GetComponent<PlayerAI>().numGlory = 0;
+            }
+            else
+            {
+                otherPlayer.GetComponent<PlayerAI>().numGlory -= gloryLostOnHit;
+            }
         }
     }
 
@@ -811,7 +843,14 @@ public class PlayerAI : MonoBehaviour
         {
             comboHits++;
             reversalGloryUpdate(attacker, comboHits);
-            attacker.GetComponent<LocalPlayerScript>().knockback(player, reversalDirection, comboHits);
+            if (attacker.tag == "Player")
+            {
+                attacker.GetComponent<LocalPlayerScript>().knockback(player, reversalDirection, comboHits);
+            }
+            else
+            {
+                attacker.GetComponent<PlayerAI>().knockback(player, reversalDirection, comboHits);
+            }
             comboHitInterval = 0;
             actionWaitFrames = 0;
             blinkFrames = 0;
@@ -884,13 +923,27 @@ public class PlayerAI : MonoBehaviour
         }
 
         //decrease attacker glory
-        if (attacker.GetComponent<LocalPlayerScript>().numGlory - attacker.GetComponent<LocalPlayerScript>().lastGloryIncrease < 0)
+        if (attacker.tag == "Player")
         {
-            attacker.GetComponent<LocalPlayerScript>().numGlory = 0;
+            if (attacker.GetComponent<LocalPlayerScript>().numGlory - attacker.GetComponent<LocalPlayerScript>().lastGloryIncrease < 0)
+            {
+                attacker.GetComponent<LocalPlayerScript>().numGlory = 0;
+            }
+            else
+            {
+                attacker.GetComponent<LocalPlayerScript>().numGlory -= attacker.GetComponent<LocalPlayerScript>().lastGloryIncrease;
+            }
         }
-        else
+        else if (attacker.tag == "PlayerAI")
         {
-            attacker.GetComponent<LocalPlayerScript>().numGlory -= attacker.GetComponent<LocalPlayerScript>().lastGloryIncrease;
+            if (attacker.GetComponent<PlayerAI>().numGlory - attacker.GetComponent<PlayerAI>().lastGloryIncrease < 0)
+            {
+                attacker.GetComponent<PlayerAI>().numGlory = 0;
+            }
+            else
+            {
+                attacker.GetComponent<PlayerAI>().numGlory -= attacker.GetComponent<PlayerAI>().lastGloryIncrease;
+            }
         }
     }
 
