@@ -190,7 +190,8 @@ public class PlayerAI : MonoBehaviour
         {
             facingRight = input.x >= 0;
             input = Vector2.zero;
-            attackInput = true;
+            reversalInput = comboHits == 0 && Mathf.CeilToInt(Random.value * 4.0f) == 4;
+            attackInput = !reversalInput;
         }
         else
         {
@@ -645,12 +646,11 @@ public class PlayerAI : MonoBehaviour
     void reversal()
     {
         //check if player is pushing reversal button and can reversal
-        if (Input.GetAxis("Reversal") > 0)
+        if (reversalInput)
         {
             //cancel momentum
             rb2D.velocity = Vector2.zero;
 
-            Debug.Log("reversal");
             reversalDirection = getDirection();
             actionLock = true;
             reversalEffective = true;
@@ -695,7 +695,6 @@ public class PlayerAI : MonoBehaviour
 
             if (hit.rigidbody != null && hit.rigidbody.tag == "Player" || hit.rigidbody.tag == "PlayerAI")
             {
-                Debug.Log("hit");
                 Destroy(hit.rigidbody.gameObject); ;
             }
             startedSuper = false;
