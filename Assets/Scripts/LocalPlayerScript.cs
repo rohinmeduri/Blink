@@ -43,7 +43,7 @@ public class LocalPlayerScript : MonoBehaviour {
     private bool reversalEffective = false;
     private Vector2 reversalDirection;
     protected GameObject glory;
-    private bool hasSuper = false;
+    protected bool hasSuper = false;
     private bool startedSuper = false;
     private Animator animator;
     private List<GameObject> touchingObjects = new List<GameObject>();
@@ -95,7 +95,7 @@ public class LocalPlayerScript : MonoBehaviour {
 	public const int TELEPORT_DISTANCE = 6; //teleport distance
 	public const int TELEPORT_FRAMES = 100; //frames until teleportation can happen again
 	public const int TELEPORT_TIME = 10; //frames until player can move again
-    public const int SUPER_CHARGE_FRAMES = 50; //number of frames a super takes to charge
+    public const int SUPER_CHARGE_FRAMES = 60; //number of frames a super takes to charge
     public const int SUPER_END_LAG = 50; //number of frames player stalls without doing anything after a super
     // if turn speed to 1 or -1 with a change of at least the threshold in at most timelimit number of frames, boost applied
     public const int BOOST_TIMELIMIT = 2; 
@@ -628,10 +628,10 @@ public class LocalPlayerScript : MonoBehaviour {
             direction.Normalize();
             Vector2 origin = new Vector2(player.GetComponent<Transform>().position.x, player.GetComponent<Transform>().position.y);
             gameObject.layer = 2;
-            RaycastHit2D hit = Physics2D.CircleCast(origin: origin, radius: superRadius, direction: direction, distance: Mathf.Infinity, layerMask: mask.value);
+            RaycastHit2D hit = Physics2D.CircleCast(origin: origin, radius: superRadius, direction: direction, distance: Mathf.Infinity);
             gameObject.layer = 0;
 
-            if (hit.rigidbody != null && hit.rigidbody.tag == "Player" || hit.rigidbody.tag == "PlayerAI")
+            if (hit.rigidbody != null && hit.rigidbody.gameObject.tag == "Player" || hit.rigidbody.gameObject.tag == "PlayerAI")
             {
                 Debug.Log("hit");
                 Destroy(hit.rigidbody.gameObject); ;
