@@ -184,9 +184,9 @@ public class PlayerAI : MonoBehaviour
         directionInputX = directionInput.x;
         directionInputY = directionInput.y;
 
-        blinkInput = input.magnitude > attackRadius;
+        blinkInput = input.magnitude > attackRadius * 0.8f;
         jumpInput = input.y > attackRadius;
-        if (input.magnitude < attackRadius)
+        if (input.magnitude < attackRadius * 0.8f)
         {
             facingRight = input.x >= 0;
             input = Vector2.zero;
@@ -535,7 +535,7 @@ public class PlayerAI : MonoBehaviour
                     {
                         hit.rigidbody.gameObject.GetComponent<PlayerAI>().knockback(player, direction, comboHits);
                     }
-                comboHitInterval = 0;
+                    comboHitInterval = 0;
                     blinkFrames = 0;
                 }
 
@@ -737,7 +737,7 @@ public class PlayerAI : MonoBehaviour
     void attackGloryUpdate(GameObject otherPlayer, int hits, bool trueHit)
     {
         //increase attacker glory
-        comboHits = hits;
+        updateComboHits(hits);
         float trueMultiplier = 1;
         if (trueHit)
         {
@@ -747,62 +747,45 @@ public class PlayerAI : MonoBehaviour
         if (numGlory + gloryIncrease >= 100)
         {
             lastGloryIncrease = (100 - numGlory);
-            numGlory = 100;
+            changeGlory(100);
         }
         else
         {
-            numGlory += gloryIncrease;
+            changeGlory(numGlory + gloryIncrease);
             lastGloryIncrease = gloryIncrease;
         }
 
         //decrease hit person glory
+
+
         if (otherPlayer.tag == "Player")
         {
             if (otherPlayer.GetComponent<LocalPlayerScript>().numGlory - gloryLostOnHit < 0)
             {
-                otherPlayer.GetComponent<LocalPlayerScript>().numGlory = 0;
+                otherPlayer.GetComponent<LocalPlayerScript>().changeGlory(0);
             }
             else
             {
-                otherPlayer.GetComponent<LocalPlayerScript>().numGlory -= gloryLostOnHit;
+                otherPlayer.GetComponent<LocalPlayerScript>().changeGlory(otherPlayer.GetComponent<LocalPlayerScript>().numGlory - gloryLostOnHit);
             }
-        }
-        else if(otherPlayer.tag == "PlayerAI")
-        {
-            if (otherPlayer.GetComponent<PlayerAI>().numGlory - gloryLostOnHit < 0)
-            {
-                otherPlayer.GetComponent<PlayerAI>().numGlory = 0;
-            }
-            else
-            {
-                otherPlayer.GetComponent<PlayerAI>().numGlory -= gloryLostOnHit;
-            }
-        }
-    }
-
-    /*
-     * Script for setting glory to specific value on server
-     */
-    void CmdSetGlory(float glory)
-    {
-        if (glory > 100)
-        {
-            numGlory = 100;
-        }
-        else if (glory < 0)
-        {
-            numGlory = 0;
         }
         else
         {
-            numGlory = glory;
+            if (otherPlayer.GetComponent<PlayerAI>().numGlory - gloryLostOnHit < 0)
+            {
+                otherPlayer.GetComponent<PlayerAI>().changeGlory(0);
+            }
+            else
+            {
+                otherPlayer.GetComponent<PlayerAI>().changeGlory(otherPlayer.GetComponent<LocalPlayerScript>().numGlory - gloryLostOnHit);
+            }
         }
     }
 
     /*
-     * Script that updates glory on the clients
+     * Script that updates glory
      */
-    void OnChangeGlory(float glory)
+    public void changeGlory(float glory)
     {
         numGlory = glory;
         if (glorySlider != null)
@@ -841,7 +824,7 @@ public class PlayerAI : MonoBehaviour
         //check if reversaling correctly
         if (reversalEffective && Vector2.Angle(reversalDirection, dir) > 90f)
         {
-            comboHits++;
+            updateComboHits(comboHits+1);
             reversalGloryUpdate(attacker, comboHits);
             if (attacker.tag == "Player")
             {
@@ -910,16 +893,16 @@ public class PlayerAI : MonoBehaviour
      */
     void reversalGloryUpdate(GameObject attacker, int hits)
     {
-        comboHits = hits;
+        updateComboHits(hits);
 
         //increase reversal-er glory
         if (numGlory + reversalGloryGain + gloryLostOnHit >= 100)
         {
-            numGlory = 100;
+            changeGlory(100);
         }
         else
         {
-            numGlory += reversalGloryGain + gloryLostOnHit;
+            changeGlory(numGlory + reversalGloryGain + gloryLostOnHit);
         }
 
         //decrease attacker glory
@@ -927,22 +910,22 @@ public class PlayerAI : MonoBehaviour
         {
             if (attacker.GetComponent<LocalPlayerScript>().numGlory - attacker.GetComponent<LocalPlayerScript>().lastGloryIncrease < 0)
             {
-                attacker.GetComponent<LocalPlayerScript>().numGlory = 0;
+                attacker.GetComponent<LocalPlayerScript>().changeGlory(0);
             }
             else
             {
-                attacker.GetComponent<LocalPlayerScript>().numGlory -= attacker.GetComponent<LocalPlayerScript>().lastGloryIncrease;
+                attacker.GetComponent<LocalPlayerScript>().changeGlory(attacker.GetComponent<LocalPlayerScript>().numGlory - attacker.GetComponent<LocalPlayerScript>().lastGloryIncrease);
             }
         }
         else if (attacker.tag == "PlayerAI")
         {
             if (attacker.GetComponent<PlayerAI>().numGlory - attacker.GetComponent<PlayerAI>().lastGloryIncrease < 0)
             {
-                attacker.GetComponent<PlayerAI>().numGlory = 0;
+                attacker.GetComponent<PlayerAI>().changeGlory(0);
             }
             else
             {
-                attacker.GetComponent<PlayerAI>().numGlory -= attacker.GetComponent<PlayerAI>().lastGloryIncrease;
+                attacker.GetComponent<PlayerAI>().changeGlory(attacker.GetComponent<PlayerAI>().numGlory - attacker.GetComponent<PlayerAI>().lastGloryIncrease);
             }
         }
     }
