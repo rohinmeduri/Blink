@@ -42,7 +42,7 @@ public class LocalPlayerScript : MonoBehaviour {
 	private bool teleported = false;
     private bool reversalEffective = false;
     private Vector2 reversalDirection;
-    private GameObject glory;
+    protected GameObject glory;
     private bool hasSuper = false;
     private bool startedSuper = false;
     private Animator animator;
@@ -51,8 +51,15 @@ public class LocalPlayerScript : MonoBehaviour {
     private float[] xVelTracker;
     private float[] xInputTracker;
     private bool boosting = false;
-    private int comboHits = 0;
+    protected int comboHits = 0;
     private int comboHitInterval = 0;
+    protected float inputX = 0;
+    protected float inputY = 0;
+    protected bool jumpInput = false;
+    protected bool reversalInput = false;
+    protected bool attackInput = false;
+    protected bool blinkInput = false;
+    protected bool superInput = false;
 
     // constants
     public const float GROUND_RUN_FORCE = 2; // How fast player can attain intended velocity on ground
@@ -119,7 +126,7 @@ public class LocalPlayerScript : MonoBehaviour {
     /**
      * Script for creating Glory meters
      */
-    public void createMeter()
+    public virtual void createMeter()
     {
         //instantiate UI element and place on canvas
         glory = Instantiate(gloryPrefab);
@@ -147,23 +154,25 @@ public class LocalPlayerScript : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update()
+    virtual protected void Update()
     {
+        assignInputs();
+
         //flips sprite if necessary (on all clients)
         gameObject.GetComponent<SpriteRenderer>().flipX = !facingRight;
 
         // Updates Animator variables
-        animator.SetFloat("xDir", Input.GetAxisRaw("Horizontal"));
-        animator.SetFloat("yDir", Input.GetAxisRaw("Vertical"));
+        animator.SetFloat("xDir", inputX);
+        animator.SetFloat("yDir", inputY);
         animator.SetFloat("yVel", rb2D.velocity.y / -FALL_SPEED);
-        animator.SetBool("isMoving", Mathf.Abs(Input.GetAxisRaw("Horizontal")) > 0);
+        animator.SetBool("isMoving", Mathf.Abs(Input.GetAxis("Horizontal")) > 0);
         animator.SetBool("isAirborn", isAirborn());
         animator.SetBool("onWall", isWall());
         animator.SetInteger("StunTimer", stunTimer);
         int attackNum = 0;
-        if (Mathf.Abs(Input.GetAxisRaw("Vertical")) > Mathf.Abs(Input.GetAxisRaw("Horizontal")))
+        if (Mathf.Abs(inputY) > Mathf.Abs(inputX))
         {
-            attackNum = (int)Mathf.Sign(Input.GetAxisRaw("Vertical"));
+            attackNum = (int)Mathf.Sign(inputY);
         }
         animator.SetInteger("attackNum", attackNum);
 
@@ -219,11 +228,23 @@ public class LocalPlayerScript : MonoBehaviour {
             }
         }*/
     }
+
+    //set input values (done this way because different inputs are used in derrived classes)
+    protected virtual void assignInputs()
+    {
+        inputX = Input.GetAxis("Horizontal");
+        inputY = Input.GetAxis("Vertical");
+        jumpInput = Input.GetAxis("Jump") != 0;
+        attackInput = Input.GetAxis("Attack") != 0;
+        reversalInput = Input.GetAxis("Reversal") != 0;
+        blinkInput = Input.GetAxis("Blink") != 0;
+        superInput = Input.GetAxis("Super") != 0;
+    }
     
     void FixedUpdate()
     {
 		//Debug.Log (blinkTimer);
-        //Debug.Log(Input.GetAxisRaw("Horizontal"));
+        //Debug.Log(Input.GetAxis("Horizontal"));
         if (stunTimer == 0)
         {
             rb2D.sharedMaterial = regularMaterial;
@@ -231,26 +252,26 @@ public class LocalPlayerScript : MonoBehaviour {
 
 			if (blinkTimer == 0) { //blinkTimer is the amount of time the blink takes to complete, not the amount of frames until next blink
 				if (!actionLock) {
-					startBlink ();
-					gravity ();
-					jump ();
-					run ();
-					boost ();
-					flipSprite ();
-					attack ();
-					reversal ();
-					StartSuper ();
+					startBlink();
+					gravity();
+					jump();
+					run();
+					boost();
+					flipSprite();
+					attack();
+					reversal();
+					StartSuper();
 				} else if (actionWaitedFrames >= 20) {
-					gravity ();
+					gravity();
 				}
 			} 
 
 			else if (characterSelection == 1) {
-				blink ();
+				blink();
 			} 
 
 			else if (characterSelection == 2) {
-				teleport ();
+				teleport();
 			}
 
             
@@ -268,7 +289,7 @@ public class LocalPlayerScript : MonoBehaviour {
     {
         //flip sprite based on player input if they are not wall hugging
         if (stickyWallTimer == 0){
-            facingRight = Input.GetAxisRaw("Horizontal") > 0 || (Input.GetAxisRaw("Horizontal") == 0 && facingRight);
+            facingRight = inputX > 0 || (inputY == 0 && facingRight);
         }
     }
 
@@ -330,7 +351,7 @@ public class LocalPlayerScript : MonoBehaviour {
             facingRight = currentNormal.x > 0;
 
             goalSpeed = -MAX_SPEED * currentNormal.x;
-            if (Mathf.Sign(currentNormal.x) == Mathf.Sign(Input.GetAxisRaw("Horizontal")))
+            if (Mathf.Sign(currentNormal.x) == Mathf.Sign(inputX))
             {
                 stickyWallTimer--;
             }
@@ -339,7 +360,7 @@ public class LocalPlayerScript : MonoBehaviour {
         // once timer is out, resume normal movement
         if (stickyWallTimer == 0)
         {
-            goalSpeed = MAX_SPEED * Input.GetAxisRaw("Horizontal");
+            goalSpeed = MAX_SPEED * inputX;
         }
 
         return goalSpeed;
@@ -356,7 +377,7 @@ public class LocalPlayerScript : MonoBehaviour {
             xInputTracker[i] = xInputTracker[i - 1];
         }
         xVelTracker[0] = rb2D.velocity.x;
-        xInputTracker[0] = Input.GetAxisRaw("Horizontal");
+        xInputTracker[0] = inputX;
 
         if(Mathf.Abs(xInputTracker[0]) >= 0.8f && Mathf.Abs(xInputTracker[0] - xInputTracker[xInputTracker.Length-1]) > BOOST_THRESHOLD)
         {
@@ -385,7 +406,7 @@ public class LocalPlayerScript : MonoBehaviour {
     void jump()
     {
         // checks if touching walls
-        if (Input.GetAxisRaw("Jump") > 0 && canJump)
+        if (jumpInput && canJump)
         {
             // if have midair jumps or attempted jump isn't midair or on a wall that's too steep
             if (jumps > 0 || !(currentNormal.y < Mathf.Sin(MAX_WJABLE_ANGLE) || isAirborn()))
@@ -406,7 +427,7 @@ public class LocalPlayerScript : MonoBehaviour {
         }
 
         // resets jump
-        if (Input.GetAxisRaw("Jump") == 0)
+        if (!jumpInput)
         {
             canJump = true;
         }
@@ -429,7 +450,7 @@ public class LocalPlayerScript : MonoBehaviour {
         }
         if(stunTimer == 0)
         {
-            fallSpeed *= (1 - Input.GetAxisRaw("Vertical") / FALL_COEF);
+            fallSpeed *= (1 - inputY / FALL_COEF);
         }
 
         // simulate gravity
@@ -448,58 +469,41 @@ public class LocalPlayerScript : MonoBehaviour {
      */
     void attack()
     {
-        //check to see if attack button is held down - attack occurs once the button is released
-        if (Input.GetAxisRaw("Attack") != 0)
+        if (attackInput)
         {
-            attackButtonHeld = true;
-        }
-        else
-        {
-            //check that button was held in previous frame (meaning it was released this frame
-            //so attack should initiate)
-            if (attackButtonHeld)
+            //cancel attacker's momentum
+            rb2D.velocity = Vector2.zero;
+
+            //raycast to see if someone is hit with the attack - mask out attacker's layer
+            Vector2 direction = getDirection();
+            direction.Normalize();
+            Vector2 origin = new Vector2(player.GetComponent<Transform>().position.x, player.GetComponent<Transform>().position.y);
+            Debug.DrawRay(origin, direction * attackRadius, Color.blue, 1f);
+            gameObject.layer = 2;
+            RaycastHit2D hit = Physics2D.Raycast(origin: origin, direction: direction, distance: attackRadius);
+            gameObject.layer = 0;
+
+            //if attack is successful:
+            if (hit.rigidbody != null)
             {
-                //cancel attacker's momentum
-                rb2D.velocity = Vector2.zero;
-
-                //raycast to see if someone is hit with the attack - mask out attacker's layer
-                Vector2 direction = getDirection();
-                direction.Normalize();
-                Vector2 origin = new Vector2(player.GetComponent<Transform>().position.x, player.GetComponent<Transform>().position.y);
-                Debug.DrawRay(origin, direction * attackRadius, Color.blue, 1f);
-                gameObject.layer = 2;
-                RaycastHit2D hit = Physics2D.Raycast(origin: origin, direction: direction, distance: attackRadius);
-                gameObject.layer = 0;
-
-                //if attack is successful:
-                if (hit.rigidbody != null)
-                {
-                    comboHits++;
-                    var trueHit = (comboHitInterval <= STUN_DURATION) && (comboHits > 1);
-                    attackGloryUpdate(hit.rigidbody.gameObject, comboHits, trueHit);
-                    if(hit.rigidbody.gameObject.tag == "Player")
-                    {
-                        hit.rigidbody.gameObject.GetComponent<LocalPlayerScript>().knockback(player, direction, comboHits);
-                    }
-                    else if(hit.rigidbody.gameObject.tag == "PlayerAI")
-                    {
-                        hit.rigidbody.gameObject.GetComponent<PlayerAI>().knockback(player, direction, comboHits);
-                    }
-                    comboHitInterval = 0;
-                    blinkFrames = 0;
-                }
-
-                //trigger animation
-                animator.SetTrigger("attacking");
-
-                //cannot attack immediately after launching an attack
-                actionLock = true;
-                actionWaitFrames = ATTACK_WAIT_FRAMES;
+                comboHits++;
+                var trueHit = (comboHitInterval <= STUN_DURATION) && (comboHits > 1);
+                attackGloryUpdate(hit.rigidbody.gameObject, comboHits, trueHit);
+                hit.rigidbody.gameObject.GetComponent<LocalPlayerScript>().knockback(player, direction, comboHits);
+                comboHitInterval = 0;
+                blinkFrames = 0;
             }
 
-            //keep track that attack button wasn't held during this frame
-            attackButtonHeld = false;
+            //trigger animation
+            animator.SetTrigger("attacking");
+
+            //cannot attack immediately after launching an attack
+            actionLock = true;
+            actionWaitFrames = ATTACK_WAIT_FRAMES;
         }
+
+        //keep track that attack button wasn't held during this frame
+        attackButtonHeld = false;
     }
 
 	/**
@@ -507,7 +511,7 @@ public class LocalPlayerScript : MonoBehaviour {
      */
 	void startBlink(){
 		if (characterSelection == 1) {
-			if (Input.GetAxis ("Blink") != 0 && blinkFrames == 0) { //currently set to 'b'
+			if (blinkInput && blinkFrames == 0) { //currently set to 'b'
 				blinkTimer = BLINK_TIME;
 				blinkFrames = BLINK_FRAMES;
 			}
@@ -520,7 +524,7 @@ public class LocalPlayerScript : MonoBehaviour {
 		}
 
 		if (characterSelection == 2) {
-			if (Input.GetAxis ("Blink") != 0 && blinkFrames == 0) { //currently set to 'b'
+			if (blinkInput && blinkFrames == 0) { //currently set to 'b'
 				blinkTimer = TELEPORT_TIME;
 				blinkFrames = TELEPORT_FRAMES;
 			}
@@ -535,7 +539,7 @@ public class LocalPlayerScript : MonoBehaviour {
      */
 	void blink(){
 		blinkTimer--;
-		if (Input.GetAxis ("Blink") != 0) { //currently set to 'b'
+		if (blinkInput) { //currently set to 'b'
 			rb2D.velocity = BLINK_VELOCITY * getDirection();
 		} else {
 			rb2D.velocity = new Vector2 (0, 0);
@@ -551,7 +555,7 @@ public class LocalPlayerScript : MonoBehaviour {
 		blinkTimer--;
 
 		//bool teleported is to prevent the user from simply hold down the button
-		if (Input.GetAxis ("Blink") != 0 && !teleported) {//currently set to 'b'
+		if (blinkInput && !teleported) {//currently set to 'b'
             float distance = TELEPORT_DISTANCE;
 
             int layerMask = LayerMask.GetMask("Ignore Raycast");
@@ -580,12 +584,11 @@ public class LocalPlayerScript : MonoBehaviour {
     void reversal()
     {
         //check if player is pushing reversal button and can reversal
-        if (Input.GetAxisRaw("Reversal") > 0)
+        if (reversalInput)
         {
             //cancel momentum
             rb2D.velocity = Vector2.zero;
 
-            Debug.Log("reversal");
             reversalDirection = getDirection();
             actionLock = true;
             reversalEffective = true;
@@ -602,7 +605,7 @@ public class LocalPlayerScript : MonoBehaviour {
     void StartSuper()
     {
         //check if can super and is super-ing
-        if (hasSuper && Input.GetAxisRaw("Super") > 0)
+        if (hasSuper && superInput)
         {
             Debug.Log("super");
             //cancel momentum
@@ -641,12 +644,12 @@ public class LocalPlayerScript : MonoBehaviour {
     /**
      * Script for determining direction of player actions (attacks, reversals, and blinks)
      */
-    private Vector2 getDirection()
+    protected virtual Vector2 getDirection()
     {
         //determine horizontal component of attack's direction
         float horizontalDirection;
         //if attacker is not moving, attack direction is the direction they are facing
-        if (Input.GetAxisRaw("Horizontal") == 0 && Input.GetAxisRaw("Vertical") == 0)
+        if (inputX == 0 && inputY == 0)
         {
             if (facingRight)
             {
@@ -659,9 +662,9 @@ public class LocalPlayerScript : MonoBehaviour {
         }
         else
         {
-            horizontalDirection = Input.GetAxisRaw("Horizontal");
+            horizontalDirection = inputX;
         }
-        Vector2 direction = new Vector2(horizontalDirection, Input.GetAxisRaw("Vertical"));
+        Vector2 direction = new Vector2(horizontalDirection, inputY);
         return direction;
     }
 
@@ -691,29 +694,13 @@ public class LocalPlayerScript : MonoBehaviour {
         }
 
         //decrease hit person glory
-
-
-        if (otherPlayer.tag == "Player")
+        if (otherPlayer.GetComponent<LocalPlayerScript>().numGlory - gloryLostOnHit < 0)
         {
-            if (otherPlayer.GetComponent<LocalPlayerScript>().numGlory - gloryLostOnHit < 0)
-            {
-                otherPlayer.GetComponent<LocalPlayerScript>().changeGlory(0);
-            }
-            else
-            {
-                otherPlayer.GetComponent<LocalPlayerScript>().changeGlory(otherPlayer.GetComponent<LocalPlayerScript>().numGlory - gloryLostOnHit);
-            }
+            otherPlayer.GetComponent<LocalPlayerScript>().changeGlory(0);
         }
         else
         {
-            if (otherPlayer.GetComponent<PlayerAI>().numGlory - gloryLostOnHit < 0)
-            {
-                otherPlayer.GetComponent<PlayerAI>().changeGlory(0);
-            }
-            else
-            {
-                otherPlayer.GetComponent<PlayerAI>().changeGlory(otherPlayer.GetComponent<LocalPlayerScript>().numGlory - gloryLostOnHit);
-            }
+            otherPlayer.GetComponent<LocalPlayerScript>().changeGlory(otherPlayer.GetComponent<LocalPlayerScript>().numGlory - gloryLostOnHit);
         }
     }
 
@@ -761,14 +748,7 @@ public class LocalPlayerScript : MonoBehaviour {
         {
             updateComboHits(comboHits+1);
             reversalGloryUpdate(attacker, comboHits);
-            if(attacker.tag == "Player")
-            {
-                attacker.GetComponent<LocalPlayerScript>().knockback(player, reversalDirection, comboHits);
-            }
-            else
-            {
-                attacker.GetComponent<PlayerAI>().knockback(player, reversalDirection, comboHits);
-            }
+            attacker.GetComponent<LocalPlayerScript>().knockback(player, reversalDirection, comboHits);
             comboHitInterval = 0;
             actionWaitFrames = 0;
             blinkFrames = 0;
@@ -841,27 +821,13 @@ public class LocalPlayerScript : MonoBehaviour {
         }
 
         //decrease attacker glory
-        if (attacker.tag == "Player")
+        if (attacker.GetComponent<LocalPlayerScript>().numGlory - attacker.GetComponent<LocalPlayerScript>().lastGloryIncrease < 0)
         {
-            if (attacker.GetComponent<LocalPlayerScript>().numGlory - attacker.GetComponent<LocalPlayerScript>().lastGloryIncrease < 0)
-            {
-                attacker.GetComponent<LocalPlayerScript>().changeGlory(0);
-            }
-            else
-            {
-                attacker.GetComponent<LocalPlayerScript>().changeGlory(attacker.GetComponent<LocalPlayerScript>().numGlory - attacker.GetComponent<LocalPlayerScript>().lastGloryIncrease);
-            }
+            attacker.GetComponent<LocalPlayerScript>().changeGlory(0);
         }
-        else if(attacker.tag == "PlayerAI")
+        else
         {
-            if (attacker.GetComponent<PlayerAI>().numGlory - attacker.GetComponent<PlayerAI>().lastGloryIncrease < 0)
-            {
-                attacker.GetComponent<PlayerAI>().changeGlory(0);
-            }
-            else
-            {
-                attacker.GetComponent<PlayerAI>().changeGlory(attacker.GetComponent<PlayerAI>().numGlory - attacker.GetComponent<PlayerAI>().lastGloryIncrease);
-            }
+            attacker.GetComponent<LocalPlayerScript>().changeGlory(attacker.GetComponent<LocalPlayerScript>().numGlory - attacker.GetComponent<LocalPlayerScript>().lastGloryIncrease);
         }
     }
 
@@ -870,7 +836,7 @@ public class LocalPlayerScript : MonoBehaviour {
     */
     void DI()
     {
-        rb2D.velocity = new Vector2(rb2D.velocity.x * KNOCKBACK_DAMPENING_COEF + DI_FORCE * Input.GetAxisRaw("Horizontal"), rb2D.velocity.y * KNOCKBACK_DAMPENING_COEF + DI_FORCE * Input.GetAxisRaw("Vertical"));
+        rb2D.velocity = new Vector2(rb2D.velocity.x * KNOCKBACK_DAMPENING_COEF + DI_FORCE * inputX, rb2D.velocity.y * KNOCKBACK_DAMPENING_COEF + DI_FORCE * inputY);
     }
 
     /**

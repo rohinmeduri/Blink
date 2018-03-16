@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 50859331604966228}
   - component: {fileID: 61408790411139706}
   - component: {fileID: 95214854890211238}
-  - component: {fileID: 114471741185430348}
+  - component: {fileID: 114455618087605086}
   m_Layer: 0
   m_Name: Player AI
   m_TagString: PlayerAI
@@ -106,7 +106,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114471741185430348
+--- !u!114 &114455618087605086
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -114,7 +114,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1273918684993908}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e73cd3a1fb882f9449e10385620f8a2c, type: 3}
+  m_Script: {fileID: 11500000, guid: 807d33b40a318df44a5ec336662273a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   facingRight: 1
