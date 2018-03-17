@@ -25,7 +25,7 @@ public class LocalPlayerScript : NetworkBehaviour {
     public float lastGloryIncrease = 0;
 
     // private variables
-    private int characterSelection = 2;
+    private int characterSelection = 1;
 	private int jumps;
     private bool canJump;
     private Vector2 currentNormal;
@@ -920,6 +920,10 @@ public class LocalPlayerScript : NetworkBehaviour {
 
     private void OnCollisionStay2D(Collision2D collision)
     {
+        if (collision.gameObject.tag == "Player" || collision.gameObject.tag == "PlayerAI")
+        {
+            return;
+        }
         // set player normal
         setPlayerNormal();
 
@@ -931,6 +935,10 @@ public class LocalPlayerScript : NetworkBehaviour {
 
     private void OnCollisionExit2D(Collision2D collision)
     {
+        if (collision.gameObject.tag == "Player" || collision.gameObject.tag == "PlayerAI")
+        {
+            return;
+        }
         // remove object from list of objects touched
         touchingNormals.RemoveAt(touchingObjects.IndexOf(collision.gameObject));
         touchingObjects.RemoveAt(touchingObjects.IndexOf(collision.gameObject));
