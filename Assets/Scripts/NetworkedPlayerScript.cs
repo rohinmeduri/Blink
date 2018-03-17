@@ -192,6 +192,13 @@ public class NetworkedPlayerScript : LocalPlayerScript {
         base.knockback(attacker, dir, hits);
     }
 
+    protected override void hitstunAnimation()
+    {
+        networkAnimator.SetTrigger("Hitstun");
+        if (NetworkServer.active)
+            animator.ResetTrigger("Hitstun");
+    }
+
     protected override void rotate(Vector3 rotation)
     {
         CmdSyncRotation(rotation);

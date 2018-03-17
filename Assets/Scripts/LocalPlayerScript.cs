@@ -821,8 +821,13 @@ public class LocalPlayerScript : NetworkBehaviour
             actionWaitFrames = STUN_DURATION;
 
             //trigger animation
-            animator.SetTrigger("Hitstun");
+            hitstunAnimation();
         }
+    }
+
+    protected virtual void hitstunAnimation()
+    {
+        animator.SetTrigger("Hitstun");
     }
 
     /*
