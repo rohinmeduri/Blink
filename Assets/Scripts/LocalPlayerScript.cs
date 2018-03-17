@@ -247,7 +247,7 @@ public class LocalPlayerScript : NetworkBehaviour
         superInput = Input.GetAxisRaw("Super") != 0;
     }
 
-    void FixedUpdate()
+    protected virtual void FixedUpdate()
     {
         if (stunTimer <= 0)
         {
@@ -1009,7 +1009,6 @@ public class LocalPlayerScript : NetworkBehaviour
     //Script used only for networked children to update comboHits on clients
     protected void OnChangeComboHits(int hits)
     {
-        Debug.Log("comboHits changed");
         if (comboText != null)
         {
             comboHits = hits;
@@ -1020,7 +1019,6 @@ public class LocalPlayerScript : NetworkBehaviour
     //script used only for networked children to update glory on clients
     protected void OnChangeGlory(float glory)
     {
-        Debug.Log("changed glory");
         numGlory = glory;
         if (glorySlider != null)
         {

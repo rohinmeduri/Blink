@@ -59,6 +59,15 @@ public class NetworkedPlayerScript : LocalPlayerScript {
         base.Update();
     }
 
+    protected override void FixedUpdate()
+    {
+        if (!hasAuthority)
+        {
+            return;
+        }
+        base.FixedUpdate();
+    }
+
     protected override void flipSprite()
     {
         if (!hasAuthority)
