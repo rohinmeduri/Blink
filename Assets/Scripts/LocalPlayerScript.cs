@@ -25,7 +25,7 @@ public class LocalPlayerScript : NetworkBehaviour {
     public float lastGloryIncrease = 0;
 
     // private variables
-    private int characterSelection = 1;
+    private int characterSelection = 2;
 	private int jumps;
     private bool canJump;
     private Vector2 currentNormal;
