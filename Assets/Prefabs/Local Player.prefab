@@ -20,15 +20,12 @@ GameObject:
   m_Component:
   - component: {fileID: 4365196966651724}
   - component: {fileID: 212091731836323832}
-  - component: {fileID: 114174269655759314}
   - component: {fileID: 50859331604966228}
   - component: {fileID: 61408790411139706}
-  - component: {fileID: 114268707513064214}
-  - component: {fileID: 114834900055569754}
   - component: {fileID: 95214854890211238}
-  - component: {fileID: 114509458611876312}
+  - component: {fileID: 114945665282527020}
   m_Layer: 0
-  m_Name: Player
+  m_Name: Local Player
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -41,7 +38,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1273918684993908}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -5.48, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -109,7 +106,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114174269655759314
+--- !u!114 &114945665282527020
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -117,20 +114,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 1273918684993908}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72e09efe47b468049ae89a8ba54ab469, type: 3}
+  m_Script: {fileID: 11500000, guid: 8b1516e39a4375145aceccb5385bb01e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  facingRight: 0
+  facingRight: 1
   numGlory: 0
-  regularMaterial: {fileID: 6200000, guid: 17f5ae5846336db40a7e5488775cd87b, type: 2}
-  stunMaterial: {fileID: 6200000, guid: 0ac2c177006bfca45a60b997751b7fd9, type: 2}
+  regularMaterial: {fileID: 0}
+  stunMaterial: {fileID: 0}
   player: {fileID: 1273918684993908}
   attackRadius: 2
   baseAttackForce: 5
   superRadius: 2
   mask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 0
   gloryPrefab: {fileID: 1732290323307310, guid: ec57c344e826fbd409641a3eefccac12,
     type: 2}
   glorySlider: {fileID: 0}
@@ -138,78 +135,7 @@ MonoBehaviour:
   baseGloryGain: 3
   gloryLostOnHit: 2
   reversalGloryGain: 12
---- !u!114 &114268707513064214
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1273918684993908}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SceneId:
-    m_Value: 0
-  m_AssetId:
-    i0: 20
-    i1: 255
-    i2: 190
-    i3: 59
-    i4: 104
-    i5: 177
-    i6: 114
-    i7: 164
-    i8: 43
-    i9: 99
-    i10: 203
-    i11: 25
-    i12: 129
-    i13: 231
-    i14: 179
-    i15: 117
-  m_ServerOnly: 0
-  m_LocalPlayerAuthority: 1
---- !u!114 &114509458611876312
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1273918684993908}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1590678366, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Animator: {fileID: 95214854890211238}
-  m_ParameterSendBits: 0
-  param0: 
-  param1: 
-  param2: 
-  param3: 
-  param4: 
-  param5: 
---- !u!114 &114834900055569754
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1273918684993908}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1768714887, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_TransformSyncMode: 2
-  m_SendInterval: 0.0625
-  m_SyncRotationAxis: 3
-  m_RotationSyncCompression: 0
-  m_SyncSpin: 0
-  m_MovementTheshold: 0.001
-  m_VelocityThreshold: 0.0001
-  m_SnapThreshold: 5
-  m_InterpolateRotation: 1
-  m_InterpolateMovement: 1
+  lastGloryIncrease: 0
 --- !u!212 &212091731836323832
 SpriteRenderer:
   m_ObjectHideFlags: 1
