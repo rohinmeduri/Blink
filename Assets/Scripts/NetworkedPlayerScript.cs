@@ -183,6 +183,29 @@ public class NetworkedPlayerScript : LocalPlayerScript {
         base.knockback(attacker, dir, hits);
     }
 
+    protected override void rotate(Vector3 rotation)
+    {
+        CmdSyncRotation(rotation);
+    }
+
+    /*
+    * Script for syncing rotation on server
+    */
+    [Command]
+    void CmdSyncRotation(Vector3 rotation)
+    {
+        RpcSyncRotation(rotation);
+    }
+
+    /*
+     * Script for syncing rotation on clients
+     */
+    [ClientRpc]
+    void RpcSyncRotation(Vector3 rotation)
+    {
+        GetComponent<Transform>().eulerAngles = rotation;
+    }
+
     protected override void killPlayer(GameObject go)
     {
         CmdKillPlayer(go);

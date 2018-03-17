@@ -10,7 +10,7 @@ public class PlayerAIScript : LocalPlayerScript {
     private List<float> timeTracker = new List<float>();
     private float timeCounter = 0;
 
-    public const float REACTION_TIME = 0.5f; //how long AI takes to react to other player's movements
+    public const float REACTION_TIME = 0.3f; //how long AI takes to react to other player's movements
 
     protected override void Update()
     {

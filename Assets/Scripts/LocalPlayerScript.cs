@@ -828,7 +828,7 @@ public class LocalPlayerScript : NetworkBehaviour
     /*
      * Script for syncing rotation on server
      */
-    void rotate(Vector3 rotation)
+    protected virtual void rotate(Vector3 rotation)
     {
         GetComponent<Transform>().eulerAngles = rotation;
     }
