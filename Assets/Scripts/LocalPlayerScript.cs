@@ -29,17 +29,17 @@ public class LocalPlayerScript : NetworkBehaviour {
 	private int jumps;
     private bool canJump;
     private Vector2 currentNormal;
-    private int stickyWallTimer;
-    private int stunTimer;
+    private float stickyWallTimer;
+    private float stunTimer;
     private Rigidbody2D rb2D;
     private Collider2D c2D;
     private bool actionLock = false;
-    private int actionWaitFrames;
-    private int actionWaitedFrames = 0;
+    private float actionWaitFrames;
+    private float actionWaitedFrames = 0;
     private bool attackButtonHeld = false;
     private int attackFrozeFrames = 0;
-	private int blinkFrames = 0;
-	private int blinkTimer = 0;
+	private float blinkFrames = 0;
+	private float blinkTimer = 0;
 	private bool teleported = false;
     private bool reversalEffective = false;
     private Vector2 reversalDirection;
@@ -53,7 +53,7 @@ public class LocalPlayerScript : NetworkBehaviour {
     private float[] xInputTracker;
     private bool boosting = false;
     protected int comboHits = 0;
-    private int comboHitInterval = 0;
+    private float comboHitInterval = 0;
     protected float inputX = 0;
     protected float inputY = 0;
     protected bool jumpInput = false;
@@ -75,29 +75,29 @@ public class LocalPlayerScript : NetworkBehaviour {
     public const float FALL_COEF = 2; // How much player can control fall speed. Smaller = more control (preferrably > 1 [see for yourself ;)])
     public const float MAX_WJABLE_ANGLE = -Mathf.PI / 18; // largest negative angle of a wall where counts as walljump
     public const float MIN_JUMP_RECOVERY_ANGLE = Mathf.PI / 4; // smallest angle of a wall where air jumps are recovered
-    public const int STICKY_WJ_DURATION = 15; // amount of frames that player sticks to a wall after touching it
-    public const int ATTACK_WAIT_FRAMES = 25; // number of frames a player must wait between attacks
-    public const int ATTACK_FREEZE_FRAMES = 12; //number of frames a player freezes while attacking [DEPRECIATED]
-    public const int COMBO_HIT_TIMER = 100; //number of frames a player must land the next attack within to continue a combo
+    public const float STICKY_WJ_DURATION = 0.375f; // amount of frames that player sticks to a wall after touching it
+    public const float ATTACK_WAIT_FRAMES = 0.625f; // number of frames a player must wait between attacks
+    public const float ATTACK_FREEZE_FRAMES = 0.3f; //number of frames a player freezes while attacking [DEPRECIATED]
+    public const float COMBO_HIT_TIMER = 2.5f; //number of frames a player must land the next attack within to continue a combo
     public const float TRUE_HIT_MULTIPLIER = 1.5f; //multiplier for glory increase for true hits 
-    public const int STUN_DURATION = 50; // amount of frames that a player stays stunned
+    public const float STUN_DURATION = 1.25f; // amount of frames that a player stays stunned
     public const float GROUND_KNOCKBACK_MODIFICATION = 0f; //amount increase to the y component of knockback velocity if player is on ground
     public const float KNOCKBACK_DAMPENING_COEF = 0.98f; // factor that knockback speed slows every frame
     public const float DI_FORCE = 0.1f; // amount of influence of DI
-    public const int REVERSAL_EFFECTIVE_TIME = 65; //number of frames in which a reversal is effective
-    public const int REVERSAL_DURATION = 65; //number of frames a reversal lasts (effective time + end lag)
+    public const float REVERSAL_EFFECTIVE_TIME = 1.625f; //number of frames in which a reversal is effective
+    public const float REVERSAL_DURATION = 1.625f; //number of frames a reversal lasts (effective time + end lag)
     public const float REVERSAL_SUCCESS_ANGLE = 90; //minimum angle between reversal and attack for reversal to be successful
     public const float SUPER_LOSS_GLORY = 85; //glory at which super is lost if player falls below
 
     public const float GLORY_ON_SUPER_MISS = 75; //glory player drops to for losing super
-	public const int BLINK_VELOCITY = 30; //target blink speed
-	public const int BLINK_TIME = 5; //how long the velocity blink lasts
-	public const int BLINK_FRAMES = 80; //how long the player needs to wait until velocity blinking again
+	public const float BLINK_VELOCITY = 0.75f; //target blink speed
+	public const float BLINK_TIME = 0.125f; //how long the velocity blink lasts
+	public const float BLINK_FRAMES = 1.3f; //how long the player needs to wait until velocity blinking again
 	public const int TELEPORT_DISTANCE = 6; //teleport distance
-	public const int TELEPORT_FRAMES = 100; //frames until teleportation can happen again
-	public const int TELEPORT_TIME = 10; //frames until player can move again
-    public const int SUPER_CHARGE_FRAMES = 60; //number of frames a super takes to charge
-    public const int SUPER_END_LAG = 50; //number of frames player stalls without doing anything after a super
+	public const float TELEPORT_FRAMES = 2.5f; //frames until teleportation can happen again
+	public const float TELEPORT_TIME = 0.25f; //frames until player can move again
+    public const float SUPER_CHARGE_FRAMES = 1.5f; //number of frames a super takes to charge
+    public const float SUPER_END_LAG = 1.25f; //number of frames player stalls without doing anything after a super
     // if turn speed to 1 or -1 with a change of at least the threshold in at most timelimit number of frames, boost applied
     public const int BOOST_TIMELIMIT = 2; 
     public const float BOOST_THRESHOLD = 0.75f;
@@ -159,6 +159,8 @@ public class LocalPlayerScript : NetworkBehaviour {
     {
         assignInputs();
 
+        Debug.Log(stunTimer);
+
         //flips sprite if necessary (on all clients)
         gameObject.GetComponent<SpriteRenderer>().flipX = !facingRight;
 
@@ -169,7 +171,7 @@ public class LocalPlayerScript : NetworkBehaviour {
         animator.SetBool("isMoving", Mathf.Abs(Input.GetAxis("Horizontal")) > 0);
         animator.SetBool("isAirborn", isAirborn());
         animator.SetBool("onWall", isWall());
-        animator.SetInteger("StunTimer", stunTimer);
+        animator.SetInteger("StunTimer", (int)stunTimer);
         int attackNum = 0;
         if (Mathf.Abs(inputY) > Mathf.Abs(inputX))
         {
@@ -178,13 +180,13 @@ public class LocalPlayerScript : NetworkBehaviour {
         animator.SetInteger("attackNum", attackNum);
 
         // Decreases stun timer
-        if (stunTimer > 0) stunTimer--;
+        if (stunTimer > 0) stunTimer -= Time.deltaTime;
 
         //keep a timer for between hits in a combo
         if (comboHits > 0)
         {
-            comboHitInterval++;
-            if(comboHitInterval == COMBO_HIT_TIMER)
+            comboHitInterval += Time.deltaTime;
+            if(comboHitInterval >= COMBO_HIT_TIMER)
             {
                 updateComboHits(0);
                 comboHitInterval = 0;
@@ -207,7 +209,7 @@ public class LocalPlayerScript : NetworkBehaviour {
             }
 
             //see if action lock duration has expired - if so, escape action lock
-            actionWaitedFrames++;
+            actionWaitedFrames += Time.deltaTime;
             if(actionWaitedFrames >= actionWaitFrames)
             {
                 actionLock = false;
@@ -246,12 +248,12 @@ public class LocalPlayerScript : NetworkBehaviour {
     {
 		//Debug.Log (blinkTimer);
         //Debug.Log(Input.GetAxis("Horizontal"));
-        if (stunTimer == 0)
+        if (stunTimer <= 0)
         {
             rb2D.sharedMaterial = regularMaterial;
             rotate(Vector3.zero);
 
-			if (blinkTimer == 0) { //blinkTimer is the amount of time the blink takes to complete, not the amount of frames until next blink
+			if (blinkTimer <= 0) { //blinkTimer is the amount of time the blink takes to complete, not the amount of frames until next blink
 				if (!actionLock) {
 					startBlink();
 					gravity();
@@ -289,7 +291,7 @@ public class LocalPlayerScript : NetworkBehaviour {
     void flipSprite()
     {
         //flip sprite based on player input if they are not wall hugging
-        if (stickyWallTimer == 0){
+        if (stickyWallTimer <= 0){
             facingRight = inputX > 0 || (inputX == 0 && facingRight);
         }
     }
@@ -340,7 +342,7 @@ public class LocalPlayerScript : NetworkBehaviour {
             stickyWallTimer = 0;
         }
         // if touching a platform close enough to a walljumpable wall, start sticking
-        else if (isWall() && stickyWallTimer == 0)
+        else if (isWall() && stickyWallTimer <= 0)
         {
             stickyWallTimer = STICKY_WJ_DURATION;
         }
@@ -354,12 +356,12 @@ public class LocalPlayerScript : NetworkBehaviour {
             goalSpeed = -MAX_SPEED * currentNormal.x;
             if (Mathf.Sign(currentNormal.x) == Mathf.Sign(inputX))
             {
-                stickyWallTimer--;
+                stickyWallTimer -= Time.deltaTime;
             }
         }
 
         // once timer is out, resume normal movement
-        if (stickyWallTimer == 0)
+        if (stickyWallTimer <= 0)
         {
             goalSpeed = MAX_SPEED * inputX;
         }
@@ -441,7 +443,7 @@ public class LocalPlayerScript : NetworkBehaviour {
     {
         // set falling terminal velocity
         float fallSpeed = FALL_SPEED;
-        if(stickyWallTimer == 0)
+        if(stickyWallTimer <= 0)
         {
             fallSpeed = FALL_SPEED;
         }
@@ -449,7 +451,7 @@ public class LocalPlayerScript : NetworkBehaviour {
         {
             fallSpeed = WALL_FALL_SPEED;
         }
-        if(stunTimer == 0)
+        if(stunTimer <= 0)
         {
             fallSpeed *= (1 - inputY / FALL_COEF);
         }
@@ -511,35 +513,37 @@ public class LocalPlayerScript : NetworkBehaviour {
      * Script for intiaiting all blink processes
      */
 	void startBlink(){
-		if (characterSelection == 1) {
-			if (blinkInput && blinkFrames == 0) { //currently set to 'b'
-				blinkTimer = BLINK_TIME;
-				blinkFrames = BLINK_FRAMES;
-			}
-			if (blinkFrames > 0) {
-				blinkFrames--;
-			}
-			if (blinkFrames == BLINK_FRAMES - BLINK_TIME) {
-				rb2D.velocity = new Vector2 (0, 0);
-			}
-		}
+        switch (characterSelection)
+        {
+            case 1:
+                if (blinkInput && blinkFrames <= 0)
+                { //currently set to 'b'
+                    blinkTimer = BLINK_TIME;
+                    blinkFrames = BLINK_FRAMES;
+                }
+                break;
+            case 2:
+                if (blinkInput && blinkFrames <= 0)
+                { //currently set to 'b'
+                    blinkTimer = TELEPORT_TIME;
+                    blinkFrames = TELEPORT_FRAMES;
+                }
+                break;
+            default:
+                break;
+        }
 
-		if (characterSelection == 2) {
-			if (blinkInput && blinkFrames == 0) { //currently set to 'b'
-				blinkTimer = TELEPORT_TIME;
-				blinkFrames = TELEPORT_FRAMES;
-			}
-			if (blinkFrames > 0) {
-				blinkFrames--;
-			}
-		}
-	}
+        if (blinkFrames > 0)
+        {
+            blinkFrames -= Time.deltaTime;
+        }
+    }
 
 	/**
      * Script for velocity boost
      */
 	void blink(){
-		blinkTimer--;
+		blinkTimer -= Time.deltaTime;
 		if (blinkInput) { //currently set to 'b'
 			rb2D.velocity = BLINK_VELOCITY * getDirection();
 		} else {
@@ -553,7 +557,7 @@ public class LocalPlayerScript : NetworkBehaviour {
      * Script for teleporting
      */
 	void teleport(){
-		blinkTimer--;
+		blinkTimer -= Time.deltaTime;
 
 		//bool teleported is to prevent the user from simply hold down the button
 		if (blinkInput && !teleported) {//currently set to 'b'
@@ -900,7 +904,7 @@ public class LocalPlayerScript : NetworkBehaviour {
             }
 
             //rotate the player if in hitstun
-            if(stunTimer != 0)
+            if(stunTimer > 0)
             {
                 Debug.Log(Vector2.SignedAngle(rb2D.velocity, currentNormal));
             }
