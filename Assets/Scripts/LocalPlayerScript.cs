@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Networking;
 
-public class LocalPlayerScript : MonoBehaviour {
+public class LocalPlayerScript : NetworkBehaviour {
     
     // public variables
     public bool facingRight = true;
@@ -289,7 +290,7 @@ public class LocalPlayerScript : MonoBehaviour {
     {
         //flip sprite based on player input if they are not wall hugging
         if (stickyWallTimer == 0){
-            facingRight = inputX > 0 || (inputY == 0 && facingRight);
+            facingRight = inputX > 0 || (inputX == 0 && facingRight);
         }
     }
 
