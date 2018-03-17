@@ -74,17 +74,17 @@ public class LocalPlayerScript : MonoBehaviour {
     public const float FALL_COEF = 2; // How much player can control fall speed. Smaller = more control (preferrably > 1 [see for yourself ;)])
     public const float MAX_WJABLE_ANGLE = -Mathf.PI / 18; // largest negative angle of a wall where counts as walljump
     public const float MIN_JUMP_RECOVERY_ANGLE = Mathf.PI / 4; // smallest angle of a wall where air jumps are recovered
-    public const float STICKY_WJ_DURATION = 0.375f; // amount of frames that player sticks to a wall after touching it
-    public const float ATTACK_WAIT_FRAMES = 0.625f; // number of frames a player must wait between attacks
-    public const float ATTACK_FREEZE_FRAMES = 0.3f; //number of frames a player freezes while attacking [DEPRECIATED]
-    public const float COMBO_HIT_TIMER = 2.5f; //number of frames a player must land the next attack within to continue a combo
+    public const float STICKY_WJ_DURATION = 0.375f; // amount of seconds that player sticks to a wall after touching it
+    public const float ATTACK_WAIT_FRAMES = 0.625f; // number of seconds a player must wait between attacks
+    public const float ATTACK_FREEZE_FRAMES = 0.3f; //number of seconds a player freezes while attacking [DEPRECIATED]
+    public const float COMBO_HIT_TIMER = 2.5f; //number of seconds a player must land the next attack within to continue a combo
     public const float TRUE_HIT_MULTIPLIER = 1.5f; //multiplier for glory increase for true hits 
-    public const float STUN_DURATION = 1.25f; // amount of frames that a player stays stunned
+    public const float STUN_DURATION = 1.25f; // amount of seconds that a player stays stunned
     public const float GROUND_KNOCKBACK_MODIFICATION = 0f; //amount increase to the y component of knockback velocity if player is on ground
-    public const float KNOCKBACK_DAMPENING_COEF = 0.98f; // factor that knockback speed slows every frame
+    public const float KNOCKBACK_DAMPENING_COEF = 0.98f; // factor that knockback speed slows every second
     public const float DI_FORCE = 0.1f; // amount of influence of DI
-    public const float REVERSAL_EFFECTIVE_TIME = 1.625f; //number of frames in which a reversal is effective
-    public const float REVERSAL_DURATION = 1.625f; //number of frames a reversal lasts (effective time + end lag)
+    public const float REVERSAL_EFFECTIVE_TIME = 1.625f; //number of seconds in which a reversal is effective
+    public const float REVERSAL_DURATION = 1.625f; //number of seconds a reversal lasts (effective time + end lag)
     public const float REVERSAL_SUCCESS_ANGLE = 90; //minimum angle between reversal and attack for reversal to be successful
     public const float SUPER_LOSS_GLORY = 85; //glory at which super is lost if player falls below
 
@@ -93,11 +93,11 @@ public class LocalPlayerScript : MonoBehaviour {
 	public const float BLINK_TIME = 0.125f; //how long the velocity blink lasts
 	public const float BLINK_FRAMES = 1.3f; //how long the player needs to wait until velocity blinking again
 	public const int TELEPORT_DISTANCE = 6; //teleport distance
-	public const float TELEPORT_FRAMES = 2.5f; //frames until teleportation can happen again
-	public const float TELEPORT_TIME = 0.25f; //frames until player can move again
-    public const float SUPER_CHARGE_FRAMES = 1.5f; //number of frames a super takes to charge
-    public const float SUPER_END_LAG = 1.25f; //number of frames player stalls without doing anything after a super
-    // if turn speed to 1 or -1 with a change of at least the threshold in at most timelimit number of frames, boost applied
+	public const float TELEPORT_FRAMES = 2.5f; //seconds until teleportation can happen again
+	public const float TELEPORT_TIME = 0.25f; //seconds until player can move again
+    public const float SUPER_CHARGE_FRAMES = 1.5f; //number of seconds a super takes to charge
+    public const float SUPER_END_LAG = 1.25f; //number of seconds player stalls without doing anything after a super
+    // if turn speed to 1 or -1 with a change of at least the threshold in at most timelimit number of seconds, boost applied
     public const int BOOST_TIMELIMIT = 2; 
     public const float BOOST_THRESHOLD = 0.75f;
     public const float BOOST_SPEED = 20; // speed of boost
@@ -108,7 +108,7 @@ public class LocalPlayerScript : MonoBehaviour {
     {
         jumps = 0;
         canJump = false;
-        currentNormal = new Vector2(0, 0);
+        currentNormal = Vector2.zero;
         stickyWallTimer = 0;
         stunTimer = 0;
         xVelTracker = new float[BOOST_TIMELIMIT + 1];
@@ -157,9 +157,7 @@ public class LocalPlayerScript : MonoBehaviour {
     virtual protected void Update()
     {
         assignInputs();
-
-        Debug.Log(stunTimer);
-
+        
         //flips sprite if necessary (on all clients)
         gameObject.GetComponent<SpriteRenderer>().flipX = !facingRight;
 
@@ -221,7 +219,7 @@ public class LocalPlayerScript : MonoBehaviour {
         //freeze player if they are mid-attack
         /*if (attacking)
         {
-            rb2D.velocity = new Vector2(0, 0);
+            rb2D.velocity = Vector2.zero;
             attackFrozeFrames++;
             if (attackFrozeFrames >= ATTACK_FREEZE_FRAMES)
             {
@@ -440,6 +438,7 @@ public class LocalPlayerScript : MonoBehaviour {
      */
     void gravity()
     {
+
         // set falling terminal velocity
         float fallSpeed = FALL_SPEED;
         if(stickyWallTimer <= 0)
@@ -874,7 +873,7 @@ public class LocalPlayerScript : MonoBehaviour {
      */
     bool isAirborn()
     {
-        return currentNormal.Equals(new Vector2(0, 0));
+        return currentNormal.Equals(Vector2.zero);
     }
 
     /**
@@ -943,7 +942,7 @@ public class LocalPlayerScript : MonoBehaviour {
         // set currentNormal to zero vector when leave a ground
         if (touchingNormals.Count == 0)
         {
-            currentNormal = new Vector2(0, 0);
+            currentNormal = Vector2.zero;
         }
         else
         {
