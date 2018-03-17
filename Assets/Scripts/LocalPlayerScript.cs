@@ -233,13 +233,13 @@ public class LocalPlayerScript : NetworkBehaviour {
     //set input values (done this way because different inputs are used in derrived classes)
     protected virtual void assignInputs()
     {
-        inputX = Input.GetAxis("Horizontal");
-        inputY = Input.GetAxis("Vertical");
-        jumpInput = Input.GetAxis("Jump") != 0;
-        attackInput = Input.GetAxis("Attack") != 0;
-        reversalInput = Input.GetAxis("Reversal") != 0;
-        blinkInput = Input.GetAxis("Blink") != 0;
-        superInput = Input.GetAxis("Super") != 0;
+        inputX = Input.GetAxisRaw("Horizontal");
+        inputY = Input.GetAxisRaw("Vertical");
+        jumpInput = Input.GetAxisRaw("Jump") != 0;
+        attackInput = Input.GetAxisRaw("Attack") != 0;
+        reversalInput = Input.GetAxisRaw("Reversal") != 0;
+        blinkInput = Input.GetAxisRaw("Blink") != 0;
+        superInput = Input.GetAxisRaw("Super") != 0;
     }
     
     void FixedUpdate()
