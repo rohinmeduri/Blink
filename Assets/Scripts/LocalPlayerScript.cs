@@ -4,10 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 
-public class LocalPlayerScript : NetworkBehaviour {
-    
+public class LocalPlayerScript : NetworkBehaviour
+{
+
     // public variables
+    [SyncVar]
     public bool facingRight = true;
+    [SyncVar(hook = "OnChangeGlory")]
     public float numGlory = 0;
     public PhysicsMaterial2D regularMaterial;
     public PhysicsMaterial2D stunMaterial;
@@ -26,32 +29,34 @@ public class LocalPlayerScript : NetworkBehaviour {
 
     // private variables
     private int characterSelection = 2;
-	private int jumps;
+    private int jumps;
     private bool canJump;
-    private Vector2 currentNormal;
-    private float stickyWallTimer;
+    protected Vector2 currentNormal;
+    protected float stickyWallTimer;
     private float stunTimer;
-    private Rigidbody2D rb2D;
+    protected Rigidbody2D rb2D;
     private Collider2D c2D;
     private bool actionLock = false;
     private float actionWaitFrames;
     private float actionWaitedFrames = 0;
     private bool attackButtonHeld = false;
     private int attackFrozeFrames = 0;
-	private float blinkFrames = 0;
-	private float blinkTimer = 0;
-	private bool teleported = false;
+    private float blinkFrames = 0;
+    private float blinkTimer = 0;
+    private bool teleported = false;
     private bool reversalEffective = false;
     private Vector2 reversalDirection;
     protected GameObject glory;
+    [SyncVar]
     protected bool hasSuper = false;
     private bool startedSuper = false;
-    private Animator animator;
+    protected Animator animator;
     private List<GameObject> touchingObjects = new List<GameObject>();
     private List<Vector2> touchingNormals = new List<Vector2>();
     private float[] xVelTracker;
     private float[] xInputTracker;
     private bool boosting = false;
+    [SyncVar(hook = "OnChangeComboHits")]
     protected int comboHits = 0;
     private float comboHitInterval = 0;
     protected float inputX = 0;
@@ -90,22 +95,22 @@ public class LocalPlayerScript : NetworkBehaviour {
     public const float SUPER_LOSS_GLORY = 85; //glory at which super is lost if player falls below
 
     public const float GLORY_ON_SUPER_MISS = 75; //glory player drops to for losing super
-	public const float BLINK_VELOCITY = 0.75f; //target blink speed
-	public const float BLINK_TIME = 0.125f; //how long the velocity blink lasts
-	public const float BLINK_FRAMES = 1.3f; //how long the player needs to wait until velocity blinking again
-	public const int TELEPORT_DISTANCE = 6; //teleport distance
-	public const float TELEPORT_FRAMES = 2.5f; //frames until teleportation can happen again
-	public const float TELEPORT_TIME = 0.25f; //frames until player can move again
+    public const float BLINK_VELOCITY = 0.75f; //target blink speed
+    public const float BLINK_TIME = 0.125f; //how long the velocity blink lasts
+    public const float BLINK_FRAMES = 1.3f; //how long the player needs to wait until velocity blinking again
+    public const int TELEPORT_DISTANCE = 6; //teleport distance
+    public const float TELEPORT_FRAMES = 2.5f; //frames until teleportation can happen again
+    public const float TELEPORT_TIME = 0.25f; //frames until player can move again
     public const float SUPER_CHARGE_FRAMES = 1.5f; //number of frames a super takes to charge
     public const float SUPER_END_LAG = 1.25f; //number of frames player stalls without doing anything after a super
     // if turn speed to 1 or -1 with a change of at least the threshold in at most timelimit number of frames, boost applied
-    public const int BOOST_TIMELIMIT = 2; 
+    public const int BOOST_TIMELIMIT = 2;
     public const float BOOST_THRESHOLD = 0.75f;
     public const float BOOST_SPEED = 20; // speed of boost
 
 
     // Use this for initialization
-    void Start()
+    protected virtual void Start()
     {
         jumps = 0;
         canJump = false;
@@ -145,7 +150,7 @@ public class LocalPlayerScript : NetworkBehaviour {
         }
         else
         {*/
-            gloryTransform.anchoredPosition = new Vector3(0, 0, 0);
+        gloryTransform.anchoredPosition = new Vector3(0, 0, 0);
         //}
 
         //assign slider and comboText to variables so they can be modified easily
@@ -158,8 +163,6 @@ public class LocalPlayerScript : NetworkBehaviour {
     virtual protected void Update()
     {
         assignInputs();
-
-        Debug.Log(stunTimer);
 
         //flips sprite if necessary (on all clients)
         gameObject.GetComponent<SpriteRenderer>().flipX = !facingRight;
@@ -186,7 +189,7 @@ public class LocalPlayerScript : NetworkBehaviour {
         if (comboHits > 0)
         {
             comboHitInterval += Time.deltaTime;
-            if(comboHitInterval >= COMBO_HIT_TIMER)
+            if (comboHitInterval >= COMBO_HIT_TIMER)
             {
                 updateComboHits(0);
                 comboHitInterval = 0;
@@ -201,16 +204,16 @@ public class LocalPlayerScript : NetworkBehaviour {
             {
                 reversalEffective = false;
             }
-            
+
             //check to see if player has started super and charge time has elapsed
-            if(startedSuper && actionWaitedFrames >= SUPER_CHARGE_FRAMES)
+            if (startedSuper && actionWaitedFrames >= SUPER_CHARGE_FRAMES)
             {
                 launchSuper();
             }
 
             //see if action lock duration has expired - if so, escape action lock
             actionWaitedFrames += Time.deltaTime;
-            if(actionWaitedFrames >= actionWaitFrames)
+            if (actionWaitedFrames >= actionWaitFrames)
             {
                 actionLock = false;
                 reversalEffective = false;
@@ -243,41 +246,47 @@ public class LocalPlayerScript : NetworkBehaviour {
         blinkInput = Input.GetAxis("Blink") != 0;
         superInput = Input.GetAxis("Super") != 0;
     }
-    
+
     void FixedUpdate()
     {
-		//Debug.Log (blinkTimer);
+        //Debug.Log (blinkTimer);
         //Debug.Log(Input.GetAxis("Horizontal"));
         if (stunTimer <= 0)
         {
             rb2D.sharedMaterial = regularMaterial;
             rotate(Vector3.zero);
 
-			if (blinkTimer <= 0) { //blinkTimer is the amount of time the blink takes to complete, not the amount of frames until next blink
-				if (!actionLock) {
-					startBlink();
-					gravity();
-					jump();
-					run();
-					boost();
-					flipSprite();
-					attack();
-					reversal();
-					StartSuper();
-				} else if (actionWaitedFrames >= 20) {
-					gravity();
-				}
-			} 
+            if (blinkTimer <= 0)
+            { //blinkTimer is the amount of time the blink takes to complete, not the amount of frames until next blink
+                if (!actionLock)
+                {
+                    startBlink();
+                    gravity();
+                    jump();
+                    run();
+                    boost();
+                    flipSprite();
+                    attack();
+                    reversal();
+                    StartSuper();
+                }
+                else if (actionWaitedFrames >= 20)
+                {
+                    gravity();
+                }
+            }
 
-			else if (characterSelection == 1) {
-				blink();
-			} 
+            else if (characterSelection == 1)
+            {
+                blink();
+            }
 
-			else if (characterSelection == 2) {
-				teleport();
-			}
+            else if (characterSelection == 2)
+            {
+                teleport();
+            }
 
-            
+
         }
         else
         {
@@ -285,18 +294,19 @@ public class LocalPlayerScript : NetworkBehaviour {
             DI();
         }
 
-	
+
     }
 
-    void flipSprite()
+    protected virtual void flipSprite()
     {
         //flip sprite based on player input if they are not wall hugging
-        if (stickyWallTimer <= 0){
+        if (stickyWallTimer <= 0)
+        {
             facingRight = inputX > 0 || (inputX == 0 && facingRight);
         }
     }
 
-    void wallJumpFlipSprite()
+    protected virtual void wallJumpFlipSprite()
     {
         if (rb2D.velocity.x == 0)
         {
@@ -333,7 +343,7 @@ public class LocalPlayerScript : NetworkBehaviour {
     /**
      * Script for checking sticky walljump
      */
-    float sticky()
+    protected virtual float sticky()
     {
         float goalSpeed = 0;
         // If standing on flat enough ground or in air, reset sticky timer
@@ -374,7 +384,7 @@ public class LocalPlayerScript : NetworkBehaviour {
      */
     void boost()
     {
-        for(int i = xVelTracker.Length - 1; i >= 1; i--)
+        for (int i = xVelTracker.Length - 1; i >= 1; i--)
         {
             xVelTracker[i] = xVelTracker[i - 1];
             xInputTracker[i] = xInputTracker[i - 1];
@@ -382,11 +392,11 @@ public class LocalPlayerScript : NetworkBehaviour {
         xVelTracker[0] = rb2D.velocity.x;
         xInputTracker[0] = inputX;
 
-        if(Mathf.Abs(xInputTracker[0]) >= 0.8f && Mathf.Abs(xInputTracker[0] - xInputTracker[xInputTracker.Length-1]) > BOOST_THRESHOLD)
+        if (Mathf.Abs(xInputTracker[0]) >= 0.8f && Mathf.Abs(xInputTracker[0] - xInputTracker[xInputTracker.Length - 1]) > BOOST_THRESHOLD)
         {
             boosting = true;
         }
-        else if(Mathf.Abs(xInputTracker[0]) != 1)
+        else if (Mathf.Abs(xInputTracker[0]) != 1)
         {
             boosting = false;
         }
@@ -394,7 +404,7 @@ public class LocalPlayerScript : NetworkBehaviour {
         {
             boosting = false;
         }
-        if (xVelTracker[xVelTracker.Length-1]*xVelTracker[xVelTracker.Length-2] <= 0 && boosting)
+        if (xVelTracker[xVelTracker.Length - 1] * xVelTracker[xVelTracker.Length - 2] <= 0 && boosting)
         {
             rb2D.velocity = new Vector2(xInputTracker[0] * BOOST_SPEED, rb2D.velocity.y);
             // goalSpeed = rb2D.velocity.x; (maybe not necessary)
@@ -421,10 +431,11 @@ public class LocalPlayerScript : NetworkBehaviour {
             {
                 jumps--;
             }
-            if (isWall()){
+            if (isWall())
+            {
                 wallJumpFlipSprite();
             }
-            
+
             // cannot jump until release jump key
             canJump = false;
         }
@@ -443,7 +454,7 @@ public class LocalPlayerScript : NetworkBehaviour {
     {
         // set falling terminal velocity
         float fallSpeed = FALL_SPEED;
-        if(stickyWallTimer <= 0)
+        if (stickyWallTimer <= 0)
         {
             fallSpeed = FALL_SPEED;
         }
@@ -451,7 +462,7 @@ public class LocalPlayerScript : NetworkBehaviour {
         {
             fallSpeed = WALL_FALL_SPEED;
         }
-        if(stunTimer <= 0)
+        if (stunTimer <= 0)
         {
             fallSpeed *= (1 - inputY / FALL_COEF);
         }
@@ -492,7 +503,7 @@ public class LocalPlayerScript : NetworkBehaviour {
                 comboHits++;
                 var trueHit = (comboHitInterval <= STUN_DURATION) && (comboHits > 1);
                 attackGloryUpdate(hit.rigidbody.gameObject, comboHits, trueHit);
-                hit.rigidbody.gameObject.GetComponent<LocalPlayerScript>().knockback(player, direction, comboHits);
+                startKnockback(hit.rigidbody.gameObject, direction, comboHits);
                 comboHitInterval = 0;
                 blinkFrames = 0;
             }
@@ -509,10 +520,11 @@ public class LocalPlayerScript : NetworkBehaviour {
         attackButtonHeld = false;
     }
 
-	/**
+    /**
      * Script for intiaiting all blink processes
      */
-	void startBlink(){
+    void startBlink()
+    {
         switch (characterSelection)
         {
             case 1:
@@ -539,49 +551,57 @@ public class LocalPlayerScript : NetworkBehaviour {
         }
     }
 
-	/**
+    /**
      * Script for velocity boost
      */
-	void blink(){
-		blinkTimer -= Time.deltaTime;
-		if (blinkInput) { //currently set to 'b'
-			rb2D.velocity = BLINK_VELOCITY * getDirection();
-		} else {
-			rb2D.velocity = new Vector2 (0, 0);
-			blinkTimer = 0;
-		}
+    void blink()
+    {
+        blinkTimer -= Time.deltaTime;
+        if (blinkInput)
+        { //currently set to 'b'
+            rb2D.velocity = BLINK_VELOCITY * getDirection();
+        }
+        else
+        {
+            rb2D.velocity = new Vector2(0, 0);
+            blinkTimer = 0;
+        }
 
-	}
+    }
 
-	/**
+    /**
      * Script for teleporting
      */
-	void teleport(){
-		blinkTimer -= Time.deltaTime;
+    void teleport()
+    {
+        blinkTimer -= Time.deltaTime;
 
-		//bool teleported is to prevent the user from simply hold down the button
-		if (blinkInput && !teleported) {//currently set to 'b'
+        //bool teleported is to prevent the user from simply hold down the button
+        if (blinkInput && !teleported)
+        {//currently set to 'b'
             float distance = TELEPORT_DISTANCE;
 
             int layerMask = LayerMask.GetMask("Ignore Raycast");
             Vector2 direction = getDirection();
             Vector2 origin = new Vector2(player.GetComponent<Transform>().position.x, player.GetComponent<Transform>().position.y);
             RaycastHit2D hit = Physics2D.Raycast(origin: origin, direction: direction, distance: TELEPORT_DISTANCE, layerMask: layerMask);
-            if(hit.collider != null)
+            if (hit.collider != null)
             {
                 distance = hit.distance;
             }
 
-            rb2D.position = new Vector2 (rb2D.position.x + distance * getDirection ().x, 
-				rb2D.position.y + distance * getDirection().y);
+            rb2D.position = new Vector2(rb2D.position.x + distance * getDirection().x,
+                rb2D.position.y + distance * getDirection().y);
 
-			teleported = true;
-		} else {
-			rb2D.velocity = new Vector2 (0, 0);
-			blinkTimer = 0; 
-			teleported = false;
-		}
-	}
+            teleported = true;
+        }
+        else
+        {
+            rb2D.velocity = new Vector2(0, 0);
+            blinkTimer = 0;
+            teleported = false;
+        }
+    }
 
     /**
      * Script to see if player is reversaling (actual impact is handled in knockback)
@@ -599,11 +619,16 @@ public class LocalPlayerScript : NetworkBehaviour {
             reversalEffective = true;
             actionWaitFrames = REVERSAL_DURATION;
 
-            //trigger animation
-            animator.SetTrigger("reversaling");
+            reversalAnimation();
         }
     }
-    
+
+    protected virtual void reversalAnimation()
+    {
+        //trigger animation
+        animator.SetTrigger("reversaling");
+    }
+
     /**
      * Script for StartinSuper
      */
@@ -638,13 +663,16 @@ public class LocalPlayerScript : NetworkBehaviour {
 
             if (hit.rigidbody != null && hit.rigidbody.gameObject.tag == "Player" || hit.rigidbody.gameObject.tag == "PlayerAI")
             {
-                Debug.Log("hit");
-                Destroy(hit.rigidbody.gameObject); ;
+                killPlayer(hit.rigidbody.gameObject);
             }
             startedSuper = false;
         }
     }
 
+    protected virtual void killPlayer(GameObject go)
+    {
+        Destroy(go);
+    }
 
     /**
      * Script for determining direction of player actions (attacks, reversals, and blinks)
@@ -677,7 +705,7 @@ public class LocalPlayerScript : NetworkBehaviour {
     /*
      * Script for updating glory after an attack on the server
      */
-    void attackGloryUpdate(GameObject otherPlayer, int hits, bool trueHit)
+    protected virtual void attackGloryUpdate(GameObject otherPlayer, int hits, bool trueHit)
     {
         //increase attacker glory
         updateComboHits(hits);
@@ -712,7 +740,7 @@ public class LocalPlayerScript : NetworkBehaviour {
     /*
      * Script that updates glory
      */
-    public void changeGlory(float glory)
+    public virtual void changeGlory(float glory)
     {
         numGlory = glory;
         if (glorySlider != null)
@@ -721,7 +749,7 @@ public class LocalPlayerScript : NetworkBehaviour {
         }
 
         //check if player has super or not
-        if(numGlory == 100)
+        if (numGlory == 100)
         {
             hasSuper = true;
         }
@@ -734,7 +762,7 @@ public class LocalPlayerScript : NetworkBehaviour {
     /*
      * Scipt that updates combo counter on clients
      */
-    void updateComboHits(int hits)
+    protected virtual void updateComboHits(int hits)
     {
         if (comboText != null)
         {
@@ -743,17 +771,22 @@ public class LocalPlayerScript : NetworkBehaviour {
         }
     }
 
+    public virtual void startKnockback(GameObject defender, Vector2 dir, int hits)
+    {
+        defender.GetComponent<LocalPlayerScript>().knockback(player, dir, hits);
+    }
+
     /**
      * Enter hit stun mode
      */
-    public void knockback(GameObject attacker, Vector2 dir, int hits)
+    public virtual void knockback(GameObject attacker, Vector2 dir, int hits)
     {
         //check if reversaling correctly
         if (reversalEffective && Vector2.Angle(reversalDirection, dir) > 90f)
         {
-            updateComboHits(comboHits+1);
+            updateComboHits(comboHits + 1);
             reversalGloryUpdate(attacker, comboHits);
-            attacker.GetComponent<LocalPlayerScript>().knockback(player, reversalDirection, comboHits);
+            startKnockback(attacker, reversalDirection, comboHits);
             comboHitInterval = 0;
             actionWaitFrames = 0;
             blinkFrames = 0;
@@ -780,14 +813,14 @@ public class LocalPlayerScript : NetworkBehaviour {
             rb2D.velocity = dir * baseAttackForce * (1.0f + hits / 4.0f);
 
             //rotate player perpendicular to attack
-            facingRight= dir.x < 0;
+            facingRight = dir.x < 0;
             if (!facingRight)
             {
-               rotate(new Vector3(0, 0, Mathf.Rad2Deg * Mathf.Atan2(dir.y, dir.x)));
+                rotate(new Vector3(0, 0, Mathf.Rad2Deg * Mathf.Atan2(dir.y, dir.x)));
             }
             else
             {
-              rotate(new Vector3(0, 0, Mathf.Rad2Deg * Mathf.Atan2(dir.y, dir.x) - 180));
+                rotate(new Vector3(0, 0, Mathf.Rad2Deg * Mathf.Atan2(dir.y, dir.x) - 180));
             }
 
             //stun player
@@ -802,7 +835,7 @@ public class LocalPlayerScript : NetworkBehaviour {
 
     /*
      * Script for syncing rotation on server
-     */ 
+     */
     void rotate(Vector3 rotation)
     {
         GetComponent<Transform>().eulerAngles = rotation;
@@ -811,7 +844,7 @@ public class LocalPlayerScript : NetworkBehaviour {
     /**
      * Script for updating glory on server after successful reversal
      */
-    void reversalGloryUpdate(GameObject attacker, int hits)
+    protected virtual void reversalGloryUpdate(GameObject attacker, int hits)
     {
         updateComboHits(hits);
 
@@ -822,7 +855,7 @@ public class LocalPlayerScript : NetworkBehaviour {
         }
         else
         {
-            changeGlory (numGlory + reversalGloryGain + gloryLostOnHit);
+            changeGlory(numGlory + reversalGloryGain + gloryLostOnHit);
         }
 
         //decrease attacker glory
@@ -880,10 +913,10 @@ public class LocalPlayerScript : NetworkBehaviour {
 
     /**
      * Collision Detector
-     */ 
+     */
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.tag == "Player" || collision.gameObject.tag == "PlayerAI")
+        if (collision.gameObject.tag == "Player" || collision.gameObject.tag == "PlayerAI")
         {
             Physics2D.IgnoreCollision(collision.collider, gameObject.GetComponent<Collider2D>());
         }
@@ -896,7 +929,7 @@ public class LocalPlayerScript : NetworkBehaviour {
 
             // set player normal
             setPlayerNormal();
-            
+
             // triggers landing animation if landed on ground
             if (isGround() && !isWall(getNormal(collision)))
             {
@@ -904,12 +937,12 @@ public class LocalPlayerScript : NetworkBehaviour {
             }
 
             //rotate the player if in hitstun
-            if(stunTimer > 0)
+            if (stunTimer > 0)
             {
                 Debug.Log(Vector2.SignedAngle(rb2D.velocity, currentNormal));
             }
         }
-        
+
 
     }
 
@@ -921,7 +954,7 @@ public class LocalPlayerScript : NetworkBehaviour {
 
         // resets jump if the flattest ground is flat enough
         if (isGround()) jumps = JUMP_NUM;
-        
+
     }
 
     private void OnCollisionExit2D(Collision2D collision)
@@ -935,7 +968,7 @@ public class LocalPlayerScript : NetworkBehaviour {
 
 
     }
-    
+
     /**
      * Method to set the player's normal with any platforms it is touching
      */
@@ -971,5 +1004,37 @@ public class LocalPlayerScript : NetworkBehaviour {
         collision.GetContacts(cps);
         ContactPoint2D cp = cps[0];
         return cp.normal;
+    }
+
+    //Script used only for networked children to update comboHits on clients
+    protected void OnChangeComboHits(int hits)
+    {
+        Debug.Log("comboHits changed");
+        if (comboText != null)
+        {
+            comboHits = hits;
+            comboText.text = "Combo: " + hits;
+        }
+    }
+
+    //script used only for networked children to update glory on clients
+    protected void OnChangeGlory(float glory)
+    {
+        Debug.Log("changed glory");
+        numGlory = glory;
+        if (glorySlider != null)
+        {
+            glorySlider.value = glory;
+        }
+
+        //check if player has super or not
+        if (numGlory == 100)
+        {
+            hasSuper = true;
+        }
+        else if (hasSuper && numGlory < SUPER_LOSS_GLORY)
+        {
+            hasSuper = false;
+        }
     }
 }

@@ -20,13 +20,13 @@ GameObject:
   m_Component:
   - component: {fileID: 4365196966651724}
   - component: {fileID: 212091731836323832}
-  - component: {fileID: 114174269655759314}
   - component: {fileID: 50859331604966228}
   - component: {fileID: 61408790411139706}
   - component: {fileID: 114268707513064214}
   - component: {fileID: 114834900055569754}
   - component: {fileID: 95214854890211238}
   - component: {fileID: 114509458611876312}
+  - component: {fileID: 114333047445098932}
   m_Layer: 0
   m_Name: Multiplayer Player
   m_TagString: Player
@@ -109,35 +109,6 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114174269655759314
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1273918684993908}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72e09efe47b468049ae89a8ba54ab469, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  facingRight: 0
-  numGlory: 0
-  regularMaterial: {fileID: 6200000, guid: 17f5ae5846336db40a7e5488775cd87b, type: 2}
-  stunMaterial: {fileID: 6200000, guid: 0ac2c177006bfca45a60b997751b7fd9, type: 2}
-  player: {fileID: 1273918684993908}
-  attackRadius: 2
-  baseAttackForce: 5
-  superRadius: 2
-  mask:
-    serializedVersion: 2
-    m_Bits: 1
-  gloryPrefab: {fileID: 1732290323307310, guid: ec57c344e826fbd409641a3eefccac12,
-    type: 2}
-  glorySlider: {fileID: 0}
-  comboText: {fileID: 0}
-  baseGloryGain: 3
-  gloryLostOnHit: 2
-  reversalGloryGain: 12
 --- !u!114 &114268707513064214
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -170,6 +141,36 @@ MonoBehaviour:
     i15: 117
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 1
+--- !u!114 &114333047445098932
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1273918684993908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f075e09368fb85a4c85e622a816fa45f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  facingRight: 1
+  numGlory: 0
+  regularMaterial: {fileID: 0}
+  stunMaterial: {fileID: 0}
+  player: {fileID: 1273918684993908}
+  attackRadius: 2
+  baseAttackForce: 5
+  superRadius: 2
+  mask:
+    serializedVersion: 2
+    m_Bits: 0
+  gloryPrefab: {fileID: 1732290323307310, guid: ec57c344e826fbd409641a3eefccac12,
+    type: 2}
+  glorySlider: {fileID: 0}
+  comboText: {fileID: 0}
+  baseGloryGain: 3
+  gloryLostOnHit: 2
+  reversalGloryGain: 12
+  lastGloryIncrease: 0
 --- !u!114 &114509458611876312
 MonoBehaviour:
   m_ObjectHideFlags: 1
