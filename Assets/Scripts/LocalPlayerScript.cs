@@ -80,17 +80,17 @@ public class LocalPlayerScript : NetworkBehaviour
     public const float FALL_COEF = 2; // How much player can control fall speed. Smaller = more control (preferrably > 1 [see for yourself ;)])
     public const float MAX_WJABLE_ANGLE = -Mathf.PI / 18; // largest negative angle of a wall where counts as walljump
     public const float MIN_JUMP_RECOVERY_ANGLE = Mathf.PI / 4; // smallest angle of a wall where air jumps are recovered
-    public const float STICKY_WJ_DURATION = 0.375f; // amount of frames that player sticks to a wall after touching it
-    public const float ATTACK_WAIT_FRAMES = 0.625f; // number of frames a player must wait between attacks
-    public const float ATTACK_FREEZE_FRAMES = 0.3f; //number of frames a player freezes while attacking [DEPRECIATED]
-    public const float COMBO_HIT_TIMER = 2.5f; //number of frames a player must land the next attack within to continue a combo
+    public const float STICKY_WJ_DURATION = 0.375f; // amount of seconds that player sticks to a wall after touching it
+    public const float ATTACK_WAIT_FRAMES = 0.625f; // number of seconds a player must wait between attacks
+    public const float ATTACK_FREEZE_FRAMES = 0.3f; //number of seconds a player freezes while attacking [DEPRECIATED]
+    public const float COMBO_HIT_TIMER = 2.5f; //number of seconds a player must land the next attack within to continue a combo
     public const float TRUE_HIT_MULTIPLIER = 1.5f; //multiplier for glory increase for true hits 
-    public const float STUN_DURATION = 1.25f; // amount of frames that a player stays stunned
+    public const float STUN_DURATION = 1.25f; // amount of seconds that a player stays stunned
     public const float GROUND_KNOCKBACK_MODIFICATION = 0f; //amount increase to the y component of knockback velocity if player is on ground
-    public const float KNOCKBACK_DAMPENING_COEF = 0.98f; // factor that knockback speed slows every frame
+    public const float KNOCKBACK_DAMPENING_COEF = 0.98f; // factor that knockback speed slows every second
     public const float DI_FORCE = 0.1f; // amount of influence of DI
-    public const float REVERSAL_EFFECTIVE_TIME = 1.625f; //number of frames in which a reversal is effective
-    public const float REVERSAL_DURATION = 1.625f; //number of frames a reversal lasts (effective time + end lag)
+    public const float REVERSAL_EFFECTIVE_TIME = 1.625f; //number of seconds in which a reversal is effective
+    public const float REVERSAL_DURATION = 1.625f; //number of seconds a reversal lasts (effective time + end lag)
     public const float REVERSAL_SUCCESS_ANGLE = 90; //minimum angle between reversal and attack for reversal to be successful
     public const float SUPER_LOSS_GLORY = 85; //glory at which super is lost if player falls below
 
@@ -114,7 +114,7 @@ public class LocalPlayerScript : NetworkBehaviour
     {
         jumps = 0;
         canJump = false;
-        currentNormal = new Vector2(0, 0);
+        currentNormal = Vector2.zero;
         stickyWallTimer = 0;
         stunTimer = 0;
         xVelTracker = new float[BOOST_TIMELIMIT + 1];
@@ -225,7 +225,7 @@ public class LocalPlayerScript : NetworkBehaviour
         //freeze player if they are mid-attack
         /*if (attacking)
         {
-            rb2D.velocity = new Vector2(0, 0);
+            rb2D.velocity = Vector2.zero;
             attackFrozeFrames++;
             if (attackFrozeFrames >= ATTACK_FREEZE_FRAMES)
             {
@@ -238,19 +238,17 @@ public class LocalPlayerScript : NetworkBehaviour
     //set input values (done this way because different inputs are used in derrived classes)
     protected virtual void assignInputs()
     {
-        inputX = Input.GetAxis("Horizontal");
-        inputY = Input.GetAxis("Vertical");
-        jumpInput = Input.GetAxis("Jump") != 0;
-        attackInput = Input.GetAxis("Attack") != 0;
-        reversalInput = Input.GetAxis("Reversal") != 0;
-        blinkInput = Input.GetAxis("Blink") != 0;
-        superInput = Input.GetAxis("Super") != 0;
+        inputX = Input.GetAxisRaw("Horizontal");
+        inputY = Input.GetAxisRaw("Vertical");
+        jumpInput = Input.GetAxisRaw("Jump") != 0;
+        attackInput = Input.GetAxisRaw("Attack") != 0;
+        reversalInput = Input.GetAxisRaw("Reversal") != 0;
+        blinkInput = Input.GetAxisRaw("Blink") != 0;
+        superInput = Input.GetAxisRaw("Super") != 0;
     }
 
     void FixedUpdate()
     {
-        //Debug.Log (blinkTimer);
-        //Debug.Log(Input.GetAxis("Horizontal"));
         if (stunTimer <= 0)
         {
             rb2D.sharedMaterial = regularMaterial;
@@ -275,18 +273,10 @@ public class LocalPlayerScript : NetworkBehaviour
                     gravity();
                 }
             }
-
-            else if (characterSelection == 1)
+            else
             {
                 blink();
             }
-
-            else if (characterSelection == 2)
-            {
-                teleport();
-            }
-
-
         }
         else
         {
@@ -452,6 +442,7 @@ public class LocalPlayerScript : NetworkBehaviour
      */
     void gravity()
     {
+
         // set falling terminal velocity
         float fallSpeed = FALL_SPEED;
         if (stickyWallTimer <= 0)
@@ -551,55 +542,56 @@ public class LocalPlayerScript : NetworkBehaviour
         }
     }
 
-    /**
-     * Script for velocity boost
+	/**
+     * Script for blinking
      */
-    void blink()
-    {
-        blinkTimer -= Time.deltaTime;
-        if (blinkInput)
-        { //currently set to 'b'
-            rb2D.velocity = BLINK_VELOCITY * getDirection();
-        }
-        else
-        {
-            rb2D.velocity = new Vector2(0, 0);
-            blinkTimer = 0;
-        }
+	void blink(){
 
-    }
-
-    /**
-     * Script for teleporting
-     */
-    void teleport()
-    {
         blinkTimer -= Time.deltaTime;
 
-        //bool teleported is to prevent the user from simply hold down the button
-        if (blinkInput && !teleported)
-        {//currently set to 'b'
-            float distance = TELEPORT_DISTANCE;
-
-            int layerMask = LayerMask.GetMask("Ignore Raycast");
-            Vector2 direction = getDirection();
-            Vector2 origin = new Vector2(player.GetComponent<Transform>().position.x, player.GetComponent<Transform>().position.y);
-            RaycastHit2D hit = Physics2D.Raycast(origin: origin, direction: direction, distance: TELEPORT_DISTANCE, layerMask: layerMask);
-            if (hit.collider != null)
-            {
-                distance = hit.distance;
-            }
-
-            rb2D.position = new Vector2(rb2D.position.x + distance * getDirection().x,
-                rb2D.position.y + distance * getDirection().y);
-
-            teleported = true;
-        }
-        else
+        switch (characterSelection)
         {
-            rb2D.velocity = new Vector2(0, 0);
-            blinkTimer = 0;
-            teleported = false;
+            case 1:
+                if (blinkInput)
+                { //currently set to 'b'
+                    rb2D.velocity = BLINK_VELOCITY * getDirection();
+                }
+                else
+                {
+                    rb2D.velocity = new Vector2(0, 0);
+                    blinkTimer = 0;
+                }
+                break;
+            case 2:
+
+                //bool teleported is to prevent the user from simply hold down the button
+                if (blinkInput && !teleported)
+                {//currently set to 'b'
+                    float distance = TELEPORT_DISTANCE;
+
+                    int layerMask = LayerMask.GetMask("Ignore Raycast");
+                    Vector2 direction = getDirection();
+                    Vector2 origin = new Vector2(player.GetComponent<Transform>().position.x, player.GetComponent<Transform>().position.y);
+                    RaycastHit2D hit = Physics2D.Raycast(origin: origin, direction: direction, distance: TELEPORT_DISTANCE, layerMask: layerMask);
+                    if (hit.collider != null)
+                    {
+                        distance = hit.distance;
+                    }
+
+                    rb2D.position = new Vector2(rb2D.position.x + distance * getDirection().x,
+                        rb2D.position.y + distance * getDirection().y);
+
+                    teleported = true;
+                }
+                else
+                {
+                    rb2D.velocity = new Vector2(0, 0);
+                    blinkTimer = 0;
+                    teleported = false;
+                }
+                break;
+            default:
+                break;
         }
     }
 
@@ -908,7 +900,7 @@ public class LocalPlayerScript : NetworkBehaviour
      */
     bool isAirborn()
     {
-        return currentNormal.Equals(new Vector2(0, 0));
+        return currentNormal.Equals(Vector2.zero);
     }
 
     /**
@@ -948,6 +940,10 @@ public class LocalPlayerScript : NetworkBehaviour
 
     private void OnCollisionStay2D(Collision2D collision)
     {
+        if (collision.gameObject.tag == "Player" || collision.gameObject.tag == "PlayerAI")
+        {
+            return;
+        }
         // set player normal
         setPlayerNormal();
 
@@ -959,6 +955,10 @@ public class LocalPlayerScript : NetworkBehaviour
 
     private void OnCollisionExit2D(Collision2D collision)
     {
+        if (collision.gameObject.tag == "Player" || collision.gameObject.tag == "PlayerAI")
+        {
+            return;
+        }
         // remove object from list of objects touched
         touchingNormals.RemoveAt(touchingObjects.IndexOf(collision.gameObject));
         touchingObjects.RemoveAt(touchingObjects.IndexOf(collision.gameObject));
@@ -977,7 +977,7 @@ public class LocalPlayerScript : NetworkBehaviour
         // set currentNormal to zero vector when leave a ground
         if (touchingNormals.Count == 0)
         {
-            currentNormal = new Vector2(0, 0);
+            currentNormal = Vector2.zero;
         }
         else
         {
