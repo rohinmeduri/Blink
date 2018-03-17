@@ -244,37 +244,34 @@ public class LocalPlayerScript : NetworkBehaviour {
     
     void FixedUpdate()
     {
-		//Debug.Log (blinkTimer);
-        //Debug.Log(Input.GetAxis("Horizontal"));
         if (stunTimer <= 0)
         {
             rb2D.sharedMaterial = regularMaterial;
             rotate(Vector3.zero);
 
-			if (blinkTimer <= 0) { //blinkTimer is the amount of time the blink takes to complete, not the amount of frames until next blink
-				if (!actionLock) {
-					startBlink();
-					gravity();
-					jump();
-					run();
-					boost();
-					flipSprite();
-					attack();
-					reversal();
-					StartSuper();
-				} else if (actionWaitedFrames >= 20) {
-					gravity();
-				}
-			} 
-
-			else if (characterSelection == 1) {
-				blink();
-			} 
-
-			else if (characterSelection == 2) {
-				teleport();
-			}
-
+            if (blinkTimer <= 0)
+            { //blinkTimer is the amount of time the blink takes to complete, not the amount of frames until next blink
+                if (!actionLock)
+                {
+                    startBlink();
+                    gravity();
+                    jump();
+                    run();
+                    boost();
+                    flipSprite();
+                    attack();
+                    reversal();
+                    StartSuper();
+                }
+                else if (actionWaitedFrames >= 20)
+                {
+                    gravity();
+                }
+            }
+            else
+            {
+                blink();
+            }
             
         }
         else
@@ -539,48 +536,57 @@ public class LocalPlayerScript : NetworkBehaviour {
     }
 
 	/**
-     * Script for velocity boost
+     * Script for blinking
      */
 	void blink(){
-		blinkTimer -= Time.deltaTime;
-		if (blinkInput) { //currently set to 'b'
-			rb2D.velocity = BLINK_VELOCITY * getDirection();
-		} else {
-			rb2D.velocity = new Vector2 (0, 0);
-			blinkTimer = 0;
-		}
 
-	}
+        blinkTimer -= Time.deltaTime;
 
-	/**
-     * Script for teleporting
-     */
-	void teleport(){
-		blinkTimer -= Time.deltaTime;
+        switch (characterSelection)
+        {
+            case 1:
+                if (blinkInput)
+                { //currently set to 'b'
+                    rb2D.velocity = BLINK_VELOCITY * getDirection();
+                }
+                else
+                {
+                    rb2D.velocity = new Vector2(0, 0);
+                    blinkTimer = 0;
+                }
+                break;
+            case 2:
 
-		//bool teleported is to prevent the user from simply hold down the button
-		if (blinkInput && !teleported) {//currently set to 'b'
-            float distance = TELEPORT_DISTANCE;
+                //bool teleported is to prevent the user from simply hold down the button
+                if (blinkInput && !teleported)
+                {//currently set to 'b'
+                    float distance = TELEPORT_DISTANCE;
 
-            int layerMask = LayerMask.GetMask("Ignore Raycast");
-            Vector2 direction = getDirection();
-            Vector2 origin = new Vector2(player.GetComponent<Transform>().position.x, player.GetComponent<Transform>().position.y);
-            RaycastHit2D hit = Physics2D.Raycast(origin: origin, direction: direction, distance: TELEPORT_DISTANCE, layerMask: layerMask);
-            if(hit.collider != null)
-            {
-                distance = hit.distance;
-            }
+                    int layerMask = LayerMask.GetMask("Ignore Raycast");
+                    Vector2 direction = getDirection();
+                    Vector2 origin = new Vector2(player.GetComponent<Transform>().position.x, player.GetComponent<Transform>().position.y);
+                    RaycastHit2D hit = Physics2D.Raycast(origin: origin, direction: direction, distance: TELEPORT_DISTANCE, layerMask: layerMask);
+                    if (hit.collider != null)
+                    {
+                        distance = hit.distance;
+                    }
 
-            rb2D.position = new Vector2 (rb2D.position.x + distance * getDirection ().x, 
-				rb2D.position.y + distance * getDirection().y);
+                    rb2D.position = new Vector2(rb2D.position.x + distance * getDirection().x,
+                        rb2D.position.y + distance * getDirection().y);
 
-			teleported = true;
-		} else {
-			rb2D.velocity = new Vector2 (0, 0);
-			blinkTimer = 0; 
-			teleported = false;
-		}
-	}
+                    teleported = true;
+                }
+                else
+                {
+                    rb2D.velocity = new Vector2(0, 0);
+                    blinkTimer = 0;
+                    teleported = false;
+                }
+                break;
+            default:
+                break;
+        }
+    }
 
     /**
      * Script to see if player is reversaling (actual impact is handled in knockback)
@@ -914,6 +920,10 @@ public class LocalPlayerScript : NetworkBehaviour {
 
     private void OnCollisionStay2D(Collision2D collision)
     {
+        if (collision.gameObject.tag == "Player" || collision.gameObject.tag == "PlayerAI")
+        {
+            return;
+        }
         // set player normal
         setPlayerNormal();
 
@@ -925,6 +935,10 @@ public class LocalPlayerScript : NetworkBehaviour {
 
     private void OnCollisionExit2D(Collision2D collision)
     {
+        if (collision.gameObject.tag == "Player" || collision.gameObject.tag == "PlayerAI")
+        {
+            return;
+        }
         // remove object from list of objects touched
         touchingNormals.RemoveAt(touchingObjects.IndexOf(collision.gameObject));
         touchingObjects.RemoveAt(touchingObjects.IndexOf(collision.gameObject));
