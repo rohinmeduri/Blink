@@ -171,7 +171,7 @@ public class LocalPlayerScript : NetworkBehaviour
         animator.SetFloat("xDir", inputX);
         animator.SetFloat("yDir", inputY);
         animator.SetFloat("yVel", rb2D.velocity.y / -FALL_SPEED);
-        animator.SetBool("isMoving", Mathf.Abs(Input.GetAxis("Horizontal")) > 0);
+        animator.SetBool("isMoving", Mathf.Abs(inputX) > 0);
         animator.SetBool("isAirborn", isAirborn());
         animator.SetBool("onWall", isWall());
         animator.SetInteger("StunTimer", (int)stunTimer);
@@ -645,6 +645,8 @@ public class LocalPlayerScript : NetworkBehaviour
     {
         if (startedSuper && actionWaitedFrames >= SUPER_CHARGE_FRAMES)
         {
+            startedSuper = false;
+
             //circlecast to see if someone is hit with the super - mask out attacker's layer
             Vector2 direction = getDirection();
             direction.Normalize();
@@ -653,11 +655,10 @@ public class LocalPlayerScript : NetworkBehaviour
             RaycastHit2D hit = Physics2D.CircleCast(origin: origin, radius: superRadius, direction: direction, distance: Mathf.Infinity);
             gameObject.layer = 0;
 
-            if (hit.rigidbody != null && hit.rigidbody.gameObject.tag == "Player" || hit.rigidbody.gameObject.tag == "PlayerAI")
+            if (hit.rigidbody != null && hit.rigidbody.gameObject.tag != null && (hit.rigidbody.gameObject.tag == "Player" || hit.rigidbody.gameObject.tag == "PlayerAI"))
             {
                 killPlayer(hit.rigidbody.gameObject);
             }
-            startedSuper = false;
         }
     }
 
