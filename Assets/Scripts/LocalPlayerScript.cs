@@ -28,7 +28,7 @@ public class LocalPlayerScript : NetworkBehaviour
     public float lastGloryIncrease = 0;
 
     // private variables
-    private int characterSelection = 2;
+    private int characterSelection = 1;
     private int jumps;
     private bool canJump;
     protected Vector2 currentNormal;
@@ -95,8 +95,8 @@ public class LocalPlayerScript : NetworkBehaviour
     public const float SUPER_LOSS_GLORY = 85; //glory at which super is lost if player falls below
 
     public const float GLORY_ON_SUPER_MISS = 75; //glory player drops to for losing super
-    public const float BLINK_VELOCITY = 0.75f; //target blink speed
-    public const float BLINK_TIME = 0.125f; //how long the velocity blink lasts
+    public const float BLINK_VELOCITY = 30; //target blink speed
+    public const float BLINK_TIME = 0.2f; //how long the velocity blink lasts
     public const float BLINK_FRAMES = 1.3f; //how long the player needs to wait until velocity blinking again
     public const int TELEPORT_DISTANCE = 6; //teleport distance
     public const float TELEPORT_FRAMES = 2.5f; //frames until teleportation can happen again
@@ -552,6 +552,11 @@ public class LocalPlayerScript : NetworkBehaviour
         switch (characterSelection)
         {
             case 1:
+                if (blinkTimer <= 0)
+                {
+                    rb2D.velocity = new Vector2(0, 0);
+                    break;
+                }
                 if (blinkInput)
                 { //currently set to 'b'
                     rb2D.velocity = BLINK_VELOCITY * getDirection();
