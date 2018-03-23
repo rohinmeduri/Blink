@@ -28,7 +28,7 @@ public class LocalPlayerScript : NetworkBehaviour
     public float lastGloryIncrease = 0;
 
     // private variables
-    private int characterSelection = 1;
+    private int characterSelection = 2;
     private int jumps;
     private bool canJump;
     protected Vector2 currentNormal;
@@ -875,7 +875,7 @@ public class LocalPlayerScript : NetworkBehaviour
     /**
     * Script for Directional Influence
     */
-    void DI()
+    protected virtual void DI()
     {
         rb2D.velocity = new Vector2(rb2D.velocity.x * KNOCKBACK_DAMPENING_COEF + DI_FORCE * inputX, rb2D.velocity.y * KNOCKBACK_DAMPENING_COEF + DI_FORCE * inputY);
     }

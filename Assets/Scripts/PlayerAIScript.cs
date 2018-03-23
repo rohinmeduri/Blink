@@ -112,4 +112,22 @@ public class PlayerAIScript : LocalPlayerScript {
         Vector2 direction = new Vector2(horizontalDirection, directionInputY);
         return direction;
     }
+
+    protected override void DI()
+    {
+
+        Vector2 direction = rb2D.velocity;  
+        //Vector2 direction = getDirection();
+        direction.Normalize();
+        Vector2 origin = new Vector2(player.GetComponent<Transform>().position.x, player.GetComponent<Transform>().position.y);
+        Debug.DrawRay(origin, direction * attackRadius, Color.blue, 1f);
+        gameObject.layer = 2;
+        RaycastHit2D hit = Physics2D.Raycast(origin: origin, direction: direction, distance: attackRadius);
+        gameObject.layer = 0;
+        if(hit.collider != null)
+        {
+            Debug.Log("wall");
+        }
+        base.DI();
+    }
 }
