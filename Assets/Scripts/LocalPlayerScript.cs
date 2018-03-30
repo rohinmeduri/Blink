@@ -101,7 +101,7 @@ public class LocalPlayerScript : NetworkBehaviour
     public const int TELEPORT_DISTANCE = 6; //teleport distance
     public const float TELEPORT_FRAMES = 2.5f; //frames until teleportation can happen again
     public const float TELEPORT_TIME = 0.25f; //frames until player can move again
-    public const float SUPER_CHARGE_FRAMES = 1.5f; //number of frames a super takes to charge
+    public const float SUPER_CHARGE_FRAMES = 1.1f; //number of frames a super takes to charge
     public const float SUPER_END_LAG = 1.25f; //number of frames player stalls without doing anything after a super
     // if turn speed to 1 or -1 with a change of at least the threshold in at most timelimit number of frames, boost applied
     public const int BOOST_TIMELIMIT = 2;
@@ -540,6 +540,7 @@ public class LocalPlayerScript : NetworkBehaviour
         {
             blinkFrames -= Time.deltaTime;
         }
+
     }
 
 	/**
@@ -568,23 +569,29 @@ public class LocalPlayerScript : NetworkBehaviour
                 }
                 break;
             case 2:
-
                 //bool teleported is to prevent the user from simply hold down the button
                 if (blinkInput && !teleported)
                 {//currently set to 'b'
+                    Debug.Log("teleporting");
                     float distance = TELEPORT_DISTANCE;
 
                     int layerMask = LayerMask.GetMask("Ignore Raycast");
                     Vector2 direction = getDirection();
                     Vector2 origin = new Vector2(player.GetComponent<Transform>().position.x, player.GetComponent<Transform>().position.y);
+
+                    gameObject.layer = 0;
                     RaycastHit2D hit = Physics2D.Raycast(origin: origin, direction: direction, distance: TELEPORT_DISTANCE, layerMask: layerMask);
+                    gameObject.layer = 2;
+
                     if (hit.collider != null)
                     {
                         distance = hit.distance;
                     }
-
+                    Debug.Log("distance" + distance);
+                    Debug.Log("position 1" + rb2D.position);
                     rb2D.position = new Vector2(rb2D.position.x + distance * getDirection().x,
                         rb2D.position.y + distance * getDirection().y);
+                    Debug.Log("position 2" + rb2D.position);
 
                     teleported = true;
                 }
