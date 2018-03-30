@@ -351,8 +351,8 @@ public class LocalPlayerScript : NetworkBehaviour
         if (stickyWallTimer > 0)
         {
             //flip sprite away from wall
-            facingRight = currentNormal.x > 0;
-
+            wallStickFlipSprite();
+            
             goalSpeed = -MAX_SPEED * currentNormal.x;
             if (Mathf.Sign(currentNormal.x) == Mathf.Sign(inputX))
             {
@@ -367,6 +367,11 @@ public class LocalPlayerScript : NetworkBehaviour
         }
 
         return goalSpeed;
+    }
+
+    protected virtual void wallStickFlipSprite()
+    {
+        facingRight = currentNormal.x > 0;
     }
 
     /**

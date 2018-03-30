@@ -110,19 +110,15 @@ public class NetworkedPlayerScript : LocalPlayerScript {
         facingRight = fr;
     }
 
-    protected override float sticky()
+    protected override void wallStickFlipSprite()
     {
-        if (stickyWallTimer > 0)
+        //flip sprite away from wall
+        bool facingRightNow = currentNormal.x > 0;
+        if (facingRightNow != facingRight)
         {
-            //flip sprite away from wall
-            bool facingRightNow = currentNormal.x > 0;
-            if (facingRightNow != facingRight)
-            {
-                CmdFlipSprite(facingRightNow);
-                facingRight = facingRightNow;
-            }
+            CmdFlipSprite(facingRightNow);
+            facingRight = facingRightNow;
         }
-        return base.sticky();
     }
 
     protected override void attackGloryUpdate(GameObject otherPlayer, int hits, bool trueHit)
