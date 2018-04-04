@@ -20,6 +20,7 @@ public class PlayerAIScript : LocalPlayerScript {
         {
             if (enemies[i] != gameObject)
             { 
+                //keeping only one enemy for now
                 enemy = enemies[i];
                 break;
             }
@@ -41,51 +42,65 @@ public class PlayerAIScript : LocalPlayerScript {
 
     protected override void assignInputs()
     {
-        timeCounter += Time.deltaTime;
-        positionTracker.Add((enemy.GetComponent<Transform>().position));
-        timeTracker.Add(Time.deltaTime);
-
-        //determine movement and input based on enemy position
-        if (timeCounter >= REACTION_TIME)
+        //check that that there is still an enemy, otherwise no input
+        if (enemy != null)
         {
-            Vector2 enemyTransform = positionTracker[0];
-            Vector2 myTransform = GetComponent<Transform>().position;
-            Vector2 input = (enemyTransform - myTransform);
-            Vector2 directionInput = input;
-            directionInput.Normalize();
-            directionInput.x += Random.Range(-0.25f, 0.25f);
-            directionInput.y += Random.Range(-0.25f, 0.25f);
-            directionInput.Normalize();
-            directionInputX = directionInput.x;
-            directionInputY = directionInput.y;
+            timeCounter += Time.deltaTime;
+            positionTracker.Add((enemy.GetComponent<Transform>().position));
+            timeTracker.Add(Time.deltaTime);
 
-            superInput = hasSuper;
-            blinkInput = input.magnitude > attackRadius * 0.8f;
-            jumpInput = input.y > attackRadius;
-            if (input.magnitude < attackRadius * 0.8f)
+            //determine movement and input based on enemy position
+            if (timeCounter >= REACTION_TIME)
             {
-                facingRight = input.x >= 0;
-                input = Vector2.zero;
-                reversalInput = comboHits == 0 && Mathf.CeilToInt(Random.value * 4.0f) == 4;
-                attackInput = !reversalInput;
-            }
-            else
-            {
-                input.Normalize();
-                attackInput = false;
-                reversalInput = false;
-            }
+                Vector2 enemyTransform = positionTracker[0];
+                Vector2 myTransform = GetComponent<Transform>().position;
+                Vector2 input = (enemyTransform - myTransform);
+                Vector2 directionInput = input;
+                directionInput.Normalize();
+                directionInput.x += Random.Range(-0.25f, 0.25f);
+                directionInput.y += Random.Range(-0.25f, 0.25f);
+                directionInput.Normalize();
+                directionInputX = directionInput.x;
+                directionInputY = directionInput.y;
 
-            inputX = input.x;
-            inputY = input.y;
+                superInput = hasSuper;
+                blinkInput = input.magnitude > attackRadius * 0.8f;
+                jumpInput = input.y > attackRadius;
+                if (input.magnitude < attackRadius * 0.8f)
+                {
+                    facingRight = input.x >= 0;
+                    input = Vector2.zero;
+                    reversalInput = comboHits == 0 && Mathf.CeilToInt(Random.value * 4.0f) == 4;
+                    attackInput = !reversalInput;
+                }
+                else
+                {
+                    input.Normalize();
+                    attackInput = false;
+                    reversalInput = false;
+                }
 
-            while(timeCounter >= REACTION_TIME)
-            {
-                timeCounter -= timeTracker[0];
+                inputX = input.x;
+                inputY = input.y;
 
-                positionTracker.RemoveAt(0);
-                timeTracker.RemoveAt(0);
+                while (timeCounter >= REACTION_TIME)
+                {
+                    timeCounter -= timeTracker[0];
+
+                    positionTracker.RemoveAt(0);
+                    timeTracker.RemoveAt(0);
+                }
             }
+        }
+        else
+        {
+            superInput = false;
+            blinkInput = false;
+            jumpInput = false;
+            attackInput = false;
+            reversalInput = false;
+            inputX = 0;
+            inputY = 0;
         }
     }
 

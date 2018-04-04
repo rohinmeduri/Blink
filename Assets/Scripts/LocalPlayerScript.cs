@@ -89,7 +89,7 @@ public class LocalPlayerScript : NetworkBehaviour
     public const float GROUND_KNOCKBACK_MODIFICATION = 0f; //amount increase to the y component of knockback velocity if player is on ground
     public const float KNOCKBACK_DAMPENING_COEF = 0.98f; // factor that knockback speed slows every second
     public const float DI_FORCE = 0.1f; // amount of influence of DI
-    public const float REVERSAL_EFFECTIVE_TIME = 1.625f; //number of seconds in which a reversal is effective
+    public const float REVERSAL_EFFECTIVE_TIME = 0.4f; //number of seconds in which a reversal is effective
     public const float REVERSAL_DURATION = 1.625f; //number of seconds a reversal lasts (effective time + end lag)
     public const float REVERSAL_SUCCESS_ANGLE = 90; //minimum angle between reversal and attack for reversal to be successful
     public const float SUPER_LOSS_GLORY = 85; //glory at which super is lost if player falls below
