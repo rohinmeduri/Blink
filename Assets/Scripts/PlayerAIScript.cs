@@ -10,7 +10,7 @@ public class PlayerAIScript : LocalPlayerScript {
     private List<float> timeTracker = new List<float>();
     private float timeCounter = 0;
 
-    public const float REACTION_TIME = 0.3f; //how long AI takes to react to other player's movements
+    public const float REACTION_TIME = 0.25f; //how long AI takes to react to other player's movements
 
     protected override void Update()
     {
@@ -49,7 +49,7 @@ public class PlayerAIScript : LocalPlayerScript {
             positionTracker.Add((enemy.GetComponent<Transform>().position));
             timeTracker.Add(Time.deltaTime);
 
-            //determine movement and input based on enemy position
+            //determine movement and input based on enemy position (in the past)
             if (timeCounter >= REACTION_TIME)
             {
                 Vector2 enemyTransform = positionTracker[0];
@@ -64,7 +64,7 @@ public class PlayerAIScript : LocalPlayerScript {
                 directionInputY = directionInput.y;
 
                 superInput = hasSuper;
-                blinkInput = input.magnitude > attackRadius * 0.8f;
+                blinkInput = input.magnitude > attackRadius * 0.8f && !superInput;
                 jumpInput = input.y > attackRadius;
                 if (input.magnitude < attackRadius * 0.8f)
                 {
@@ -130,19 +130,27 @@ public class PlayerAIScript : LocalPlayerScript {
 
     protected override void DI()
     {
-
+        //DI in the direction the Ai is movings
         Vector2 direction = rb2D.velocity;  
-        //Vector2 direction = getDirection();
         direction.Normalize();
         Vector2 origin = new Vector2(player.GetComponent<Transform>().position.x, player.GetComponent<Transform>().position.y);
-        Debug.DrawRay(origin, direction * attackRadius, Color.blue, 1f);
-        gameObject.layer = 2;
-        RaycastHit2D hit = Physics2D.Raycast(origin: origin, direction: direction, distance: attackRadius);
-        gameObject.layer = 0;
-        if(hit.collider != null)
+
+        //make sure not DI'ing into a wall
+        int layerMask = LayerMask.GetMask("Ignore Raycast");
+        RaycastHit2D hit = Physics2D.Raycast(origin: origin, direction: direction, distance: attackRadius * 2, layerMask: layerMask);
+        if (hit.collider != null)
         {
-            Debug.Log("wall");
+            direction = Quaternion.Euler(0, 0, 90) * direction;
+            Debug.DrawRay(origin, direction * attackRadius * 2, Color.red, 1f);
+            if (hit.collider != null)
+            {
+                direction = Quaternion.Euler(0, 0, 180) * direction;
+                Debug.DrawRay(origin, direction * attackRadius * 2, Color.green, 1f);
+            }
         }
+
+        inputX = direction.x;
+        inputY = direction.y;
         base.DI();
     }
 }
