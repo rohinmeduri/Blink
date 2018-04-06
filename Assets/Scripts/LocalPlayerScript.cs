@@ -877,6 +877,10 @@ public class LocalPlayerScript : NetworkBehaviour
     protected virtual void DI()
     {
         rb2D.velocity = new Vector2(rb2D.velocity.x * KNOCKBACK_DAMPENING_COEF + DI_FORCE * inputX, rb2D.velocity.y * KNOCKBACK_DAMPENING_COEF + DI_FORCE * inputY);
+        Vector2 direction = new Vector2(inputX, inputY);
+        direction.Normalize();
+        Vector2 origin = new Vector2(player.GetComponent<Transform>().position.x, player.GetComponent<Transform>().position.y);
+        Debug.DrawRay(origin, direction * attackRadius * 2, Color.green, 0.1f);
     }
 
     /**

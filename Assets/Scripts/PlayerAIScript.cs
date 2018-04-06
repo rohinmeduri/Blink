@@ -10,7 +10,7 @@ public class PlayerAIScript : LocalPlayerScript {
     private List<float> timeTracker = new List<float>();
     private float timeCounter = 0;
 
-    public const float REACTION_TIME = 0.25f; //how long AI takes to react to other player's movements
+    public const float REACTION_TIME = 0.3f; //how long AI takes to react to other player's movements
 
     protected override void Update()
     {
@@ -130,8 +130,8 @@ public class PlayerAIScript : LocalPlayerScript {
 
     protected override void DI()
     {
-        //DI in the direction the Ai is moving
-        Vector2 direction = rb2D.velocity;  
+        //DI away from enemy
+        Vector2 direction = new Vector2(inputX * -1, inputY * -1); 
         direction.Normalize();
         Vector2 origin = new Vector2(player.GetComponent<Transform>().position.x, player.GetComponent<Transform>().position.y);
 
@@ -140,16 +140,14 @@ public class PlayerAIScript : LocalPlayerScript {
         RaycastHit2D hit = Physics2D.Raycast(origin: origin, direction: direction, distance: attackRadius * 2, layerMask: layerMask);
         if (hit.collider != null)
         {
-            //DI perpendicular to velocity if heading towards a wall
+            //DI perpendicular to direction if heading towards a wall
             direction = Quaternion.Euler(0, 0, 90) * direction;
             hit = Physics2D.Raycast(origin: origin, direction: direction, distance: attackRadius * 2, layerMask: layerMask);
-            Debug.DrawRay(origin, direction * attackRadius * 2, Color.red, 1f);
 
             //if now heading toward another wall (i.e. in a corner), flip DI 180 degrees
             if (hit.collider != null)
             {
                 direction = Quaternion.Euler(0, 0, 180) * direction;
-                Debug.DrawRay(origin, direction * attackRadius * 2, Color.green, 1f);
             }
         }
 
