@@ -39,6 +39,24 @@ public class NetworkedPlayerScript : LocalPlayerScript {
         }
     }
 
+    /*public override void removeMeter()
+    {
+        CmdRemoveMeter();
+    }
+
+    [Command]
+    public void CmdRemoveMeter()
+    {
+        RpcRemoveMeter();
+    }
+
+    [ClientRpc]
+    public void RpcRemoveMeter()
+    {
+        Debug.Log("remove meter called");
+        base.removeMeter();
+    }*/
+
     // Update is called once per frame
     protected override void Update()
     {
@@ -249,6 +267,6 @@ public class NetworkedPlayerScript : LocalPlayerScript {
     [ClientRpc]
     void RpcKillPlayer(GameObject player)
     {
-        Destroy(player);
+        base.killPlayer(player);
     }
 }

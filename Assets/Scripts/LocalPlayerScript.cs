@@ -140,23 +140,17 @@ public class LocalPlayerScript : NetworkBehaviour
         RectTransform gloryTransform = glory.GetComponent<RectTransform>();
         gloryTransform.SetParent(canvas.transform);
 
-        //position meter appropriately depending on if it corresponds to local player or enemy player
-        /*if (!hasAuthority)
-        {
-            gloryTransform.anchorMin = new Vector2(1, 1);
-            gloryTransform.anchorMax = new Vector2(1, 1);
-            gloryTransform.pivot = new Vector2(1, 1);
-            gloryTransform.anchoredPosition = new Vector3(-100, 0, 0);
-        }
-        else
-        {*/
         gloryTransform.anchoredPosition = new Vector3(0, 0, 0);
-        //}
 
         //assign slider and comboText to variables so they can be modified easily
         glorySlider = glory.transform.Find("Slider").gameObject.GetComponent<Slider>();
         comboText = glory.transform.Find("Combo Text").gameObject.GetComponent<Text>();
         glorySlider.value = numGlory;
+    }
+
+    public virtual void removeMeter()
+    {
+        Destroy(glory);
     }
 
     // Update is called once per frame
@@ -404,7 +398,6 @@ public class LocalPlayerScript : NetworkBehaviour
             rb2D.velocity = new Vector2(xInputTracker[0] * BOOST_SPEED, rb2D.velocity.y);
             // goalSpeed = rb2D.velocity.x; (maybe not necessary)
             boosting = false;
-            Debug.Log("boosting");
         }
     }
 
@@ -577,7 +570,6 @@ public class LocalPlayerScript : NetworkBehaviour
                 //bool teleported is to prevent the user from simply hold down the button
                 if (blinkInput && !teleported)
                 {//currently set to 'b'
-                    Debug.Log("teleporting");
                     float distance = TELEPORT_DISTANCE;
 
                     int layerMask = LayerMask.GetMask("Ignore Raycast");
@@ -590,11 +582,8 @@ public class LocalPlayerScript : NetworkBehaviour
                     {
                         distance = hit.distance;
                     }
-                    Debug.Log("distance" + distance);
-                    Debug.Log("position 1" + rb2D.position);
                     rb2D.position = new Vector2(rb2D.position.x + distance * getDirection().x,
                         rb2D.position.y + distance * getDirection().y);
-                    Debug.Log("position 2" + rb2D.position);
 
                     teleported = true;
                 }
@@ -644,7 +633,6 @@ public class LocalPlayerScript : NetworkBehaviour
         //check if can super and is super-ing
         if (hasSuper && superInput)
         {
-            Debug.Log("super");
             //cancel momentum
             rb2D.velocity = Vector2.zero;
             actionLock = true;
@@ -679,6 +667,7 @@ public class LocalPlayerScript : NetworkBehaviour
 
     protected virtual void killPlayer(GameObject go)
     {
+        go.GetComponent<LocalPlayerScript>().removeMeter();
         Destroy(go);
     }
 
