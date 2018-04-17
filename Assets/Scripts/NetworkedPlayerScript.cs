@@ -77,6 +77,12 @@ public class NetworkedPlayerScript : LocalPlayerScript {
         base.Update();
     }
 
+    //no pausing in online multiplayer
+    protected override void pauseGame()
+    {
+
+    }
+
     protected override void FixedUpdate()
     {
         if (!hasAuthority)
