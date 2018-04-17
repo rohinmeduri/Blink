@@ -66,6 +66,8 @@ public class LocalPlayerScript : NetworkBehaviour
     protected bool attackInput = false;
     protected bool blinkInput = false;
     protected bool superInput = false;
+    private bool gamePauseBtnClick = false;
+    private bool gamePaused = false;
 
     // constants
     public const float GROUND_RUN_FORCE = 2; // How fast player can attain intended velocity on ground
@@ -158,6 +160,8 @@ public class LocalPlayerScript : NetworkBehaviour
     {
         assignInputs();
 
+        pauseGame();
+
         //flips sprite if necessary (on all clients)
         gameObject.GetComponent<SpriteRenderer>().flipX = !facingRight;
 
@@ -165,7 +169,7 @@ public class LocalPlayerScript : NetworkBehaviour
         animator.SetFloat("xDir", inputX);
         animator.SetFloat("yDir", inputY);
         animator.SetFloat("yVel", rb2D.velocity.y / -FALL_SPEED);
-        animator.SetBool("isMoving", Mathf.Abs(inputX) > 0);
+        animator.SetBool("isMoving", rb2D.velocity.x != 0);
         animator.SetBool("isAirborn", isAirborn());
         animator.SetBool("onWall", isWall());
         animator.SetInteger("StunTimer", (int)stunTimer);
@@ -239,6 +243,29 @@ public class LocalPlayerScript : NetworkBehaviour
         reversalInput = Input.GetAxisRaw("Reversal") != 0;
         blinkInput = Input.GetAxisRaw("Blink") != 0;
         superInput = Input.GetAxisRaw("Super") != 0;
+    }
+
+    protected virtual void pauseGame()
+    {
+        if (gamePauseBtnClick == false && Input.GetButton("Pause"))
+        {
+            gamePauseBtnClick = true;
+
+            if (!gamePaused)
+            {
+                Time.timeScale = 0;
+                gamePaused = true;
+            }
+            else
+            {
+                Time.timeScale = 1;
+                gamePaused = false;
+            }
+        }
+        else if (!Input.GetButton("Pause"))
+        {
+            gamePauseBtnClick = false;
+        }
     }
 
     protected virtual void FixedUpdate()
