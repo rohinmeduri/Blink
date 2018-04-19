@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class PlayerAIScript : LocalPlayerScript {
     private float directionInputX = 0;
@@ -15,7 +16,10 @@ public class PlayerAIScript : LocalPlayerScript {
     protected override void Update()
     {
         //find enemy player
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Player");
+        GameObject[] playerEnemies = GameObject.FindGameObjectsWithTag("Player");
+        GameObject[] AIenemies = GameObject.FindGameObjectsWithTag("PlayerAI");
+        GameObject[] enemies = playerEnemies.Concat(AIenemies).ToArray();
+
         for (var i = 0; i < enemies.Length; i++)
         {
             if (enemies[i] != gameObject)
