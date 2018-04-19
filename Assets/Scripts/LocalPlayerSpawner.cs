@@ -7,17 +7,24 @@ public class LocalPlayerSpawner : MonoBehaviour {
     private int numAIs;
     public GameObject playerPrefab;
     public GameObject AIPrefab;
+
 	// Use this for initialization
 	void Start () {
         numPlayers = GetComponent<ChangePlayerNumber>().getNumberOfPlayers();
         numAIs = GetComponent<ChangePlayerNumber>().getNumberOfAI();
-        for(int i = 1; i <= numPlayers; i++)
+
+        for(int i = 1; i <= numPlayers + numAIs; i++)
         {
-            Instantiate(playerPrefab);
-        }
-        for(int i = 1; i <= numAIs; i++)
-        {
-            Instantiate(AIPrefab);
+            GameObject player;
+            if (i <= numPlayers)
+            {
+                player = Instantiate(playerPrefab);
+            }
+            else
+            {
+                player = Instantiate(AIPrefab);
+            }
+            player.GetComponent<LocalPlayerScript>().setPlayerID(i);
         }
 	}
 }

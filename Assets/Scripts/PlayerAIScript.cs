@@ -40,7 +40,7 @@ public class PlayerAIScript : LocalPlayerScript {
         base.Update();
     }
 
-    public override void createMeter()
+    /*public override void createMeter()
     {
         base.createMeter();
 
@@ -49,7 +49,7 @@ public class PlayerAIScript : LocalPlayerScript {
         gloryTransform.anchorMax = new Vector2(1, 1);
         gloryTransform.pivot = new Vector2(1, 1);
         gloryTransform.anchoredPosition = new Vector3(-100, 0, 0);
-    }
+    }*/
 
     protected override void assignInputs()
     {

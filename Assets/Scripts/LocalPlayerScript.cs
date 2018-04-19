@@ -68,6 +68,7 @@ public class LocalPlayerScript : NetworkBehaviour
     protected bool superInput = false;
     private bool gamePauseBtnClick = false;
     private bool gamePaused = false;
+    private int playerID;
 
     // constants
     public const float GROUND_RUN_FORCE = 2; // How fast player can attain intended velocity on ground
@@ -126,23 +127,47 @@ public class LocalPlayerScript : NetworkBehaviour
         c2D = gameObject.GetComponent<Collider2D>();
 
         animator = GetComponent<Animator>();
-
-        createMeter();
     }
 
 
     /**
      * Script for creating Glory meters
      */
-    public virtual void createMeter()
+    public void createMeter()
     {
         //instantiate UI element and place on canvas
         glory = Instantiate(gloryPrefab);
         var canvas = GameObject.Find("Canvas");
         RectTransform gloryTransform = glory.GetComponent<RectTransform>();
-        gloryTransform.SetParent(canvas.transform);
+        //if(playerID == 2)
+        //{
+            gloryTransform.SetParent(canvas.transform);
+        //}
 
-        gloryTransform.anchoredPosition = new Vector3(0, 0, 0);
+
+        if(playerID == 1)
+        {
+            gloryTransform.anchoredPosition = new Vector3(0, 0, 0);
+        }
+        else if(playerID == 2)
+        {
+            gloryTransform.anchoredPosition = new Vector3(0, -60, 0);
+        }
+        else if(playerID == 3)
+        {
+            gloryTransform.anchorMin = new Vector2(1, 1);
+            gloryTransform.anchorMax = new Vector2(1, 1);
+            gloryTransform.pivot = new Vector2(1, 1);
+            gloryTransform.anchoredPosition = new Vector3(-100, 0, 0);
+        }
+        else
+        {
+            gloryTransform.anchorMin = new Vector2(1, 1);
+            gloryTransform.anchorMax = new Vector2(1, 1);
+            gloryTransform.pivot = new Vector2(1, 1);
+            gloryTransform.anchoredPosition = new Vector3(-100, -60, 0);
+        }
+
 
         //assign slider and comboText to variables so they can be modified easily
         glorySlider = glory.transform.Find("Slider").gameObject.GetComponent<Slider>();
@@ -153,6 +178,13 @@ public class LocalPlayerScript : NetworkBehaviour
     public virtual void removeMeter()
     {
         Destroy(glory);
+    }
+
+    public void setPlayerID(int ID)
+    {
+        playerID = ID;
+        createMeter();
+        Debug.Log(playerID);
     }
 
     // Update is called once per frame
@@ -969,12 +1001,6 @@ public class LocalPlayerScript : NetworkBehaviour
             if (isGround() && !isWall(getNormal(collision)))
             {
                 animator.SetTrigger("hitGround");
-            }
-
-            //rotate the player if in hitstun
-            if (stunTimer > 0)
-            {
-                Debug.Log(Vector2.SignedAngle(rb2D.velocity, currentNormal));
             }
         }
 

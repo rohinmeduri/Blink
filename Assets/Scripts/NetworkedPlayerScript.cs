@@ -23,7 +23,7 @@ public class NetworkedPlayerScript : LocalPlayerScript {
         }
     }
 
-    public override void createMeter()
+    /*public override void createMeter()
     {
         if (gloryWaitedFrames == gloryWaitFrames)
         {
@@ -37,7 +37,7 @@ public class NetworkedPlayerScript : LocalPlayerScript {
                 gloryTransform.anchoredPosition = new Vector3(-100, 0, 0);
             }
         }
-    }
+    }*/
 
     /*public override void removeMeter()
     {
