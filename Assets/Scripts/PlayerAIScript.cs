@@ -19,14 +19,21 @@ public class PlayerAIScript : LocalPlayerScript {
         GameObject[] playerEnemies = GameObject.FindGameObjectsWithTag("Player");
         GameObject[] AIenemies = GameObject.FindGameObjectsWithTag("PlayerAI");
         GameObject[] enemies = playerEnemies.Concat(AIenemies).ToArray();
+        float enemyDistance = Mathf.Infinity;
 
         for (var i = 0; i < enemies.Length; i++)
         {
+            Vector2 myTransform = GetComponent<Transform>().position;
+
             if (enemies[i] != gameObject)
-            { 
-                //keeping only one enemy for now
-                enemy = enemies[i];
-                break;
+            {
+                Vector2 enemyTransform = enemies[i].GetComponent<Transform>().position;
+                Vector2 distanceVector = (enemyTransform - myTransform);
+                if (distanceVector.magnitude < enemyDistance)
+                {
+                    enemy = enemies[i];
+                    enemyDistance = distanceVector.magnitude;
+                }
             }
         }
 
