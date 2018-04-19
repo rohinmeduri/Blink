@@ -19,7 +19,12 @@ public class NetworkedPlayerScript : LocalPlayerScript {
     {
         if (hasAuthority)
         {
+            setPlayerID(1);
             gameObject.layer = 2;
+        }
+        else
+        {
+            setPlayerID(2);
         }
     }
 

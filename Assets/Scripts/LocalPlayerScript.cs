@@ -68,7 +68,7 @@ public class LocalPlayerScript : NetworkBehaviour
     protected bool superInput = false;
     private bool gamePauseBtnClick = false;
     private bool gamePaused = false;
-    private int playerID;
+    protected int playerID;
 
     // constants
     public const float GROUND_RUN_FORCE = 2; // How fast player can attain intended velocity on ground
@@ -139,11 +139,7 @@ public class LocalPlayerScript : NetworkBehaviour
         glory = Instantiate(gloryPrefab);
         var canvas = GameObject.Find("Canvas");
         RectTransform gloryTransform = glory.GetComponent<RectTransform>();
-        //if(playerID == 2)
-        //{
-            gloryTransform.SetParent(canvas.transform);
-        //}
-
+        gloryTransform.SetParent(canvas.transform);
 
         if(playerID == 1)
         {
