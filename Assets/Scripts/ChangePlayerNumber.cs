@@ -6,8 +6,6 @@ using UnityEngine.UI;
 public class ChangePlayerNumber : MonoBehaviour {
     private static int numberOfPlayers = 1;     //keep track of number of players
     private static int numberOfAI = 1;          //keep track of number of AI
-    public static int playerLimit = 4;              //set limit in unity editor on players
-    public static int AILimit = 4;
     public Text players;
     public Text AI;
     //set limit in unity editor on AI
@@ -23,11 +21,15 @@ public class ChangePlayerNumber : MonoBehaviour {
         {                               //keep Players from going below 0
             numberOfPlayers = 0;        //
         }
-        if(numberOfPlayers > playerLimit)       //
-        {                                       //set a limit in unity that number cannot exceed
-            numberOfPlayers = playerLimit;      //
+        if (numberOfPlayers > 4)
+        {
+            numberOfPlayers = 4;
         }
-        players.text = numberOfPlayers.ToString();
+        if (numberOfPlayers + numberOfAI > 4)
+        {
+            numberOfAI = 4 - numberOfPlayers;
+        }
+        updateTextElements();
     }
     public void changeNumberOfAIBy(int n)           //used by AICountGroup
     {
@@ -36,11 +38,15 @@ public class ChangePlayerNumber : MonoBehaviour {
         {                           //keep AI from going below 0
             numberOfAI = 0;         //
         }
-        if(numberOfAI > AILimit)        //
-        {                               //keep AI from exceeding limit set in unity;
-            numberOfAI = AILimit;       //
+        if (numberOfAI > 3)        //
+        {                         //can't go over 3 AI
+            numberOfAI = 3;       //
         }
-        AI.text = numberOfAI.ToString();
+        if (numberOfPlayers + numberOfAI > 4)
+        {
+            numberOfPlayers = 4 - numberOfAI;
+        }
+        updateTextElements();
     }
     public int getNumberOfPlayers()
     {
@@ -50,5 +56,9 @@ public class ChangePlayerNumber : MonoBehaviour {
     {
         return numberOfAI;
     }
-	
+	public void updateTextElements()
+    {
+        players.text = numberOfPlayers.ToString();
+        AI.text = numberOfAI.ToString();
+    }
 }
