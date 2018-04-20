@@ -69,7 +69,7 @@ public class LocalPlayerScript : NetworkBehaviour
     private bool gamePauseBtnClick = false;
     private bool gamePaused = false;
     protected int playerID;
-    protected int controllerID;
+    protected int controllerID = 0;
 
     // constants
     public const float GROUND_RUN_FORCE = 2; // How fast player can attain intended velocity on ground
@@ -128,12 +128,6 @@ public class LocalPlayerScript : NetworkBehaviour
         c2D = gameObject.GetComponent<Collider2D>();
 
         animator = GetComponent<Animator>();
-
-        string[] joysticks = Input.GetJoystickNames();
-        foreach(var i in joysticks)
-        {
-            Debug.Log(i);
-        }
     }
 
 
@@ -185,6 +179,20 @@ public class LocalPlayerScript : NetworkBehaviour
 
     public void setPlayerID(int ID)
     {
+        //change colors so players are distinguishable
+        if (ID == 2)
+        {
+            GetComponent<SpriteRenderer>().material.SetColor("_Color", new Color(1, 0, 0, 1));
+        }
+        else if (ID == 3)
+        {
+            GetComponent<SpriteRenderer>().material.SetColor("_Color", new Color(0, 1, 0, 1));
+        }
+        else if (ID == 4)
+        {
+            GetComponent<SpriteRenderer>().material.SetColor("_Color", new Color(0, 0, 1, 1));
+        }
+
         playerID = ID;
         createMeter();
 
@@ -196,13 +204,17 @@ public class LocalPlayerScript : NetworkBehaviour
             if (joysticks[i].Length > 0)
             {
                 joyStickCounter++;
-                if(joyStickCounter == playerID)
+                if (joyStickCounter == playerID)
                 {
                     controllerID = i + 1;
                     break;
                 }
             }
-            
+        }
+
+        if (controllerID == 0 || playerID > joyStickCounter)
+        {
+            controllerID = playerID;
         }
     }
 
