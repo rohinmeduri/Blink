@@ -107,7 +107,7 @@ public class NetworkedPlayerScript : LocalPlayerScript {
         //flip sprite based on player input if they are not wall hugging
         if (stickyWallTimer == 0)
         {
-            bool facingRightNow = Input.GetAxisRaw("Horizontal" + playerID) > 0 || (Input.GetAxisRaw("Horizontal" + playerID) == 0 && facingRight);
+            bool facingRightNow = Input.GetAxisRaw("Horizontal" + controllerID) > 0 || (Input.GetAxisRaw("Horizontal" + controllerID) == 0 && facingRight);
             if (facingRightNow != facingRight)
             {
                 CmdFlipSprite(facingRightNow);

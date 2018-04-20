@@ -119,8 +119,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   facingRight: 1
   numGlory: 0
-  regularMaterial: {fileID: 0}
-  stunMaterial: {fileID: 0}
+  regularMaterial: {fileID: 6200000, guid: 17f5ae5846336db40a7e5488775cd87b, type: 2}
+  stunMaterial: {fileID: 6200000, guid: 0ac2c177006bfca45a60b997751b7fd9, type: 2}
   player: {fileID: 1273918684993908}
   attackRadius: 2
   baseAttackForce: 5

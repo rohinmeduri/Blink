@@ -69,6 +69,7 @@ public class LocalPlayerScript : NetworkBehaviour
     private bool gamePauseBtnClick = false;
     private bool gamePaused = false;
     protected int playerID;
+    protected int controllerID;
 
     // constants
     public const float GROUND_RUN_FORCE = 2; // How fast player can attain intended velocity on ground
@@ -127,6 +128,12 @@ public class LocalPlayerScript : NetworkBehaviour
         c2D = gameObject.GetComponent<Collider2D>();
 
         animator = GetComponent<Animator>();
+
+        string[] joysticks = Input.GetJoystickNames();
+        foreach(var i in joysticks)
+        {
+            Debug.Log(i);
+        }
     }
 
 
@@ -180,7 +187,23 @@ public class LocalPlayerScript : NetworkBehaviour
     {
         playerID = ID;
         createMeter();
-        Debug.Log(playerID);
+
+        //unity's joystick numbers are inconsistent, so need to manually assign controller IDs
+        string[] joysticks = Input.GetJoystickNames();
+        int joyStickCounter = 0;
+        for (var i = 0; i < joysticks.Length; i++)
+        {
+            if (joysticks[i].Length > 0)
+            {
+                joyStickCounter++;
+                if(joyStickCounter == playerID)
+                {
+                    controllerID = i + 1;
+                    break;
+                }
+            }
+            
+        }
     }
 
     // Update is called once per frame
@@ -264,13 +287,13 @@ public class LocalPlayerScript : NetworkBehaviour
     //set input values (done this way because different inputs are used in derrived classes)
     protected virtual void assignInputs()
     {
-        inputX = Input.GetAxisRaw(("Horizontal" + playerID));
-        inputY = Input.GetAxisRaw(("Vertical" + playerID));
-        jumpInput = Input.GetAxisRaw(("Jump" + playerID)) != 0;
-        attackInput = Input.GetAxisRaw(("Attack" + playerID)) != 0;
-        reversalInput = Input.GetAxisRaw(("Reversal" + playerID)) != 0;
-        blinkInput = Input.GetAxisRaw(("Blink" + playerID)) != 0;
-        superInput = Input.GetAxisRaw(("Super" + playerID)) != 0;
+        inputX = Input.GetAxisRaw(("Horizontal" + controllerID));
+        inputY = Input.GetAxisRaw(("Vertical" + controllerID));
+        jumpInput = Input.GetAxisRaw(("Jump" + controllerID)) != 0;
+        attackInput = Input.GetAxisRaw(("Attack" + controllerID)) != 0;
+        reversalInput = Input.GetAxisRaw(("Reversal" + controllerID)) != 0;
+        blinkInput = Input.GetAxisRaw(("Blink" + controllerID)) != 0;
+        superInput = Input.GetAxisRaw(("Super" + controllerID)) != 0;
     }
 
     protected virtual void pauseGame()
