@@ -202,6 +202,10 @@ public class NetworkedPlayerScript : LocalPlayerScript {
     [ClientRpc]
     void RpcKnockback(GameObject defender, GameObject attacker, Vector2 dir, int hits)
     {
+        if (comboHits > 1)
+        {
+            camera.GetComponent<CameraShake>().shake((1.0f + (hits / 4)) * 0.5f);
+        }
         if (defender.tag == "Player")
         {
             defender.GetComponent<NetworkedPlayerScript>().baseKnockback(attacker, dir, hits);

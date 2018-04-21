@@ -136,6 +136,7 @@ MonoBehaviour:
   gloryLostOnHit: 2
   reversalGloryGain: 12
   lastGloryIncrease: 0
+  camera: {fileID: 0}
 --- !u!212 &212091731836323832
 SpriteRenderer:
   m_ObjectHideFlags: 1

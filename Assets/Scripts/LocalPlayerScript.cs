@@ -70,6 +70,7 @@ public class LocalPlayerScript : NetworkBehaviour
     private bool gamePaused = false;
     protected int playerID;
     protected int controllerID = 0;
+    public GameObject camera;
 
     // constants
     public const float GROUND_RUN_FORCE = 2; // How fast player can attain intended velocity on ground
@@ -128,6 +129,7 @@ public class LocalPlayerScript : NetworkBehaviour
         c2D = gameObject.GetComponent<Collider2D>();
 
         animator = GetComponent<Animator>();
+        camera = GameObject.Find("Main Camera");
     }
 
 
@@ -585,6 +587,10 @@ public class LocalPlayerScript : NetworkBehaviour
                 startKnockback(hit.rigidbody.gameObject, direction, comboHits);
                 comboHitInterval = 0;
                 blinkFrames = 0;
+                if (comboHits > 1)
+                {
+                    camera.GetComponent<CameraShake>().shake((1.0f + (comboHits / 4)) * 0.5f);
+                }
             }
 
             //trigger animation
