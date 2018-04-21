@@ -92,7 +92,7 @@ public class LocalPlayerScript : NetworkBehaviour
     public const float TRUE_HIT_MULTIPLIER = 1.5f; //multiplier for glory increase for true hits 
     public const float STUN_DURATION = 1.25f; // amount of seconds that a player stays stunned
     public const float GROUND_KNOCKBACK_MODIFICATION = 0f; //amount increase to the y component of knockback velocity if player is on ground
-    public const float KNOCKBACK_DAMPENING_COEF = 0.99f; // factor that knockback speed slows every second
+    public const float KNOCKBACK_DAMPENING_COEF = 0.985f; // factor that knockback speed slows every second
     public const float DI_FORCE = 0.1f; // amount of influence of DI
     public const float REVERSAL_EFFECTIVE_TIME = 0.4f; //number of seconds in which a reversal is effective
     public const float REVERSAL_DURATION = 1.625f; //number of seconds a reversal lasts (effective time + end lag)
