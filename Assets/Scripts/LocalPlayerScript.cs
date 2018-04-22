@@ -115,7 +115,7 @@ public class LocalPlayerScript : NetworkBehaviour
 
 
     // Use this for initialization
-    protected virtual void Start()
+    protected void Start()
     {
         jumps = 0;
         canJump = false;

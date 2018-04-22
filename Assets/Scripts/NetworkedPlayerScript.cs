@@ -9,12 +9,6 @@ public class NetworkedPlayerScript : LocalPlayerScript {
     private int gloryWaitFrames = 2;
     private int gloryWaitedFrames = 0;
 
-    // Use this for initialization
-    protected override void Start () {
-        base.Start();
-        Debug.Log("started");
-    }
-
     public void setLayer()
     {
         if (hasAuthority)
@@ -27,10 +21,6 @@ public class NetworkedPlayerScript : LocalPlayerScript {
         {
             setPlayerID(2);
         }
-        Debug.Log("camera null before: " + (camera == null).ToString());
-        camera = GameObject.Find("Main Camera");
-        Debug.Log("camera null after: " + (camera == null).ToString());
-
     }
 
     /*public override void createMeter()
@@ -207,7 +197,6 @@ public class NetworkedPlayerScript : LocalPlayerScript {
     [ClientRpc]
     void RpcKnockback(GameObject defender, GameObject attacker, Vector2 dir, int hits)
     {
-        Debug.Log(camera == null);
         if (hits > 1)
         {
             camera.GetComponent<CameraShake>().shake((1.0f + (hits / 4)) * 0.5f);
