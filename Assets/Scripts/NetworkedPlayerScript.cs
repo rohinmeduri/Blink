@@ -12,7 +12,7 @@ public class NetworkedPlayerScript : LocalPlayerScript {
     // Use this for initialization
     protected override void Start () {
         base.Start();
-        networkAnimator = GetComponent<NetworkAnimator>();
+        Debug.Log("started");
     }
 
     public void setLayer()
@@ -21,11 +21,16 @@ public class NetworkedPlayerScript : LocalPlayerScript {
         {
             setPlayerID(1);
             gameObject.layer = 2;
+            networkAnimator = GetComponent<NetworkAnimator>();
         }
         else
         {
             setPlayerID(2);
         }
+        Debug.Log("camera null before: " + (camera == null).ToString());
+        camera = GameObject.Find("Main Camera");
+        Debug.Log("camera null after: " + (camera == null).ToString());
+
     }
 
     /*public override void createMeter()
@@ -202,7 +207,8 @@ public class NetworkedPlayerScript : LocalPlayerScript {
     [ClientRpc]
     void RpcKnockback(GameObject defender, GameObject attacker, Vector2 dir, int hits)
     {
-        if (comboHits > 1)
+        Debug.Log(camera == null);
+        if (hits > 1)
         {
             camera.GetComponent<CameraShake>().shake((1.0f + (hits / 4)) * 0.5f);
         }
