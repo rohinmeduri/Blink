@@ -21,7 +21,6 @@ public class LocalPlayerScript : NetworkBehaviour
     public LayerMask mask;
     public GameObject gloryPrefab;
     public Slider glorySlider;
-    public Text comboText;
     public Image comboOnes;
     public Image comboTens;
     public Image comboHitsImage;
@@ -172,9 +171,8 @@ public class LocalPlayerScript : NetworkBehaviour
         }
 
 
-        //assign slider and comboText to variables so they can be modified easily
+        //assign slider and combo text images to variables so they can be modified easily
         glorySlider = glory.transform.Find("Slider").gameObject.GetComponent<Slider>();
-        comboText = glory.transform.Find("Combo Text").gameObject.GetComponent<Text>();
         comboHitsImage = glory.transform.Find("HitsText").gameObject.GetComponent<Image>();
         comboTens = glory.transform.Find("TensPlace").gameObject.GetComponent<Image>();
         comboOnes = glory.transform.Find("OnesPlace").gameObject.GetComponent<Image>();
@@ -866,46 +864,44 @@ public class LocalPlayerScript : NetworkBehaviour
      */
     protected virtual void updateComboHits(int hits)
     {
-        if (comboText != null)
+        if(hits >= 99)
         {
-            if(hits >= 99)
-            {
-                hits = 99;
-            }
-            comboHits = hits;
-            comboText.text = "Combo: " + hits;
-            if(comboHits / 10 == 0)
-            {
-                //hide tens place
-                Color c = comboTens.color;
-                c.a = 0;
-                comboTens.color = c;
+            hits = 99;
+        }
+        comboHits = hits;
 
-                if(comboHits % 10 <= 1)
-                {
-                    //hide ones place and 'hits'
-                    comboOnes.color = c;
-                    comboHitsImage.color = c;
-                }
-                else
-                {
-                    Color c3 = comboOnes.color;
-                    c3.a = 1;
-                    comboOnes.color = c3;
-                    comboHitsImage.color = c3;
-                }
+        if(comboHits / 10 == 0)
+        {
+            //hide tens place
+            Color c = comboTens.color;
+            c.a = 0;
+            comboTens.color = c;
+
+            if(comboHits % 10 <= 1)
+            {
+                //hide ones place and 'hits'
+                comboOnes.color = c;
+                comboHitsImage.color = c;
             }
             else
             {
-                Color c = comboOnes.color;
-                c.a = 1;
-                comboOnes.color = c;
-                comboTens.color = c;
-                comboHitsImage.color = c;
+                Color c3 = comboOnes.color;
+                c3.a = 1;
+                comboOnes.color = c3;
+                comboHitsImage.color = c3;
             }
-            comboTens.sprite = numbers[comboHits / 10];
-            comboOnes.sprite = numbers[comboHits % 10];
         }
+        else
+        {
+            Color c = comboOnes.color;
+            c.a = 1;
+            comboOnes.color = c;
+            comboTens.color = c;
+            comboHitsImage.color = c;
+        }
+        comboTens.sprite = numbers[comboHits / 10];
+        comboOnes.sprite = numbers[comboHits % 10];
+        
     }
 
     public virtual void startKnockback(GameObject defender, Vector2 dir, int hits)
@@ -1157,46 +1153,44 @@ public class LocalPlayerScript : NetworkBehaviour
     //Script used only for networked children to update comboHits on clients
     void OnChangeComboHits(int hits)
     {
-        if (comboText != null)
+        if (hits >= 99)
         {
-            if (hits >= 99)
-            {
-                hits = 99;
-            }
-            comboHits = hits;
-            comboText.text = "Combo: " + hits;
-            if (comboHits / 10 == 0)
-            {
-                //hide tens place
-                Color c = comboTens.color;
-                c.a = 0;
-                comboTens.color = c;
+            hits = 99;
+        }
+        comboHits = hits;
 
-                if (comboHits % 10 <= 1)
-                {
-                    //hide ones place and 'hits'
-                    comboOnes.color = c;
-                    comboHitsImage.color = c;
-                }
-                else
-                {
-                    Color c3 = comboOnes.color;
-                    c3.a = 1;
-                    comboOnes.color = c3;
-                    comboHitsImage.color = c3;
-                }
+        if (comboHits / 10 == 0)
+        {
+            //hide tens place
+            Color c = comboTens.color;
+            c.a = 0;
+            comboTens.color = c;
+
+            if (comboHits % 10 <= 1)
+            {
+                //hide ones place and 'hits'
+                comboOnes.color = c;
+                comboHitsImage.color = c;
             }
             else
             {
-                Color c = comboOnes.color;
-                c.a = 1;
-                comboOnes.color = c;
-                comboTens.color = c;
-                comboHitsImage.color = c;
+                Color c3 = comboOnes.color;
+                c3.a = 1;
+                comboOnes.color = c3;
+                comboHitsImage.color = c3;
             }
-            comboTens.sprite = numbers[comboHits / 10];
-            comboOnes.sprite = numbers[comboHits % 10];
         }
+        else
+        {
+            Color c = comboOnes.color;
+            c.a = 1;
+            comboOnes.color = c;
+            comboTens.color = c;
+            comboHitsImage.color = c;
+        }
+        comboTens.sprite = numbers[comboHits / 10];
+        comboOnes.sprite = numbers[comboHits % 10];
+        
     }
 
     //script used only for networked children to update glory on clients
