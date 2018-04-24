@@ -22,6 +22,10 @@ public class LocalPlayerScript : NetworkBehaviour
     public GameObject gloryPrefab;
     public Slider glorySlider;
     public Text comboText;
+    public Image comboOnes;
+    public Image comboTens;
+    public Image comboHitsImage;
+    public Sprite[] numbers;
     public float baseGloryGain;
     public float gloryLostOnHit;
     public float reversalGloryGain;
@@ -171,6 +175,9 @@ public class LocalPlayerScript : NetworkBehaviour
         //assign slider and comboText to variables so they can be modified easily
         glorySlider = glory.transform.Find("Slider").gameObject.GetComponent<Slider>();
         comboText = glory.transform.Find("Combo Text").gameObject.GetComponent<Text>();
+        comboHitsImage = glory.transform.Find("HitsText").gameObject.GetComponent<Image>();
+        comboTens = glory.transform.Find("TensPlace").gameObject.GetComponent<Image>();
+        comboOnes = glory.transform.Find("OnesPlace").gameObject.GetComponent<Image>();
         glorySlider.value = numGlory;
     }
 
@@ -861,8 +868,43 @@ public class LocalPlayerScript : NetworkBehaviour
     {
         if (comboText != null)
         {
+            if(hits >= 99)
+            {
+                hits = 99;
+            }
             comboHits = hits;
             comboText.text = "Combo: " + hits;
+            if(comboHits / 10 == 0)
+            {
+                //hide tens place
+                Color c = comboTens.color;
+                c.a = 0;
+                comboTens.color = c;
+
+                if(comboHits % 10 <= 1)
+                {
+                    //hide ones place and 'hits'
+                    comboOnes.color = c;
+                    comboHitsImage.color = c;
+                }
+                else
+                {
+                    Color c3 = comboOnes.color;
+                    c3.a = 1;
+                    comboOnes.color = c3;
+                    comboHitsImage.color = c3;
+                }
+            }
+            else
+            {
+                Color c = comboOnes.color;
+                c.a = 1;
+                comboOnes.color = c;
+                comboTens.color = c;
+                comboHitsImage.color = c;
+            }
+            comboTens.sprite = numbers[comboHits / 10];
+            comboOnes.sprite = numbers[comboHits % 10];
         }
     }
 

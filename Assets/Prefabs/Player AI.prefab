@@ -132,10 +132,24 @@ MonoBehaviour:
     type: 2}
   glorySlider: {fileID: 0}
   comboText: {fileID: 0}
+  comboOnes: {fileID: 0}
+  comboTens: {fileID: 0}
+  numbers:
+  - {fileID: 21300000, guid: a59d55b0fe89ca143bb6c49edf4aa51e, type: 3}
+  - {fileID: 21300002, guid: a59d55b0fe89ca143bb6c49edf4aa51e, type: 3}
+  - {fileID: 21300006, guid: a59d55b0fe89ca143bb6c49edf4aa51e, type: 3}
+  - {fileID: 21300018, guid: a59d55b0fe89ca143bb6c49edf4aa51e, type: 3}
+  - {fileID: 21300008, guid: a59d55b0fe89ca143bb6c49edf4aa51e, type: 3}
+  - {fileID: 21300010, guid: a59d55b0fe89ca143bb6c49edf4aa51e, type: 3}
+  - {fileID: 21300012, guid: a59d55b0fe89ca143bb6c49edf4aa51e, type: 3}
+  - {fileID: 21300014, guid: a59d55b0fe89ca143bb6c49edf4aa51e, type: 3}
+  - {fileID: 21300016, guid: a59d55b0fe89ca143bb6c49edf4aa51e, type: 3}
+  - {fileID: 21300020, guid: a59d55b0fe89ca143bb6c49edf4aa51e, type: 3}
   baseGloryGain: 3
   gloryLostOnHit: 2
   reversalGloryGain: 12
   lastGloryIncrease: 0
+  camera: {fileID: 0}
 --- !u!212 &212091731836323832
 SpriteRenderer:
   m_ObjectHideFlags: 1
