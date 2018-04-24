@@ -21,7 +21,7 @@ public class LocalPlayerScript : NetworkBehaviour
     public LayerMask mask;
     public GameObject gloryPrefab;
     public Slider glorySlider;
-    public Image comboOnes;
+    public   Image comboOnes;
     public Image comboTens;
     public Image comboHitsImage;
     public Sprite[] numbers;
@@ -147,36 +147,37 @@ public class LocalPlayerScript : NetworkBehaviour
         RectTransform gloryTransform = glory.GetComponent<RectTransform>();
         gloryTransform.SetParent(canvas.transform);
 
-        if(playerID == 1)
-        {
-            gloryTransform.anchoredPosition = new Vector3(0, 0, 0);
-        }
-        else if(playerID == 2)
-        {
-            gloryTransform.anchoredPosition = new Vector3(0, -60, 0);
-        }
-        else if(playerID == 3)
-        {
-            gloryTransform.anchorMin = new Vector2(1, 1);
-            gloryTransform.anchorMax = new Vector2(1, 1);
-            gloryTransform.pivot = new Vector2(1, 1);
-            gloryTransform.anchoredPosition = new Vector3(-100, 0, 0);
-        }
-        else
-        {
-            gloryTransform.anchorMin = new Vector2(1, 1);
-            gloryTransform.anchorMax = new Vector2(1, 1);
-            gloryTransform.pivot = new Vector2(1, 1);
-            gloryTransform.anchoredPosition = new Vector3(-100, -60, 0);
-        }
-
-
         //assign slider and combo text images to variables so they can be modified easily
         glorySlider = glory.transform.Find("Slider").gameObject.GetComponent<Slider>();
         comboHitsImage = glory.transform.Find("HitsText").gameObject.GetComponent<Image>();
         comboTens = glory.transform.Find("TensPlace").gameObject.GetComponent<Image>();
         comboOnes = glory.transform.Find("OnesPlace").gameObject.GetComponent<Image>();
         glorySlider.value = numGlory;
+
+        if (playerID == 1)
+        {
+            gloryTransform.anchoredPosition = new Vector3(-143, 0, 0);
+        }
+        else if(playerID == 2)
+        {
+            gloryTransform.anchoredPosition = new Vector3(53, 0, 0);
+
+            glorySlider.GetComponent<RectTransform>().Rotate(0, -180, 0);
+            glorySlider.GetComponent<RectTransform>().anchoredPosition = new Vector3(18, -20, 0);
+            glory.transform.Find("Meter Cover").gameObject.GetComponent<RectTransform>().Rotate(0, -180, 0);
+        }
+        else if(playerID == 3)
+        {
+            gloryTransform.anchoredPosition = new Vector3(-143, -40, 0);
+        }
+        else
+        {
+            gloryTransform.anchoredPosition = new Vector3(53, -40, 0);
+
+            glorySlider.GetComponent<RectTransform>().Rotate(0, -180, 0);
+            glorySlider.GetComponent<RectTransform>().anchoredPosition = new Vector3(18, -20, 0);
+            glory.transform.Find("Meter Cover").gameObject.GetComponent<RectTransform>().Rotate(0, -180, 0);
+        }
     }
 
     public virtual void removeMeter()
