@@ -1155,12 +1155,47 @@ public class LocalPlayerScript : NetworkBehaviour
     }
 
     //Script used only for networked children to update comboHits on clients
-    protected void OnChangeComboHits(int hits)
+    void OnChangeComboHits(int hits)
     {
         if (comboText != null)
         {
+            if (hits >= 99)
+            {
+                hits = 99;
+            }
             comboHits = hits;
             comboText.text = "Combo: " + hits;
+            if (comboHits / 10 == 0)
+            {
+                //hide tens place
+                Color c = comboTens.color;
+                c.a = 0;
+                comboTens.color = c;
+
+                if (comboHits % 10 <= 1)
+                {
+                    //hide ones place and 'hits'
+                    comboOnes.color = c;
+                    comboHitsImage.color = c;
+                }
+                else
+                {
+                    Color c3 = comboOnes.color;
+                    c3.a = 1;
+                    comboOnes.color = c3;
+                    comboHitsImage.color = c3;
+                }
+            }
+            else
+            {
+                Color c = comboOnes.color;
+                c.a = 1;
+                comboOnes.color = c;
+                comboTens.color = c;
+                comboHitsImage.color = c;
+            }
+            comboTens.sprite = numbers[comboHits / 10];
+            comboOnes.sprite = numbers[comboHits % 10];
         }
     }
 
