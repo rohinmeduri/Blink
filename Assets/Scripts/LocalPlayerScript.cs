@@ -319,6 +319,7 @@ public class LocalPlayerScript : NetworkBehaviour
 
     protected virtual void pauseGame()
     {
+        CanvasGroup pauseMenu = GameObject.Find("Pause Menu").GetComponent<CanvasGroup>();
         if (gamePauseBtnClick == false && Input.GetButton("Pause"))
         {
             gamePauseBtnClick = true;
@@ -327,11 +328,17 @@ public class LocalPlayerScript : NetworkBehaviour
             {
                 Time.timeScale = 0;
                 gamePaused = true;
+                pauseMenu.alpha = 1;
+                pauseMenu.interactable = true;
+
+                
             }
             else
             {
                 Time.timeScale = 1;
                 gamePaused = false;
+                pauseMenu.alpha = 0;
+                pauseMenu.interactable = false;
             }
         }
         else if (!Input.GetButton("Pause"))
