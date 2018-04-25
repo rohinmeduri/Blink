@@ -10,8 +10,10 @@ public class PlayerAIScript : LocalPlayerScript {
     private List<Vector3> positionTracker = new List<Vector3>();
     private List<float> timeTracker = new List<float>();
     private float timeCounter = 0;
+    private int playerDifficulty;
 
-    public const float REACTION_TIME = 0.32f; //how long AI takes to react to other player's movements
+    public readonly float[] REACTION_TIME = {0.5f, 0.4f, 0.3f}; //how long AI takes to react to other player's movements
+    public readonly float[] BLINK_DISTANCE_FACTOR = {4f, 2f, 1.2f};
 
     protected override void Update()
     {
@@ -40,6 +42,21 @@ public class PlayerAIScript : LocalPlayerScript {
         base.Update();
     }
 
+    public void setPlayerDifficulty(int difficulty)
+    {
+        if(difficulty > 2)
+        {
+            difficulty = 2;
+        }
+        else if(difficulty < 0)
+        {
+            difficulty = 0;
+        }
+        playerDifficulty = difficulty;
+        Debug.Log(playerDifficulty);
+        Debug.Log(GetComponent<SpriteRenderer>().material.color);
+    }
+
     /*public override void createMeter()
     {
         base.createMeter();
@@ -61,7 +78,7 @@ public class PlayerAIScript : LocalPlayerScript {
             timeTracker.Add(Time.deltaTime);
 
             //determine movement and input based on enemy position (in the past)
-            if (timeCounter >= REACTION_TIME)
+            if (timeCounter >= REACTION_TIME[playerDifficulty])
             {
                 Vector2 enemyTransform = positionTracker[0];
                 Vector2 myTransform = GetComponent<Transform>().position;
@@ -75,7 +92,8 @@ public class PlayerAIScript : LocalPlayerScript {
                 directionInputY = directionInput.y;
 
                 superInput = hasSuper;
-                blinkInput = input.magnitude > attackRadius * 0.8f && !superInput;
+                blinkInput = input.magnitude > attackRadius * BLINK_DISTANCE_FACTOR[playerDifficulty] && !superInput;
+
                 jumpInput = input.y > attackRadius;
                 if (input.magnitude < attackRadius * 0.8f)
                 {
@@ -94,7 +112,7 @@ public class PlayerAIScript : LocalPlayerScript {
                 inputX = input.x;
                 inputY = input.y;
 
-                while (timeCounter >= REACTION_TIME)
+                while (timeCounter >= REACTION_TIME[playerDifficulty])
                 {
                     timeCounter -= timeTracker[0];
 
