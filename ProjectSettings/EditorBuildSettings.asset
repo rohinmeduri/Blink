@@ -17,3 +17,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Scenes/Local Lobby Menu.unity
     guid: e2bf350534df7d14181835793ecab646
+  - enabled: 1
+    path: Assets/_Scenes/Multiplayer Lobby.unity
+    guid: 83b773045ae50804a878c8952a684144

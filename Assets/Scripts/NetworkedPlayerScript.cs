@@ -11,6 +11,10 @@ public class NetworkedPlayerScript : LocalPlayerScript {
 
     public void setLayer()
     {
+    }
+
+    public override void OnStartAuthority()
+    {
         if (hasAuthority)
         {
             setPlayerID(1);

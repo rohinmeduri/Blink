@@ -187,6 +187,7 @@ public class LocalPlayerScript : NetworkBehaviour
 
     public void setPlayerID(int ID)
     {
+        Debug.Log("playerID:" + ID);
         //change colors so players are distinguishable
         if (ID == 2)
         {
