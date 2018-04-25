@@ -8,23 +8,58 @@ public class NetworkedPlayerScript : LocalPlayerScript {
     private NetworkAnimator networkAnimator;
     private int gloryWaitFrames = 2;
     private int gloryWaitedFrames = 0;
+    private int IDCounter = 2;
+    private GameObject IDAssigner;
 
-    public void setLayer()
+    //this function is used for non-local versions of this player
+    public void newPlayer()
     {
+        if (!hasAuthority)
+        {
+            IDAssigner = GameObject.Find("ID Assigner");
+            setPlayerID(IDAssigner.GetComponent<IDAssigner>().getID());
+            createMeter();
+            Debug.Log("new player called");
+        }
     }
 
     public override void OnStartAuthority()
     {
         if (hasAuthority)
         {
-            setPlayerID(1);
-            gameObject.layer = 2;
             networkAnimator = GetComponent<NetworkAnimator>();
+            GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+            IDAssigner = GameObject.Find("ID Assigner");
+            foreach(var i in players)
+            {
+                if(i == gameObject)
+                {
+                    setPlayerID(1);
+                    gameObject.layer = 2;
+                    continue;
+                }
+                else
+                {
+                    Debug.Log(IDCounter);
+                    i.GetComponent<NetworkedPlayerScript>().setPlayerID(IDAssigner.GetComponent<IDAssigner>().getID());
+                    i.GetComponent<NetworkedPlayerScript>().createMeter();
+                    IDCounter++;
+                }
+            }
+           CmdNewPlayer(gameObject);
         }
-        else
-        {
-            setPlayerID(2);
-        }
+    }
+
+    [Command]
+    void CmdNewPlayer(GameObject p)
+    {
+        RpcNewPlayer(p);
+    }
+
+    [ClientRpc]
+    void RpcNewPlayer(GameObject p)
+    {
+        player.GetComponent<NetworkedPlayerScript>().newPlayer();
     }
 
     /*public override void createMeter()
@@ -67,11 +102,11 @@ public class NetworkedPlayerScript : LocalPlayerScript {
         //flips sprite if necessary (on all clients)
         gameObject.GetComponent<SpriteRenderer>().flipX = !facingRight;
 
-        gloryWaitedFrames++;
+        /*gloryWaitedFrames++;
         if (gloryWaitedFrames == gloryWaitFrames)
         {
             createMeter();
-        }
+        }*/
 
         if (!hasAuthority)
         {
