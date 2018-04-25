@@ -116,10 +116,11 @@ public class NetworkedPlayerScript : LocalPlayerScript {
         base.Update();
     }
 
-    //no pausing in online multiplayer
+    //'pausing' in online multiplayer doesn't actually stop game - only allows you to quit
     protected override void pauseGame()
     {
-
+        base.pauseGame();
+        Time.timeScale = 1;
     }
 
     protected override void FixedUpdate()
