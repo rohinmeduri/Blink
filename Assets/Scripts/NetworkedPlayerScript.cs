@@ -46,20 +46,20 @@ public class NetworkedPlayerScript : LocalPlayerScript {
                     IDCounter++;
                 }
             }
-           CmdNewPlayer(gameObject);
+           CmdNewPlayer();
         }
     }
 
     [Command]
-    void CmdNewPlayer(GameObject p)
+    void CmdNewPlayer()
     {
-        RpcNewPlayer(p);
+        RpcNewPlayer();
     }
 
     [ClientRpc]
-    void RpcNewPlayer(GameObject p)
+    void RpcNewPlayer()
     {
-        player.GetComponent<NetworkedPlayerScript>().newPlayer();
+        newPlayer();
     }
 
     /*public override void createMeter()
