@@ -183,7 +183,6 @@ public class LocalPlayerScript : NetworkBehaviour
 
     public virtual void removeMeter()
     {
-        Debug.Log("remove meter called");
         Destroy(glory);
     }
 
