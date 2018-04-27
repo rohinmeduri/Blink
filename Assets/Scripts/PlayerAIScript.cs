@@ -162,7 +162,7 @@ public class PlayerAIScript : LocalPlayerScript {
         //DI away from enemy
         Vector2 direction = new Vector2(inputX * -1, inputY * -1); 
         direction.Normalize();
-        Vector2 origin = new Vector2(player.GetComponent<Transform>().position.x, player.GetComponent<Transform>().position.y);
+        Vector2 origin = new Vector2(gameObject.GetComponent<Transform>().position.x, gameObject.GetComponent<Transform>().position.y);
 
         //make sure not DI'ing into a wall
         int layerMask = LayerMask.GetMask("Ignore Raycast");

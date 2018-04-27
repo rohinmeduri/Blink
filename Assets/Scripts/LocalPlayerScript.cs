@@ -14,7 +14,6 @@ public class LocalPlayerScript : NetworkBehaviour
     public float numGlory = 0;
     public PhysicsMaterial2D regularMaterial;
     public PhysicsMaterial2D stunMaterial;
-    public GameObject player;
     public float attackRadius;
     public float baseAttackForce;
     public float superRadius;
@@ -588,7 +587,7 @@ public class LocalPlayerScript : NetworkBehaviour
             //raycast to see if someone is hit with the attack - mask out attacker's layer
             Vector2 direction = getDirection();
             direction.Normalize();
-            Vector2 origin = new Vector2(player.GetComponent<Transform>().position.x, player.GetComponent<Transform>().position.y);
+            Vector2 origin = new Vector2(gameObject.GetComponent<Transform>().position.x, gameObject.GetComponent<Transform>().position.y);
             Debug.DrawRay(origin, direction * attackRadius, Color.blue, 1f);
             gameObject.layer = 2;
             RaycastHit2D hit = Physics2D.Raycast(origin: origin, direction: direction, distance: attackRadius);
@@ -686,7 +685,7 @@ public class LocalPlayerScript : NetworkBehaviour
 
                     int layerMask = LayerMask.GetMask("Ignore Raycast");
                     Vector2 direction = getDirection();
-                    Vector2 origin = new Vector2(player.GetComponent<Transform>().position.x, player.GetComponent<Transform>().position.y);
+                    Vector2 origin = new Vector2(gameObject.GetComponent<Transform>().position.x, gameObject.GetComponent<Transform>().position.y);
 
                     gameObject.layer = 0;
                     RaycastHit2D hit = Physics2D.Raycast(origin: origin, direction: direction, distance: TELEPORT_DISTANCE, layerMask: layerMask);
@@ -767,7 +766,7 @@ public class LocalPlayerScript : NetworkBehaviour
             //circlecast to see if someone is hit with the super - mask out attacker's layer
             Vector2 direction = getDirection();
             direction.Normalize();
-            Vector2 origin = new Vector2(player.GetComponent<Transform>().position.x, player.GetComponent<Transform>().position.y);
+            Vector2 origin = new Vector2(gameObject.GetComponent<Transform>().position.x, gameObject.GetComponent<Transform>().position.y);
             gameObject.layer = 2;
             RaycastHit2D hit = Physics2D.CircleCast(origin: origin, radius: superRadius, direction: direction, distance: Mathf.Infinity);
             gameObject.layer = 0;
@@ -917,7 +916,7 @@ public class LocalPlayerScript : NetworkBehaviour
 
     public virtual void startKnockback(GameObject defender, Vector2 dir, int hits)
     {
-        defender.GetComponent<LocalPlayerScript>().knockback(player, dir, hits);
+        defender.GetComponent<LocalPlayerScript>().knockback(gameObject, dir, hits);
     }
 
     /**
@@ -1026,7 +1025,7 @@ public class LocalPlayerScript : NetworkBehaviour
         rb2D.velocity = new Vector2(rb2D.velocity.x * KNOCKBACK_DAMPENING_COEF + DI_FORCE * inputX, rb2D.velocity.y * KNOCKBACK_DAMPENING_COEF + DI_FORCE * inputY);
         Vector2 direction = new Vector2(inputX, inputY);
         direction.Normalize();
-        Vector2 origin = new Vector2(player.GetComponent<Transform>().position.x, player.GetComponent<Transform>().position.y);
+        Vector2 origin = new Vector2(gameObject.GetComponent<Transform>().position.x, gameObject.GetComponent<Transform>().position.y);
         Debug.DrawRay(origin, direction * attackRadius * 2, Color.green, 0.1f);
     }
 
