@@ -133,6 +133,8 @@ public class LocalPlayerScript : NetworkBehaviour
 
         animator = GetComponent<Animator>();
         camera = GameObject.Find("Main Camera");
+
+        Time.timeScale = 1;
     }
 
 
