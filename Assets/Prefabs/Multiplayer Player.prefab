@@ -166,9 +166,9 @@ MonoBehaviour:
   gloryPrefab: {fileID: 1732290323307310, guid: ec57c344e826fbd409641a3eefccac12,
     type: 2}
   glorySlider: {fileID: 0}
-  comboText: {fileID: 0}
   comboOnes: {fileID: 0}
   comboTens: {fileID: 0}
+  comboHitsImage: {fileID: 0}
   numbers:
   - {fileID: 21300000, guid: a59d55b0fe89ca143bb6c49edf4aa51e, type: 3}
   - {fileID: 21300002, guid: a59d55b0fe89ca143bb6c49edf4aa51e, type: 3}
