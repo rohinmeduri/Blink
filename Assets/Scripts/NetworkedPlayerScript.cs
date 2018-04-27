@@ -6,8 +6,6 @@ using UnityEngine.Networking;
 public class NetworkedPlayerScript : LocalPlayerScript {
 
     private NetworkAnimator networkAnimator;
-    private int gloryWaitFrames = 2;
-    private int gloryWaitedFrames = 0;
     private int IDCounter = 2;
     private GameObject IDAssigner;
 
@@ -47,15 +45,20 @@ public class NetworkedPlayerScript : LocalPlayerScript {
     [ClientRpc]
     void RpcNewPlayer()
     {
+        newPlayer();
+    }
+
+
+    //this function is used for non-local versions of this player
+    public void newPlayer()
+    {
         if (!hasAuthority)
         {
             IDAssigner = GameObject.Find("ID Assigner");
             setPlayerID(IDAssigner.GetComponent<IDAssigner>().getID());
             createMeter();
-            Debug.Log("new player called");
         }
     }
-
 
     // Update is called once per frame
     protected override void Update()
@@ -146,17 +149,17 @@ public class NetworkedPlayerScript : LocalPlayerScript {
         CmdGloryUpdate(numGlory, otherPlayer.GetComponent<LocalPlayerScript>().numGlory, otherPlayer);
     }
 
+    protected override void reversalGloryUpdate(GameObject attacker, int hits)
+    {
+        base.reversalGloryUpdate(attacker, hits);
+        CmdGloryUpdate(numGlory, attacker.GetComponent<LocalPlayerScript>().numGlory, attacker);
+    }
+
     [Command]
     void CmdGloryUpdate(float myGlory, float otherGlory, GameObject otherPlayer)
     {
         numGlory = myGlory;
         otherPlayer.GetComponent<LocalPlayerScript>().numGlory = otherGlory;
-    }
-
-    protected override void reversalGloryUpdate(GameObject attacker, int hits)
-    {
-        base.reversalGloryUpdate(attacker, hits);
-        CmdGloryUpdate(numGlory, attacker.GetComponent<LocalPlayerScript>().numGlory, attacker);
     }
 
     protected override void reversalAnimation()
@@ -232,17 +235,6 @@ public class NetworkedPlayerScript : LocalPlayerScript {
         RpcSyncRotation(rotation);
     }
 
-    protected override void updateComboHits(int hits)
-    {
-        CmdUpdateComboHits(hits);
-    }
-
-    [Command]
-    void CmdUpdateComboHits(int hits)
-    {
-        comboHits = hits;
-    }
-
     /*
      * Script for syncing rotation on clients
      */
@@ -255,6 +247,17 @@ public class NetworkedPlayerScript : LocalPlayerScript {
     protected override void killPlayer(GameObject go)
     {
         CmdKillPlayer(go);
+    }
+
+    protected override void updateComboHits(int hits)
+    {
+        CmdUpdateComboHits(hits);
+    }
+
+    [Command]
+    void CmdUpdateComboHits(int hits)
+    {
+        comboHits = hits;
     }
 
     /**
