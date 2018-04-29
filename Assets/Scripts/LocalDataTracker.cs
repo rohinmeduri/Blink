@@ -13,10 +13,6 @@ public class LocalDataTracker : MonoBehaviour {
     private void Start()
     {
         cpn = new ChangePlayerNumber();
-    }
-
-    public void startGame()
-    {
         numberOfPlayers = cpn.getNumberOfAI() + cpn.getNumberOfPlayers();
         placing = new int[numberOfPlayers];
         counter = placing.Length - 1;
