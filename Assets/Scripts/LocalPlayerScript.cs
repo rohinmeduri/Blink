@@ -28,6 +28,7 @@ public class LocalPlayerScript : NetworkBehaviour
     public float gloryLostOnHit;
     public float reversalGloryGain;
     public float lastGloryIncrease = 0;
+    public GameObject camera;
 
     // private variables
     private int characterSelection = 2;
@@ -72,7 +73,6 @@ public class LocalPlayerScript : NetworkBehaviour
     private bool gamePaused = false;
     protected int playerID;
     protected int controllerID = 0;
-    public GameObject camera;
 
     // constants
     public const float GROUND_RUN_FORCE = 2; // How fast player can attain intended velocity on ground
@@ -226,6 +226,11 @@ public class LocalPlayerScript : NetworkBehaviour
         {
             controllerID = playerID;
         }
+    }
+
+    public int getPlayerID()
+    {
+        return playerID;
     }
 
     // Update is called once per frame
@@ -781,6 +786,8 @@ public class LocalPlayerScript : NetworkBehaviour
     protected virtual void killPlayer(GameObject go)
     {
         go.GetComponent<LocalPlayerScript>().removeMeter();
+        //Debug.Log("player " + go.GetComponent<LocalPlayerScript>().playerID + " died");
+        LocalDataTracker.playerDeath(go.GetComponent<LocalPlayerScript>().playerID);
         Destroy(go);
     }
 
