@@ -73,6 +73,10 @@ public class LocalPlayerScript : NetworkBehaviour
     private bool gamePaused = false;
     protected int playerID;
     protected int controllerID = 0;
+    private int maxCombo = 0;
+    private int hitNumber = 0;
+    private int attackNumber = 0;
+    private int kills = 0;
 
     // constants
     public const float GROUND_RUN_FORCE = 2; // How fast player can attain intended velocity on ground
@@ -598,6 +602,8 @@ public class LocalPlayerScript : NetworkBehaviour
             RaycastHit2D hit = Physics2D.Raycast(origin: origin, direction: direction, distance: attackRadius);
             gameObject.layer = 0;
 
+            attackNumber++;
+
             //if attack is successful:
             if (hit.rigidbody != null)
             {
@@ -611,6 +617,8 @@ public class LocalPlayerScript : NetworkBehaviour
                 {
                     camera.GetComponent<CameraShake>().shake((1.0f + (comboHits / 4)) * 0.5f);
                 }
+                hitNumber++;
+                if (comboHits > maxCombo) maxCombo = comboHits;
             }
 
             //trigger animation
@@ -783,12 +791,17 @@ public class LocalPlayerScript : NetworkBehaviour
         }
     }
 
+    /**
+     * Script for killing another player
+     */
     protected virtual void killPlayer(GameObject go)
     {
         go.GetComponent<LocalPlayerScript>().removeMeter();
-        //Debug.Log("player " + go.GetComponent<LocalPlayerScript>().playerID + " died");
-        LocalDataTracker.playerDeath(go.GetComponent<LocalPlayerScript>().playerID);
         Destroy(go);
+        kills++;
+
+        LocalDataTracker ldt = GameObject.Find("Data Tracker").GetComponent<LocalDataTracker>();
+        ldt.playerDeath(go, gameObject);
     }
 
     /**
@@ -1165,6 +1178,26 @@ public class LocalPlayerScript : NetworkBehaviour
         collision.GetContacts(cps);
         ContactPoint2D cp = cps[0];
         return cp.normal;
+    }
+
+    /**
+     * Methods for getting various end game stats
+     */
+    public int getCombo()
+    {
+        return maxCombo;
+    }
+    public int getHits()
+    {
+        return hitNumber;
+    }
+    public int getHitPercentage()
+    {
+        return (attackNumber == 0) ? 0 : 100 * hitNumber / attackNumber;
+    }
+    public int getKills()
+    {
+        return kills;
     }
 
     //Script used only for networked children to update comboHits on clients
