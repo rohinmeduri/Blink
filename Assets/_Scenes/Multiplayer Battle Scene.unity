@@ -1065,10 +1065,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bf5f86b0fbf24a4a984a47536223001, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  place1: {fileID: 0}
-  place2: {fileID: 0}
-  place3: {fileID: 0}
-  place4: {fileID: 0}
+  place1: {fileID: 485072131}
+  place2: {fileID: 937448127}
+  place3: {fileID: 906095311}
+  place4: {fileID: 1511167793}
 --- !u!4 &1212681318
 Transform:
   m_ObjectHideFlags: 0
