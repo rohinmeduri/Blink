@@ -8,12 +8,8 @@ public class ChangePlayerNumber : MonoBehaviour {
     private static int numberOfAI = 1;          //keep track of number of AI
     public Text players;
     public Text AI;
+
     //set limit in unity editor on AI
-    void start()
-    {
-        players = gameObject.GetComponent<Text>();
-        AI = gameObject.GetComponent<Text>();
-    }
     public void changeNumberOfPlayersBy(int n)      //used by playerCountGroup buttons
     {
         numberOfPlayers += n;
