@@ -216,9 +216,23 @@ public class NetworkedPlayerScript : LocalPlayerScript {
 
     protected override void hitstunAnimation()
     {
-        networkAnimator.SetTrigger("Hitstun");
-        if (NetworkServer.active)
-            animator.ResetTrigger("Hitstun");
+       // networkAnimator.SetTrigger("Hitstun");
+        //if (NetworkServer.active)
+          //  animator.ResetTrigger("Hitstun");
+
+        CmdHitstun();
+    }
+
+    [Command]
+    void CmdHitstun()
+    {
+        RpcHitstun();
+    }
+
+    [ClientRpc]
+    void RpcHitstun()
+    {
+        animator.SetTrigger("Hitstun");
     }
 
     protected override void rotate(Vector3 rotation)

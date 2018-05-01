@@ -38,12 +38,9 @@ public class LocalPlayerScript : NetworkBehaviour
     protected float stickyWallTimer;
     private float stunTimer;
     protected Rigidbody2D rb2D;
-    private Collider2D c2D;
     private bool actionLock = false;
     private float actionWaitFrames;
     private float actionWaitedFrames = 0;
-    private bool attackButtonHeld = false;
-    private int attackFrozeFrames = 0;
     private float blinkFrames = 0;
     private float blinkTimer = 0;
     private bool teleported = false;
@@ -132,7 +129,6 @@ public class LocalPlayerScript : NetworkBehaviour
         xInputTracker = new float[BOOST_TIMELIMIT + 1];
 
         rb2D = gameObject.GetComponent<Rigidbody2D>();
-        c2D = gameObject.GetComponent<Collider2D>();
 
         animator = GetComponent<Animator>();
         camera = GameObject.Find("Main Camera");
@@ -188,6 +184,7 @@ public class LocalPlayerScript : NetworkBehaviour
     public virtual void removeMeter()
     {
         Destroy(glory);
+        Debug.Log("remove meter called" + playerID);
     }
 
     public void setPlayerID(int ID)
@@ -301,18 +298,6 @@ public class LocalPlayerScript : NetworkBehaviour
             }
 
         }
-
-        //freeze player if they are mid-attack
-        /*if (attacking)
-        {
-            rb2D.velocity = Vector2.zero;
-            attackFrozeFrames++;
-            if (attackFrozeFrames >= ATTACK_FREEZE_FRAMES)
-            {
-                attackFrozeFrames = 0;
-                attacking = false;
-            }
-        }*/
     }
 
     //set input values (done this way because different inputs are used in derrived classes)
@@ -628,9 +613,6 @@ public class LocalPlayerScript : NetworkBehaviour
             actionLock = true;
             actionWaitFrames = ATTACK_WAIT_FRAMES;
         }
-
-        //keep track that attack button wasn't held during this frame
-        attackButtonHeld = false;
     }
 
     /**
