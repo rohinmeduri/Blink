@@ -1048,7 +1048,7 @@ GameObject:
   - component: {fileID: 1212681318}
   - component: {fileID: 1212681317}
   m_Layer: 0
-  m_Name: Data Manager
+  m_Name: Data Tracker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
