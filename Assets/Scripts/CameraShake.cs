@@ -27,6 +27,7 @@ public class CameraShake : MonoBehaviour {
     void Update () {
 		if(followDuration <= ZOOM_DURATION && playerToFollow != null)
         {
+            //camera pan
             xPosition = (playerToFollow.GetComponent<Transform>().position - gameObject.GetComponent<Transform>().position).x;
             yPosition = (playerToFollow.GetComponent<Transform>().position - gameObject.GetComponent<Transform>().position).y;
             difference = new Vector3(xPosition, yPosition, 0);
@@ -34,9 +35,11 @@ public class CameraShake : MonoBehaviour {
             {
                 GetComponent<Camera>().orthographicSize -= 0.01f;
             }
-            gameObject.GetComponent<Transform>().position += difference / 100 + Random.insideUnitSphere * shakeIntensity;
-            //gameObject.GetComponent<Transform>().position = new Vector3(playerToFollow.GetComponent<Transform>().position.x, playerToFollow.GetComponent<Transform>().position.y, GetComponent<Transform>().position.z);
-            if(shakeIntensity > 0)
+            gameObject.GetComponent<Transform>().position += difference / 50 + Random.insideUnitSphere * shakeIntensity;
+            followDuration++;
+
+            //camera shake
+            if (shakeIntensity > 0)
             {
                 shakeIntensity -= shakeDecay;
             }
@@ -45,7 +48,6 @@ public class CameraShake : MonoBehaviour {
                        originalRotation.y + Random.Range(-shakeIntensity, shakeIntensity) * .002f,
                        originalRotation.z + Random.Range(-shakeIntensity, shakeIntensity) * .002f,
                        originalRotation.w + Random.Range(-shakeIntensity, shakeIntensity) * .002f);
-            followDuration++; ;
         }
         else
         {
@@ -65,7 +67,6 @@ public class CameraShake : MonoBehaviour {
         shakeDecay = intensity * 0.04f;
         playerToFollow = victim;
         followDuration = 0;
-
     }
 
     private void reset()
