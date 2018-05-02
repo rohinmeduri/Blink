@@ -197,7 +197,7 @@ public class NetworkedPlayerScript : LocalPlayerScript {
     {
         if (hits > 1)
         {
-            camera.GetComponent<CameraShake>().shake((1.0f + (hits / 4)) * 0.5f);
+            camera.GetComponent<CameraShake>().shake((1.0f + (hits / 4)) * 0.5f, defender);
         }
         if (defender.tag == "Player")
         {

@@ -12,7 +12,7 @@ public class PlayerAIScript : LocalPlayerScript {
     private float timeCounter = 0;
     private int playerDifficulty;
 
-    public readonly float[] REACTION_TIME = {0.5f, 0.4f, 0.3f}; //how long AI takes to react to other player's movements
+    public readonly float[] REACTION_TIME = {0.5f, 0.4f, 0.25f}; //how long AI takes to react to other player's movements
     public readonly float[] BLINK_DISTANCE_FACTOR = {4f, 2f, 1.2f};
 
     protected override void Update()

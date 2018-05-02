@@ -20,7 +20,7 @@ public class LocalPlayerScript : NetworkBehaviour
     public LayerMask mask;
     public GameObject gloryPrefab;
     public Slider glorySlider;
-    public   Image comboOnes;
+    public Image comboOnes;
     public Image comboTens;
     public Image comboHitsImage;
     public Sprite[] numbers;
@@ -600,7 +600,7 @@ public class LocalPlayerScript : NetworkBehaviour
                 blinkFrames = 0;
                 if (comboHits > 1)
                 {
-                    camera.GetComponent<CameraShake>().shake((1.0f + (comboHits / 4)) * 0.5f);
+                    camera.GetComponent<CameraShake>().shake((1.0f + (comboHits / 4)) * 0.5f, hit.rigidbody.gameObject);
                 }
                 hitNumber++;
                 if (comboHits > maxCombo) maxCombo = comboHits;
