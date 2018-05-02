@@ -28,7 +28,6 @@ public class NetworkedPlayerScript : LocalPlayerScript {
                 {
                     Debug.Log(IDCounter);
                     i.GetComponent<NetworkedPlayerScript>().setPlayerID(IDAssigner.GetComponent<IDAssigner>().getID());
-                    i.GetComponent<NetworkedPlayerScript>().createMeter();
                     IDCounter++;
                 }
             }
@@ -56,7 +55,6 @@ public class NetworkedPlayerScript : LocalPlayerScript {
         {
             IDAssigner = GameObject.Find("ID Assigner");
             setPlayerID(IDAssigner.GetComponent<IDAssigner>().getID());
-            createMeter();
         }
     }
 
@@ -260,6 +258,7 @@ public class NetworkedPlayerScript : LocalPlayerScript {
 
     protected override void killPlayer(GameObject go)
     {
+        go.GetComponent<LocalPlayerScript>().removeMeter();
         CmdKillPlayer(go);
     }
 
