@@ -10,26 +10,28 @@ public class LocalDataTracker : MonoBehaviour {
     public Text place3;
     public Text place4;
 
-    private ChangePlayerNumber cpn;
+    //private ChangePlayerNumber cpn;
     private static int numberOfPlayers;
     private static int[][] placing;
-    private static int counter;
+    private static int numberAlive;
     private static int sum = 0;
 
     private void Start()
     {
-        cpn = new ChangePlayerNumber();
-        numberOfPlayers = cpn.getNumberOfAI() + cpn.getNumberOfPlayers();
+        //cpn = new ChangePlayerNumber();
+        //numberOfPlayers = cpn.getNumberOfAI() + cpn.getNumberOfPlayers();
+        Invoke("findPlayers", 2);
+    }
+
+    private void findPlayers()
+    {
+        numberOfPlayers = GameObject.FindGameObjectsWithTag("Player").Length + GameObject.FindGameObjectsWithTag("PlayerAI").Length;
         placing = new int[numberOfPlayers][];
-        for(int i = 0; i < numberOfPlayers; i++)
+        for (int i = 0; i < numberOfPlayers; i++)
         {
             placing[i] = new int[5];
         }
-        counter = placing.Length - 1;
-    }
-
-    private void Update()
-    {
+        numberAlive = placing.Length;
     }
 
     public void playerDeath(GameObject lostPlayer, GameObject wonPlayer)
@@ -37,19 +39,20 @@ public class LocalDataTracker : MonoBehaviour {
         LocalPlayerScript lostPlayerScript = lostPlayer.GetComponent<LocalPlayerScript>();
         LocalPlayerScript wonPlayerScript = wonPlayer.GetComponent<LocalPlayerScript>();
 
-        placing[counter] = compileData(lostPlayerScript);
+        placing[numberAlive - 1] = compileData(lostPlayerScript);
         placing[0] = compileData(wonPlayerScript);
 
         int playerIndex = lostPlayerScript.getPlayerID();
         sum += playerIndex;
-       
-        counter--;
+        
+        numberAlive--;
 
         
         // insert code for updating other player stats
 
-        if(counter == 0)
+        if(numberAlive == 1)
         {
+            Debug.Log(numberAlive);
             displayResults();
         }
     }
@@ -57,7 +60,7 @@ public class LocalDataTracker : MonoBehaviour {
     private int[] compileData(LocalPlayerScript lps)
     {
         int playerIndex = lps.getPlayerID();
-        int place = counter + 1;
+        int place = numberAlive;
         int maxCombo = lps.getCombo();
         int hitNumber = lps.getHits();
         int hitPercentage = lps.getHitPercentage();
