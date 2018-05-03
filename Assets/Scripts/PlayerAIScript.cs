@@ -40,7 +40,6 @@ public class PlayerAIScript : LocalPlayerScript {
         }
 
         base.Update();
-        hasSuper = false;
     }
 
     public void setPlayerDifficulty(int difficulty)
