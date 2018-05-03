@@ -326,8 +326,7 @@ public class LocalPlayerScript : NetworkBehaviour
                 gamePaused = true;
                 pauseMenu.alpha = 1;
                 pauseMenu.interactable = true;
-
-                
+                Debug.Log(pauseMenu.interactable);
             }
             else
             {
