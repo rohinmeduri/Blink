@@ -253,7 +253,7 @@ public class NetworkedPlayerScript : LocalPlayerScript {
         GetComponent<Transform>().eulerAngles = rotation;
     }
 
-    protected override void killPlayer(GameObject go)
+    public override void killPlayer(GameObject go)
     {
         go.GetComponent<LocalPlayerScript>().removeMeter();
         CmdKillPlayer(go);

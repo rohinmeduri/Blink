@@ -149,6 +149,8 @@ MonoBehaviour:
   reversalGloryGain: 12
   lastGloryIncrease: 0
   camera: {fileID: 0}
+  superPrefab: {fileID: 1127662235417580, guid: b284844ca23c54742a7860d4411681e5,
+    type: 2}
 --- !u!212 &212091731836323832
 SpriteRenderer:
   m_ObjectHideFlags: 1

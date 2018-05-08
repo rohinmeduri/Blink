@@ -29,6 +29,7 @@ public class LocalPlayerScript : NetworkBehaviour
     public float reversalGloryGain;
     public float lastGloryIncrease = 0;
     public GameObject camera;
+    public GameObject superPrefab;  
 
     // private variables
     private int characterSelection = 2;
@@ -237,6 +238,7 @@ public class LocalPlayerScript : NetworkBehaviour
     // Update is called once per frame
     virtual protected void Update()
     {
+        hasSuper = true;
         assignInputs();
 
         pauseGame();
@@ -762,7 +764,15 @@ public class LocalPlayerScript : NetworkBehaviour
             //circlecast to see if someone is hit with the super - mask out attacker's layer
             Vector2 direction = getDirection();
             direction.Normalize();
-            Vector2 origin = new Vector2(gameObject.GetComponent<Transform>().position.x, gameObject.GetComponent<Transform>().position.y);
+
+           // superPrefab.transform.rotation = Quaternion.LookRotation(direction);
+            superPrefab.transform.position = transform.position;
+            superPrefab.transform.eulerAngles = new Vector3(0, 0, Mathf.Rad2Deg * Mathf.Atan2(direction.y, direction.x) - 90f);
+
+            GameObject projectile = Instantiate(superPrefab);
+            projectile.GetComponent<SuperProjectileScript>().setSender(gameObject);
+            projectile.GetComponent<Rigidbody2D>().velocity = direction * 25;
+            /*Vector2 origin = new Vector2(gameObject.GetComponent<Transform>().position.x, gameObject.GetComponent<Transform>().position.y);
             gameObject.layer = 2;
             RaycastHit2D hit = Physics2D.CircleCast(origin: origin, radius: superRadius, direction: direction, distance: Mathf.Infinity);
             gameObject.layer = 0;
@@ -770,14 +780,14 @@ public class LocalPlayerScript : NetworkBehaviour
             if (hit.rigidbody != null && hit.rigidbody.gameObject.tag != null && (hit.rigidbody.gameObject.tag == "Player" || hit.rigidbody.gameObject.tag == "PlayerAI"))
             {
                 killPlayer(hit.rigidbody.gameObject);
-            }
+            }*/
         }
     }
 
     /**
      * Script for killing another player
      */
-    protected virtual void killPlayer(GameObject go)
+    public virtual void killPlayer(GameObject go)
     {
         go.GetComponent<LocalPlayerScript>().removeMeter();
         Destroy(go);
