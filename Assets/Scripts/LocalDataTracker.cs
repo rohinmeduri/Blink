@@ -77,6 +77,7 @@ public class LocalDataTracker : MonoBehaviour {
 
         endScreen.alpha = 1;
         endScreen.interactable = true;
+        endScreen.GetComponent<RectTransform>().SetAsLastSibling();
 
         place1.text = "1st\n" + formatStats(placing[0]);
         place2.text = "2nd\n" + formatStats(placing[1]);

@@ -325,6 +325,7 @@ public class LocalPlayerScript : NetworkBehaviour
                 gamePaused = true;
                 pauseMenu.alpha = 1;
                 pauseMenu.interactable = true;
+                pauseMenu.GetComponent<RectTransform>().SetAsLastSibling();
                 Debug.Log(pauseMenu.interactable);
             }
             else
