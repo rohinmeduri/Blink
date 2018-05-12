@@ -215,11 +215,11 @@ public class NetworkedPlayerScript : LocalPlayerScript {
 
     protected override void hitstunAnimation()
     {
-       // networkAnimator.SetTrigger("Hitstun");
+       networkAnimator.SetTrigger("Hitstun");
         //if (NetworkServer.active)
           //  animator.ResetTrigger("Hitstun");
 
-        CmdHitstun();
+       // CmdHitstun();
     }
 
     [Command]
