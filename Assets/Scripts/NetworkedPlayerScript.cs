@@ -26,7 +26,6 @@ public class NetworkedPlayerScript : LocalPlayerScript {
                 }
                 else
                 {
-                    Debug.Log(IDCounter);
                     i.GetComponent<NetworkedPlayerScript>().setPlayerID(IDAssigner.GetComponent<IDAssigner>().getID());
                     IDCounter++;
                 }
@@ -280,7 +279,7 @@ public class NetworkedPlayerScript : LocalPlayerScript {
     void CmdSpawnSuperProjectile(Vector3 position, Vector2 velocity, Vector3 rotation)
     {
         base.spawnProjectile(position, velocity, rotation);
-        NetworkServer.SpawnWithClientAuthority(projectile, connectionToClient);
+        NetworkServer.Spawn(projectile);
     }
 
     /*

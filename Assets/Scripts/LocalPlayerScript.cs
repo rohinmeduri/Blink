@@ -237,7 +237,6 @@ public class LocalPlayerScript : NetworkBehaviour
     // Update is called once per frame
     virtual protected void Update()
     {
-        hasSuper = true;
         assignInputs();
 
         pauseGame();
