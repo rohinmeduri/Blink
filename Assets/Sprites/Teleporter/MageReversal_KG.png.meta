@@ -1,12 +1,13 @@
 fileFormatVersion: 2
-guid: 78eab95c9ec3ad24a865a9a053d98af8
-timeCreated: 1519111962
+guid: e4ce1b509f43beb418c86f6299389e89
+timeCreated: 1526092938
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Teleporter_Idle_1
-    21300002: Teleporter_Idle_2
-    21300004: Teleporter_Idle_3
+    21300000: Reversal_1
+    21300002: Reversal_2
+    21300004: Reversal_3
+    21300006: Reversal_4
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -48,8 +49,9 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 180
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 100
+  spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -93,43 +95,57 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Teleporter_Idle_1
+      name: Reversal_1
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 90
-        height: 180
+        width: 123
+        height: 409
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Teleporter_Idle_2
+      name: Reversal_2
       rect:
         serializedVersion: 2
-        x: 90
+        x: 198
         y: 0
-        width: 90
-        height: 180
+        width: 129
+        height: 409
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Teleporter_Idle_3
+      name: Reversal_3
       rect:
         serializedVersion: 2
-        x: 180
+        x: 358
         y: 0
-        width: 90
-        height: 180
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 187
+        height: 409
+      alignment: 9
+      pivot: {x: 0.5596609, y: 0.5054555}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Reversal_4
+      rect:
+        serializedVersion: 2
+        x: 544
+        y: 3
+        width: 201
+        height: 406
+      alignment: 9
+      pivot: {x: 0.575, y: 0.50000006}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
