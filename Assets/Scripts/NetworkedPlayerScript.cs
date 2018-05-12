@@ -164,6 +164,11 @@ public class NetworkedPlayerScript : LocalPlayerScript {
         networkAnimator.SetTrigger("reversaling");
     }
 
+    protected override void superAnimation()
+    {
+        networkAnimator.SetTrigger("super");
+    }
+
     public override void startKnockback(GameObject defender, Vector2 dir, int hits)
     {
         CmdKnockback(defender, gameObject, dir, hits);

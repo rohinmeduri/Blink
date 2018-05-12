@@ -237,6 +237,8 @@ public class LocalPlayerScript : NetworkBehaviour
     // Update is called once per frame
     virtual protected void Update()
     {
+        hasSuper = true;
+
         assignInputs();
 
         pauseGame();
@@ -745,8 +747,13 @@ public class LocalPlayerScript : NetworkBehaviour
             actionLock = true;
             actionWaitFrames = SUPER_CHARGE_FRAMES + SUPER_END_LAG;
             startedSuper = true;
-            animator.SetTrigger("super");
+            superAnimation();
         }
+    }
+
+    protected virtual void superAnimation()
+    {
+        animator.SetTrigger("super");
     }
 
     /**
