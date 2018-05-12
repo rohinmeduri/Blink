@@ -958,7 +958,7 @@ public class LocalPlayerScript : NetworkBehaviour
             reversalGloryUpdate(attacker, comboHits);
             startKnockback(attacker, reversalDirection, comboHits);
             comboHitInterval = 0;
-            //actionWaitFrames = 0;
+            actionWaitFrames = 1.1f;
             blinkFrames = 0;
         }
 
