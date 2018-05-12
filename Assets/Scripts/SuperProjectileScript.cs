@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class SuperProjectileScript : MonoBehaviour {
+public class SuperProjectileScript : NetworkBehaviour {
     private GameObject sender;
 	// Use this for initialization
 	void Start () {
@@ -19,13 +20,14 @@ public class SuperProjectileScript : MonoBehaviour {
         sender = s;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.layer == 2)
+        if(collision.gameObject.tag != "Player" && collision.gameObject.tag != "PlayerAI")
         {
             Destroy(gameObject);
+            Debug.Log("destroyed");
         }
-        else if(collision.gameObject.tag == "Player" || collision.rigidbody.gameObject.tag == "PlayerAI")
+        else
         {
             Debug.Log(sender == null);
             sender.GetComponent<LocalPlayerScript>().killPlayer(collision.gameObject);

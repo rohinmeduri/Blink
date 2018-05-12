@@ -270,7 +270,20 @@ public class NetworkedPlayerScript : LocalPlayerScript {
         comboHits = hits;
     }
 
-    /**
+    protected override void spawnProjectile(Vector3 position, Vector2 velocity, Vector3 rotation)
+    {
+        CmdSpawnSuperProjectile(position, velocity, rotation);
+    }
+    
+
+    [Command]
+    void CmdSpawnSuperProjectile(Vector3 position, Vector2 velocity, Vector3 rotation)
+    {
+        base.spawnProjectile(position, velocity, rotation);
+        NetworkServer.SpawnWithClientAuthority(projectile, connectionToClient);
+    }
+
+    /*
     * Script that tells server to kill player on clients
     */
     [Command]

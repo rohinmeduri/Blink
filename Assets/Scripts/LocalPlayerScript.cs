@@ -51,6 +51,7 @@ public class LocalPlayerScript : NetworkBehaviour
     [SyncVar]
     protected bool hasSuper = false;
     private bool startedSuper = false;
+    protected GameObject projectile;
     protected Animator animator;
     private List<GameObject> touchingObjects = new List<GameObject>();
     private List<Vector2> touchingNormals = new List<Vector2>();
@@ -185,12 +186,10 @@ public class LocalPlayerScript : NetworkBehaviour
     public virtual void removeMeter()
     {
         Destroy(glory);
-        Debug.Log("remove meter called" + playerID);
     }
 
     public void setPlayerID(int ID)
     {
-        Debug.Log("playerID:" + ID);
         //change colors so players are distinguishable
         if (ID == 2)
         {
@@ -328,7 +327,6 @@ public class LocalPlayerScript : NetworkBehaviour
                 pauseMenu.alpha = 1;
                 pauseMenu.interactable = true;
                 pauseMenu.GetComponent<RectTransform>().SetAsLastSibling();
-                Debug.Log(pauseMenu.interactable);
             }
             else
             {
@@ -755,7 +753,7 @@ public class LocalPlayerScript : NetworkBehaviour
     /**
      * Script for firing super
      */
-    void launchSuper()
+    protected virtual void launchSuper()
     {
         if (startedSuper && actionWaitedFrames >= SUPER_CHARGE_FRAMES)
         {
@@ -766,12 +764,13 @@ public class LocalPlayerScript : NetworkBehaviour
             direction.Normalize();
 
            // superPrefab.transform.rotation = Quaternion.LookRotation(direction);
-            superPrefab.transform.position = transform.position;
+            /*superPrefab.transform.position = transform.position;
             superPrefab.transform.eulerAngles = new Vector3(0, 0, Mathf.Rad2Deg * Mathf.Atan2(direction.y, direction.x) - 90f);
 
-            GameObject projectile = Instantiate(superPrefab);
+            projectile = Instantiate(superPrefab);
             projectile.GetComponent<SuperProjectileScript>().setSender(gameObject);
-            projectile.GetComponent<Rigidbody2D>().velocity = direction * 25;
+            projectile.GetComponent<Rigidbody2D>().velocity = direction * 25;*/
+            spawnProjectile(transform.position, direction * 25, new Vector3(0, 0, Mathf.Rad2Deg * Mathf.Atan2(direction.y, direction.x) - 90f));
             /*Vector2 origin = new Vector2(gameObject.GetComponent<Transform>().position.x, gameObject.GetComponent<Transform>().position.y);
             gameObject.layer = 2;
             RaycastHit2D hit = Physics2D.CircleCast(origin: origin, radius: superRadius, direction: direction, distance: Mathf.Infinity);
@@ -782,6 +781,16 @@ public class LocalPlayerScript : NetworkBehaviour
                 killPlayer(hit.rigidbody.gameObject);
             }*/
         }
+    }
+
+    protected virtual void spawnProjectile(Vector3 position, Vector2 velocity, Vector3 rotation)
+    {
+            superPrefab.transform.position = position;
+            superPrefab.transform.eulerAngles = rotation;
+
+            projectile = Instantiate(superPrefab);
+            projectile.GetComponent<SuperProjectileScript>().setSender(gameObject);
+            projectile.GetComponent<Rigidbody2D>().velocity = velocity;
     }
 
     /**

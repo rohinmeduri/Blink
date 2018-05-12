@@ -184,7 +184,7 @@ MonoBehaviour:
   reversalGloryGain: 12
   lastGloryIncrease: 0
   camera: {fileID: 0}
-  superPrefab: {fileID: 1127662235417580, guid: b284844ca23c54742a7860d4411681e5,
+  superPrefab: {fileID: 1516640886044026, guid: 12f75d4d3260a9843adf531d3d0f29cc,
     type: 2}
 --- !u!114 &114509458611876312
 MonoBehaviour:
