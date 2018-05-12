@@ -1118,6 +1118,7 @@ public class LocalPlayerScript : NetworkBehaviour
             if (isGround() && !isWall(getNormal(collision)))
             {
                 animator.SetTrigger("hitGround");
+                actionWaitFrames = 0.1f;
             }
         }
 
