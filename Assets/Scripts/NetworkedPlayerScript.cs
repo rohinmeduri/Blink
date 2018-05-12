@@ -164,6 +164,11 @@ public class NetworkedPlayerScript : LocalPlayerScript {
         networkAnimator.SetTrigger("reversaling");
     }
 
+    protected override void reversalLandedAnimation()
+    {
+        networkAnimator.SetTrigger("reversalLanded");
+    }
+
     protected override void superAnimation()
     {
         networkAnimator.SetTrigger("super");
@@ -221,6 +226,7 @@ public class NetworkedPlayerScript : LocalPlayerScript {
 
        // CmdHitstun();
     }
+
 
     [Command]
     void CmdHitstun()

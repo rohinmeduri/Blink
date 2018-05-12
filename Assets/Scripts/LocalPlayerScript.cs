@@ -953,11 +953,12 @@ public class LocalPlayerScript : NetworkBehaviour
         //check if reversaling correctly
         if (reversalEffective && Vector2.Angle(reversalDirection, dir) > 90f)
         {
+            reversalLandedAnimation();
             updateComboHits(comboHits + 1);
             reversalGloryUpdate(attacker, comboHits);
             startKnockback(attacker, reversalDirection, comboHits);
             comboHitInterval = 0;
-            actionWaitFrames = 0;
+            //actionWaitFrames = 0;
             blinkFrames = 0;
         }
 
@@ -1000,6 +1001,11 @@ public class LocalPlayerScript : NetworkBehaviour
             //trigger animation
             hitstunAnimation();
         }
+    }
+
+    protected virtual void reversalLandedAnimation()
+    {
+        animator.SetTrigger("reversalLanded");
     }
 
     protected virtual void hitstunAnimation()
