@@ -253,10 +253,29 @@ public class LocalPlayerScript : NetworkBehaviour
         animator.SetBool("onWall", isWall());
         animator.SetInteger("StunTimer", (int)stunTimer);
         int attackNum = 0;
-        if (Mathf.Abs(inputY) > Mathf.Abs(inputX))
+        float angle = Mathf.Atan2(Mathf.Abs(getDirection().x), getDirection().y);
+        if(angle < Mathf.PI / 8)
+        {
+            attackNum = 2;
+        }
+        else if (angle < 5 * Mathf.PI / 8)
+        {
+            attackNum = 0;
+        }
+        else if (angle < 7 * Mathf.PI / 8)
+        {
+            attackNum = -1;
+        }
+        else
+        {
+            attackNum = -2;
+        }
+       /* if (Mathf.Abs(inputY) > Mathf.Abs(inputX))
         {
             attackNum = (int)Mathf.Sign(inputY);
-        }
+        }*/
+
+
         animator.SetInteger("attackNum", attackNum);
 
         // Decreases stun timer
@@ -574,6 +593,9 @@ public class LocalPlayerScript : NetworkBehaviour
     {
         if (attackInput)
         {
+            float angle = Mathf.Atan2(getDirection().x, getDirection().y);
+            Debug.Log(angle);
+
             //cancel attacker's momentum
             rb2D.velocity = Vector2.zero;
 

@@ -1,14 +1,15 @@
 fileFormatVersion: 2
-guid: fa65ccc5888c783418f54094fcc81dde
-timeCreated: 1525752880
+guid: 74eae1a6c5753c045adcf993f0fdbbd9
+timeCreated: 1526184401
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Uair_5
-    21300002: Uair_4
-    21300004: Uair_3
-    21300006: Uair_2
-    21300008: Uair_1
+    21300000: DownSide_3
+    21300002: DownSide_4
+    21300004: DownSide_5
+    21300006: DownSide_3
+    21300008: DownSide_1
+    21300010: DownSide_2
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -50,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 260
+  spritePixelsToUnits: 180
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -96,13 +97,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Uair_5
+      name: DownSide_3
       rect:
         serializedVersion: 2
-        x: 85
-        y: 4
-        width: 268
-        height: 539
+        x: 0
+        y: 337
+        width: 212
+        height: 357
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -110,55 +111,55 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Uair_4
+      name: DownSide_4
       rect:
         serializedVersion: 2
-        x: 428
+        x: 210
+        y: 342
+        width: 207
+        height: 353
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: DownSide_5
+      rect:
+        serializedVersion: 2
+        x: 408
+        y: 339
+        width: 221
+        height: 356
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: DownSide_2
+      rect:
+        serializedVersion: 2
+        x: 629
+        y: 338
+        width: 147
+        height: 354
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: DownSide_1
+      rect:
+        serializedVersion: 2
+        x: 0
         y: 0
-        width: 288
-        height: 634
-      alignment: 9
-      pivot: {x: 0.5, y: 0.4}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: Uair_3
-      rect:
-        serializedVersion: 2
-        x: 816
-        y: 4
-        width: 272
-        height: 480
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: Uair_2
-      rect:
-        serializedVersion: 2
-        x: 1252
-        y: 31
-        width: 237
-        height: 469
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: Uair_1
-      rect:
-        serializedVersion: 2
-        x: 1619
-        y: 34
-        width: 313
-        height: 455
+        width: 211
+        height: 337
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
