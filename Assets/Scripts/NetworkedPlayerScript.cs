@@ -8,6 +8,8 @@ public class NetworkedPlayerScript : LocalPlayerScript {
     private NetworkAnimator networkAnimator;
     private int IDCounter = 2;
     private GameObject IDAssigner;
+    [SyncVar]
+    private int[] stats;
 
     public override void OnStartAuthority()
     {
@@ -308,6 +310,16 @@ public class NetworkedPlayerScript : LocalPlayerScript {
     [ClientRpc]
     void RpcKillPlayer(GameObject player)
     {
+        if (hasAuthority)
+        {
+            CmdUpdateStats(compileData());
+        }
         base.killPlayer(player);
+    }
+
+    [Command]
+    void CmdUpdateStats(int[] s)
+    {
+        stats = s;
     }
 }

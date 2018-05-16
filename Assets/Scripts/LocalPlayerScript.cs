@@ -29,7 +29,7 @@ public class LocalPlayerScript : NetworkBehaviour
     public float reversalGloryGain;
     public float lastGloryIncrease = 0;
     public GameObject camera;
-    public GameObject superPrefab;  
+    public GameObject superPrefab;
 
     // private variables
     private int characterSelection = 2;
@@ -161,7 +161,7 @@ public class LocalPlayerScript : NetworkBehaviour
         {
             gloryTransform.anchoredPosition = new Vector3(-143, 0, 0);
         }
-        else if(playerID == 2)
+        else if (playerID == 2)
         {
             gloryTransform.anchoredPosition = new Vector3(53, 0, 0);
 
@@ -169,7 +169,7 @@ public class LocalPlayerScript : NetworkBehaviour
             glorySlider.GetComponent<RectTransform>().anchoredPosition = new Vector3(18, -20, 0);
             glory.transform.Find("Meter Cover").gameObject.GetComponent<RectTransform>().Rotate(0, -180, 0);
         }
-        else if(playerID == 3)
+        else if (playerID == 3)
         {
             gloryTransform.anchoredPosition = new Vector3(-143, -40, 0);
         }
@@ -229,11 +229,6 @@ public class LocalPlayerScript : NetworkBehaviour
         }
     }
 
-    public int getPlayerID()
-    {
-        return playerID;
-    }
-
     // Update is called once per frame
     virtual protected void Update()
     {
@@ -254,7 +249,7 @@ public class LocalPlayerScript : NetworkBehaviour
         animator.SetInteger("StunTimer", (int)stunTimer);
         int attackNum = 0;
         float angle = Mathf.Atan2(Mathf.Abs(getDirection().x), getDirection().y);
-        if(angle < Mathf.PI / 8)
+        if (angle < Mathf.PI / 8)
         {
             attackNum = 2;
         }
@@ -270,10 +265,10 @@ public class LocalPlayerScript : NetworkBehaviour
         {
             attackNum = -2;
         }
-       /* if (Mathf.Abs(inputY) > Mathf.Abs(inputX))
-        {
-            attackNum = (int)Mathf.Sign(inputY);
-        }*/
+        /* if (Mathf.Abs(inputY) > Mathf.Abs(inputX))
+         {
+             attackNum = (int)Mathf.Sign(inputY);
+         }*/
 
 
         animator.SetInteger("attackNum", attackNum);
@@ -465,7 +460,7 @@ public class LocalPlayerScript : NetworkBehaviour
         {
             //flip sprite away from wall
             wallStickFlipSprite();
-            
+
             goalSpeed = -MAX_SPEED * currentNormal.x;
             if (Mathf.Sign(currentNormal.x) == Mathf.Sign(inputX))
             {
@@ -668,10 +663,10 @@ public class LocalPlayerScript : NetworkBehaviour
 
     }
 
-	/**
+    /**
      * Script for blinking
      */
-	void blink(){
+    void blink() {
 
         blinkTimer -= Time.deltaTime;
 
@@ -789,7 +784,7 @@ public class LocalPlayerScript : NetworkBehaviour
             Vector2 direction = getDirection();
             direction.Normalize();
 
-           // superPrefab.transform.rotation = Quaternion.LookRotation(direction);
+            // superPrefab.transform.rotation = Quaternion.LookRotation(direction);
             /*superPrefab.transform.position = transform.position;
             superPrefab.transform.eulerAngles = new Vector3(0, 0, Mathf.Rad2Deg * Mathf.Atan2(direction.y, direction.x) - 90f);
 
@@ -811,12 +806,12 @@ public class LocalPlayerScript : NetworkBehaviour
 
     protected virtual void spawnProjectile(Vector3 position, Vector2 velocity, Vector3 rotation)
     {
-            superPrefab.transform.position = position;
-            superPrefab.transform.eulerAngles = rotation;
+        superPrefab.transform.position = position;
+        superPrefab.transform.eulerAngles = rotation;
 
-            projectile = Instantiate(superPrefab);
-            projectile.GetComponent<SuperProjectileScript>().setSender(gameObject);
-            projectile.GetComponent<Rigidbody2D>().velocity = velocity;
+        projectile = Instantiate(superPrefab);
+        projectile.GetComponent<SuperProjectileScript>().setSender(gameObject);
+        projectile.GetComponent<Rigidbody2D>().velocity = velocity;
     }
 
     /**
@@ -922,20 +917,20 @@ public class LocalPlayerScript : NetworkBehaviour
      */
     protected virtual void updateComboHits(int hits)
     {
-        if(hits >= 99)
+        if (hits >= 99)
         {
             hits = 99;
         }
         comboHits = hits;
 
-        if(comboHits / 10 == 0)
+        if (comboHits / 10 == 0)
         {
             //hide tens place
             Color c = comboTens.color;
             c.a = 0;
             comboTens.color = c;
 
-            if(comboHits % 10 <= 1)
+            if (comboHits % 10 <= 1)
             {
                 //hide ones place and 'hits'
                 comboOnes.color = c;
@@ -959,7 +954,7 @@ public class LocalPlayerScript : NetworkBehaviour
         }
         comboTens.sprite = numbers[comboHits / 10];
         comboOnes.sprite = numbers[comboHits % 10];
-        
+
     }
 
     public virtual void startKnockback(GameObject defender, Vector2 dir, int hits)
@@ -1218,6 +1213,11 @@ public class LocalPlayerScript : NetworkBehaviour
     /**
      * Methods for getting various end game stats
      */
+    public int getPlayerID()
+    {
+        return playerID;
+    }
+    /*
     public int getCombo()
     {
         return maxCombo;
@@ -1226,14 +1226,17 @@ public class LocalPlayerScript : NetworkBehaviour
     {
         return hitNumber;
     }
+    */
     public int getHitPercentage()
     {
         return (attackNumber == 0) ? 0 : 100 * hitNumber / attackNumber;
     }
+    /*
     public int getKills()
     {
         return kills;
     }
+    */
 
     //Script used only for networked children to update comboHits on clients
     void OnChangeComboHits(int hits)
@@ -1296,5 +1299,15 @@ public class LocalPlayerScript : NetworkBehaviour
         {
             hasSuper = false;
         }
+    }
+
+
+    public int[] compileData()
+    {
+        int hitPercentage = getHitPercentage();
+
+        int[] output = {playerID, maxCombo, hitNumber, hitPercentage, kills };
+
+        return output;
     }
 }

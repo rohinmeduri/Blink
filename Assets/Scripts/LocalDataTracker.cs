@@ -34,6 +34,7 @@ public class LocalDataTracker : MonoBehaviour {
         numberAlive = placing.Length;
     }
 
+
     public void playerDeath(GameObject lostPlayer, GameObject wonPlayer)
     {
         LocalPlayerScript lostPlayerScript = lostPlayer.GetComponent<LocalPlayerScript>();
@@ -59,14 +60,7 @@ public class LocalDataTracker : MonoBehaviour {
 
     private int[] compileData(LocalPlayerScript lps)
     {
-        int playerIndex = lps.getPlayerID();
-        int place = numberAlive;
-        int maxCombo = lps.getCombo();
-        int hitNumber = lps.getHits();
-        int hitPercentage = lps.getHitPercentage();
-        int kills = lps.getKills();
-
-        int[] output = { playerIndex, maxCombo, hitNumber, hitPercentage, kills };
+        int[] output = lps.compileData();
 
        return output;
     }
