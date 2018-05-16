@@ -301,6 +301,7 @@ public class NetworkedPlayerScript : LocalPlayerScript {
     [Command]
     void CmdKillPlayer(GameObject player)
     {
+        Debug.Log("cmdkillplayer");
         RpcKillPlayer(player);
     }
 
@@ -310,8 +311,10 @@ public class NetworkedPlayerScript : LocalPlayerScript {
     [ClientRpc]
     void RpcKillPlayer(GameObject player)
     {
+        Debug.Log("rpckillplayer");
         if (hasAuthority)
         {
+            Debug.Log("hasAuthority");
             CmdUpdateStats(compileData());
         }
         base.killPlayer(player);
@@ -320,6 +323,7 @@ public class NetworkedPlayerScript : LocalPlayerScript {
     [Command]
     void CmdUpdateStats(int[] s)
     {
+        Debug.Log("cmdupdateStats");
         stats = s;
     }
 }
