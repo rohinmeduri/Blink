@@ -698,9 +698,9 @@ public class LocalPlayerScript : NetworkBehaviour
                     Vector2 direction = getDirection();
                     Vector2 origin = new Vector2(gameObject.GetComponent<Transform>().position.x, gameObject.GetComponent<Transform>().position.y);
 
-                    gameObject.layer = 0;
+                    gameObject.layer = 3;
                     RaycastHit2D hit = Physics2D.Raycast(origin: origin, direction: direction, distance: TELEPORT_DISTANCE, layerMask: layerMask);
-                    gameObject.layer = 2;
+                    gameObject.layer = 0;
 
                     if (hit.collider != null)
                     {
