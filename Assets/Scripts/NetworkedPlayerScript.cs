@@ -8,8 +8,7 @@ public class NetworkedPlayerScript : LocalPlayerScript {
     private NetworkAnimator networkAnimator;
     private int IDCounter = 2;
     private GameObject IDAssigner;
-    [SyncVar]
-    private int[] stats;
+    private GameObject dataManager;
 
     public override void OnStartAuthority()
     {
@@ -310,16 +309,33 @@ public class NetworkedPlayerScript : LocalPlayerScript {
     [ClientRpc]
     void RpcKillPlayer(GameObject player)
     {
-        if (hasAuthority)
-        {
-            CmdUpdateStats(compileData());
-        }
         base.killPlayer(player);
     }
 
     [Command]
-    void CmdUpdateStats(int[] s)
+    void CmdUpdateStats(int mc, int hn, int hp, int k) { 
+    Debug.Log("updating stats");
+        maxCombo = mc;
+        hitNumber = hn;
+        kills = k;
+    }
+
+    [ClientRpc]
+    void RpcReplaceStats(int mc, int hn, int hp, int k)
     {
-        stats = s;
+        if (!hasAuthority)
+        {
+
+        }
+    }
+
+    public override int[] compileData()
+    {
+        if (hasAuthority)
+        {
+            Debug.Log("has authority");
+            CmdUpdateStats(maxCombo, hitNumber,getHitPercentage(), kills);
+        }
+        return base.compileData();
     }
 }

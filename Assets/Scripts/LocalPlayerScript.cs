@@ -70,12 +70,17 @@ public class LocalPlayerScript : NetworkBehaviour
     protected bool superInput = false;
     private bool gamePauseBtnClick = false;
     private bool gamePaused = false;
+    [SyncVar]
     protected int playerID;
     protected int controllerID = 0;
-    private int maxCombo = 0;
-    private int hitNumber = 0;
-    private int attackNumber = 0;
-    private int kills = 0;
+    [SyncVar]
+    protected int maxCombo = 0;
+    [SyncVar]
+    protected int hitNumber = 0;
+    [SyncVar]
+    protected int attackNumber = 0;
+    [SyncVar]
+    protected int kills = 0;
 
     // constants
     public const float GROUND_RUN_FORCE = 2; // How fast player can attain intended velocity on ground
@@ -589,7 +594,6 @@ public class LocalPlayerScript : NetworkBehaviour
         if (attackInput)
         {
             float angle = Mathf.Atan2(getDirection().x, getDirection().y);
-            Debug.Log(angle);
 
             //cancel attacker's momentum
             rb2D.velocity = Vector2.zero;
@@ -1302,7 +1306,7 @@ public class LocalPlayerScript : NetworkBehaviour
     }
 
 
-    public int[] compileData()
+    public virtual int[] compileData()
     {
         int hitPercentage = getHitPercentage();
 
