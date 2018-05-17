@@ -5,6 +5,7 @@ using UnityEngine;
 public class LocalPlayerSpawner : MonoBehaviour {
     private int numPlayers;
     private int numAIs;
+    private int[] AIDifficulties;
     public GameObject playerPrefab;
     public GameObject AIPrefab;
 
@@ -12,6 +13,7 @@ public class LocalPlayerSpawner : MonoBehaviour {
 	void Start () {
         numPlayers = GetComponent<ChangePlayerNumber>().getNumberOfPlayers();
         numAIs = GetComponent<ChangePlayerNumber>().getNumberOfAI();
+        AIDifficulties = GetComponent<ChangePlayerNumber>().getAIDifficulties();
 
         for(int i = 1; i <= numPlayers + numAIs; i++)
         {
@@ -23,7 +25,7 @@ public class LocalPlayerSpawner : MonoBehaviour {
             else
             {
                 player = Instantiate(AIPrefab);
-                player.GetComponent<PlayerAIScript>().setPlayerDifficulty(2);
+                player.GetComponent<PlayerAIScript>().setPlayerDifficulty(i - 1 - numPlayers);
             }
             player.GetComponent<LocalPlayerScript>().setPlayerID(i);
         }
