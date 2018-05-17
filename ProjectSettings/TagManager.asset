@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Combo Counter
   - PlayerAI
+  - DataTracker
   layers:
   - Default
   - TransparentFX

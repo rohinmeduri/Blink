@@ -89,4 +89,13 @@ public class LocalDataTracker : MonoBehaviour {
         }
         return output;
     }
+
+    public void  replaceStats(int mc, int hn, int hp, int k)
+    {
+        Debug.Log("replacing stats pt 2");
+        placing[numberAlive][1] = mc;
+        placing[numberAlive][2] = hn;
+        placing[numberAlive][3] = hp;
+        placing[numberAlive][4] = k;
+    }
 }

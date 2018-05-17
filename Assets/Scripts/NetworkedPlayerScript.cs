@@ -318,14 +318,19 @@ public class NetworkedPlayerScript : LocalPlayerScript {
         maxCombo = mc;
         hitNumber = hn;
         kills = k;
+        RpcReplaceStats(mc, hn, hp, k);
     }
 
     [ClientRpc]
     void RpcReplaceStats(int mc, int hn, int hp, int k)
     {
+        Debug.Log("replace stats called");
         if (!hasAuthority)
         {
-
+            Debug.Log("replacing stats");
+            dataManager = GameObject.FindGameObjectWithTag("DataTracker");
+            dataManager.GetComponent<LocalDataTracker>().replaceStats(mc, hn, hp, k);
+            Debug.Log(mc + hn + hp + k);
         }
     }
 

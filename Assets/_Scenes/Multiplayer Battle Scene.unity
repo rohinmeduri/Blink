@@ -1034,7 +1034,7 @@ GameObject:
   - component: {fileID: 1212681317}
   m_Layer: 0
   m_Name: Data Tracker
-  m_TagString: Untagged
+  m_TagString: DataTracker
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
