@@ -8,7 +8,7 @@ public class NetworkedPlayerScript : LocalPlayerScript {
     private NetworkAnimator networkAnimator;
     private int IDCounter = 2;
     private GameObject IDAssigner;
-    private GameObject dataManager;
+    private GameObject dataTracker;
 
     public override void OnStartAuthority()
     {
@@ -31,7 +31,7 @@ public class NetworkedPlayerScript : LocalPlayerScript {
                     IDCounter++;
                 }
             }
-           CmdNewPlayer();
+            CmdNewPlayer();
         }
     }
 
@@ -264,12 +264,6 @@ public class NetworkedPlayerScript : LocalPlayerScript {
         GetComponent<Transform>().eulerAngles = rotation;
     }
 
-    public override void killPlayer(GameObject go)
-    {
-        go.GetComponent<LocalPlayerScript>().removeMeter();
-        CmdKillPlayer(go);
-    }
-
     protected override void updateComboHits(int hits)
     {
         CmdUpdateComboHits(hits);
@@ -294,6 +288,16 @@ public class NetworkedPlayerScript : LocalPlayerScript {
         NetworkServer.Spawn(projectile);
     }
 
+    public bool getHasAuthority()
+    {
+        return hasAuthority;
+    }
+
+    public override void killPlayer(GameObject go)
+    {
+        CmdKillPlayer(go);
+    }
+
     /*
     * Script that tells server to kill player on clients
     */
@@ -309,12 +313,25 @@ public class NetworkedPlayerScript : LocalPlayerScript {
     [ClientRpc]
     void RpcKillPlayer(GameObject player)
     {
-        base.killPlayer(player);
+        if (hasAuthority)
+        {
+            kills++;
+        }
+        player.GetComponent<NetworkedPlayerScript>().playerDeath();
+    }
+
+    void playerDeath()
+    {
+        if (hasAuthority)
+        {
+            Debug.Log("compiling data");
+            compileData();
+        }
     }
 
     [Command]
     void CmdUpdateStats(int mc, int hn, int hp, int k) { 
-    Debug.Log("updating stats");
+        Debug.Log("updating stats");
         maxCombo = mc;
         hitNumber = hn;
         kills = k;
@@ -324,14 +341,17 @@ public class NetworkedPlayerScript : LocalPlayerScript {
     [ClientRpc]
     void RpcReplaceStats(int mc, int hn, int hp, int k)
     {
-        Debug.Log("replace stats called");
-        if (!hasAuthority)
+        GameObject dataManager = GameObject.FindGameObjectWithTag("DataTracker");
+        Debug.Log("replacing stats");
+        dataManager.GetComponent<LocalDataTracker>().replaceStats(mc, hn, hp, k, gameObject);
+        Debug.Log(mc + hn + hp + k);
+
+        /*if (playersLeft > 0)
         {
-            Debug.Log("replacing stats");
-            dataManager = GameObject.FindGameObjectWithTag("DataTracker");
-            dataManager.GetComponent<LocalDataTracker>().replaceStats(mc, hn, hp, k);
-            Debug.Log(mc + hn + hp + k);
-        }
+            removeMeter();
+            Destroy(gameObject);
+        }*/
+        //}
     }
 
     public override int[] compileData()
@@ -339,8 +359,8 @@ public class NetworkedPlayerScript : LocalPlayerScript {
         if (hasAuthority)
         {
             Debug.Log("has authority");
-            CmdUpdateStats(maxCombo, hitNumber,getHitPercentage(), kills);
+            CmdUpdateStats(maxCombo, hitNumber, getHitPercentage(), kills);
         }
-        return base.compileData();
+        return null;
     }
 }
