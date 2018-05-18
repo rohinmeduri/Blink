@@ -1,13 +1,13 @@
 fileFormatVersion: 2
-guid: 7073f955a7f2ad341b762cb23ddcc4a0
-timeCreated: 1526097232
+guid: 4df8b1824ab0e5641922ab243512778e
+timeCreated: 1526628940
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Run_1
-    21300002: Run_2
-    21300004: Run_3
-    21300006: Run_4
+    21300000: Fall_1
+    21300002: Fall_2
+    21300004: Fall_3
+    21300006: Fall_4
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -49,7 +49,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 120
+  spritePixelsToUnits: 150
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -95,57 +95,57 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Run_1
+      name: Fall_1
       rect:
         serializedVersion: 2
         x: 0
+        y: 1
+        width: 141
+        height: 279
+      alignment: 9
+      pivot: {x: 0.49619222, y: 0.49037832}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Fall_2
+      rect:
+        serializedVersion: 2
+        x: 159
         y: 0
-        width: 129
-        height: 217
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 147
+        height: 280
+      alignment: 9
+      pivot: {x: 0.43791085, y: 0.49808258}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Run_2
+      name: Fall_3
       rect:
         serializedVersion: 2
-        x: 134
-        y: 4
-        width: 133
-        height: 218
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 307
+        y: 0
+        width: 141
+        height: 280
+      alignment: 9
+      pivot: {x: 0.49238467, y: 0.49424765}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Run_3
+      name: Fall_4
       rect:
         serializedVersion: 2
-        x: 273
-        y: 8
+        x: 467
+        y: 1
         width: 137
-        height: 218
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: Run_4
-      rect:
-        serializedVersion: 2
-        x: 413
-        y: 11
-        width: 137
-        height: 217
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        height: 279
+      alignment: 9
+      pivot: {x: 0.46473014, y: 0.48845395}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
