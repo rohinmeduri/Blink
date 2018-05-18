@@ -534,6 +534,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   players: {fileID: 0}
   AI: {fileID: 0}
+  AIDiff1: {fileID: 0}
+  AIDiff2: {fileID: 0}
+  AIDiff3: {fileID: 0}
 --- !u!4 &655318693
 Transform:
   m_ObjectHideFlags: 0
