@@ -56,9 +56,8 @@ public class LocalDataTracker : NetworkBehaviour {
 
     public int reducePlayers(GameObject player)
     {
-        Debug.Log("method called");
         numberAlive--;
-        if(numberAlive >= 1)
+        if(numberAlive > 0)
         {
             player.GetComponent<LocalPlayerScript>().removeMeter();
             Destroy(player);

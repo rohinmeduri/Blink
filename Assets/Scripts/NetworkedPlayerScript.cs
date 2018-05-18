@@ -6,7 +6,6 @@ using UnityEngine.Networking;
 public class NetworkedPlayerScript : LocalPlayerScript {
 
     private NetworkAnimator networkAnimator;
-    private int IDCounter = 2;
     private GameObject IDAssigner;
     private GameObject dataTracker;
 
@@ -23,12 +22,10 @@ public class NetworkedPlayerScript : LocalPlayerScript {
                 {
                     setPlayerID(1);
                     gameObject.layer = 2;
-                    continue;
                 }
                 else
                 {
                     i.GetComponent<NetworkedPlayerScript>().setPlayerID(IDAssigner.GetComponent<IDAssigner>().getID());
-                    IDCounter++;
                 }
             }
             CmdNewPlayer();
@@ -51,7 +48,7 @@ public class NetworkedPlayerScript : LocalPlayerScript {
     //this function is used for non-local versions of this player
     public void newPlayer()
     {
-        if (!hasAuthority)
+        if (!hasAuthority && (getPlayerID() == 0))
         {
             IDAssigner = GameObject.Find("ID Assigner");
             setPlayerID(IDAssigner.GetComponent<IDAssigner>().getID());
@@ -324,17 +321,12 @@ public class NetworkedPlayerScript : LocalPlayerScript {
     {
         if (hasAuthority)
         {
-            Debug.Log("compiling data");
             compileData();
         }
     }
 
     [Command]
     void CmdUpdateStats(int mc, int hn, int hp, int k) { 
-        Debug.Log("updating stats");
-        maxCombo = mc;
-        hitNumber = hn;
-        kills = k;
         RpcReplaceStats(mc, hn, hp, k);
     }
 
@@ -342,23 +334,13 @@ public class NetworkedPlayerScript : LocalPlayerScript {
     void RpcReplaceStats(int mc, int hn, int hp, int k)
     {
         GameObject dataManager = GameObject.FindGameObjectWithTag("DataTracker");
-        Debug.Log("replacing stats");
         dataManager.GetComponent<LocalDataTracker>().replaceStats(mc, hn, hp, k, gameObject);
-        Debug.Log(mc + hn + hp + k);
-
-        /*if (playersLeft > 0)
-        {
-            removeMeter();
-            Destroy(gameObject);
-        }*/
-        //}
     }
 
     public override int[] compileData()
     {
         if (hasAuthority)
         {
-            Debug.Log("has authority");
             CmdUpdateStats(maxCombo, hitNumber, getHitPercentage(), kills);
         }
         return null;
