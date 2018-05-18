@@ -35,7 +35,9 @@ public class CameraShake : MonoBehaviour {
             {
                 GetComponent<Camera>().orthographicSize -= 0.01f;
             }
-            gameObject.GetComponent<Transform>().position += difference / 50 + Random.insideUnitSphere * shakeIntensity;
+            Vector2 shakeFactor = Random.insideUnitCircle * shakeIntensity;
+            Vector3 shakeVector = new Vector3(shakeFactor.x, shakeFactor.y, 0);
+            gameObject.GetComponent<Transform>().position += difference / 50 + shakeVector;
             followDuration++;
 
             //camera shake
