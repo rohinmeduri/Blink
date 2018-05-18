@@ -479,7 +479,7 @@ public class LocalPlayerScript : NetworkBehaviour
 
     protected virtual void wallStickFlipSprite()
     {
-        facingRight = currentNormal.x > 0;
+        facingRight = currentNormal.x < 0;
     }
 
     /**
