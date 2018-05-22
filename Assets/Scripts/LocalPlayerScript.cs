@@ -390,8 +390,7 @@ public class LocalPlayerScript : NetworkBehaviour
             rb2D.sharedMaterial = stunMaterial;
             DI();
         }
-
-
+        rotateSuperProjectile();
     }
 
     protected virtual void flipSprite()
@@ -756,11 +755,24 @@ public class LocalPlayerScript : NetworkBehaviour
         if (hasSuper && superInput)
         {
             //cancel momentum
+            superPrefab.GetComponent<Transform>().position = transform.position;
+            projectile = Instantiate(superPrefab);
             rb2D.velocity = Vector2.zero;
             actionLock = true;
             actionWaitFrames = SUPER_CHARGE_FRAMES + SUPER_END_LAG;
             startedSuper = true;
             superAnimation();
+        }
+    }
+    
+    void rotateSuperProjectile()
+    {
+        if (startedSuper)
+        {
+            Debug.Log("rotating");
+            Vector2 direction = getDirection();
+            direction.Normalize();
+            projectile.GetComponent<SuperProjectileScript>().rotate(direction);
         }
     }
 
@@ -789,7 +801,7 @@ public class LocalPlayerScript : NetworkBehaviour
             projectile = Instantiate(superPrefab);
             projectile.GetComponent<SuperProjectileScript>().setSender(gameObject);
             projectile.GetComponent<Rigidbody2D>().velocity = direction * 25;*/
-            spawnProjectile(transform.position, direction * 25, new Vector3(0, 0, Mathf.Rad2Deg * Mathf.Atan2(direction.y, direction.x) - 90f));
+            spawnProjectile(direction);
             /*Vector2 origin = new Vector2(gameObject.GetComponent<Transform>().position.x, gameObject.GetComponent<Transform>().position.y);
             gameObject.layer = 2;
             RaycastHit2D hit = Physics2D.CircleCast(origin: origin, radius: superRadius, direction: direction, distance: Mathf.Infinity);
@@ -802,14 +814,10 @@ public class LocalPlayerScript : NetworkBehaviour
         }
     }
 
-    protected virtual void spawnProjectile(Vector3 position, Vector2 velocity, Vector3 rotation)
+    protected virtual void spawnProjectile(Vector2 direction)
     {
-        superPrefab.transform.position = position;
-        superPrefab.transform.eulerAngles = rotation;
-
-        projectile = Instantiate(superPrefab);
         projectile.GetComponent<SuperProjectileScript>().setSender(gameObject);
-        projectile.GetComponent<Rigidbody2D>().velocity = velocity;
+        projectile.GetComponent<SuperProjectileScript>().activate(direction);
     }
 
     /**
@@ -980,6 +988,10 @@ public class LocalPlayerScript : NetworkBehaviour
         //otherwise, take the hit
         else
         {
+            if (startedSuper)
+            {
+                Destroy(projectile);
+            }
             reversalEffective = false;
             startedSuper = false;
 

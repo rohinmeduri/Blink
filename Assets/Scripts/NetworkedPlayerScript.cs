@@ -272,16 +272,16 @@ public class NetworkedPlayerScript : LocalPlayerScript {
         comboHits = hits;
     }
 
-    protected override void spawnProjectile(Vector3 position, Vector2 velocity, Vector3 rotation)
+    protected override void spawnProjectile(Vector2 direction)
     {
-        CmdSpawnSuperProjectile(position, velocity, rotation);
+        CmdSpawnSuperProjectile(direction);
     }
     
 
     [Command]
-    void CmdSpawnSuperProjectile(Vector3 position, Vector2 velocity, Vector3 rotation)
+    void CmdSpawnSuperProjectile(Vector2 direction)
     {
-        base.spawnProjectile(position, velocity, rotation);
+        base.spawnProjectile(direction);
         NetworkServer.Spawn(projectile);
     }
 

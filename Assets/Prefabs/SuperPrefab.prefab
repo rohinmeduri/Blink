@@ -23,6 +23,8 @@ GameObject:
   - component: {fileID: 58631560336547358}
   - component: {fileID: 50619050346598702}
   - component: {fileID: 114745890873273066}
+  - component: {fileID: 95418552689680484}
+  - component: {fileID: 61744132182841412}
   m_Layer: 2
   m_Name: SuperPrefab
   m_TagString: Untagged
@@ -37,7 +39,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1127662235417580}
   m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: -8.552379, y: -4.058063, z: 0}
+  m_LocalPosition: {x: -6.8336425, y: -2.8978453, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -69,15 +71,57 @@ CircleCollider2D:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1127662235417580}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 2.29}
+  m_Offset: {x: 0, y: 3.78}
   serializedVersion: 2
   m_Radius: 0.81
+--- !u!61 &61744132182841412
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1127662235417580}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.02, y: 2.33}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: -0.5}
+    oldSize: {x: 1.565, y: 3.07}
+    newSize: {x: 3.13, y: 6.14}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.5, y: 1.5}
+  m_EdgeRadius: 0
+--- !u!95 &95418552689680484
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1127662235417580}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a81fc6544f537514793342bcf2059a81, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &114745890873273066
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -89,6 +133,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3ce1199be9e2404b8b677711025a03b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  chargingSuper: {fileID: 0}
+  activatedSuper: {fileID: 21300000, guid: a719a8e8f5e8b644a9b5ad847d1e53fe, type: 3}
 --- !u!212 &212986835869906436
 SpriteRenderer:
   m_ObjectHideFlags: 1
