@@ -120,7 +120,7 @@ public class LocalPlayerScript : NetworkBehaviour
 
 
     // Use this for initialization
-    protected void Start()
+    protected virtual void Start()
     {
         jumps = 0;
         canJump = false;
@@ -357,8 +357,7 @@ public class LocalPlayerScript : NetworkBehaviour
 
     protected virtual void FixedUpdate()
     {
-        if (stunTimer <= 0)
-        {
+        if (stunTimer <= 0){
             rb2D.sharedMaterial = regularMaterial;
             rotate(Vector3.zero);
 

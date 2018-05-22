@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LocalPlayerSpawner : MonoBehaviour {
+
+public class LocalPlayerSpawner : MonoBehaviour{
     private int numPlayers;
     private int numAIs;
     private int[] AIDifficulties;
@@ -11,6 +12,7 @@ public class LocalPlayerSpawner : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+            
         numPlayers = GetComponent<ChangePlayerNumber>().getNumberOfPlayers();
         numAIs = GetComponent<ChangePlayerNumber>().getNumberOfAI();
         AIDifficulties = GetComponent<ChangePlayerNumber>().getAIDifficulties();
