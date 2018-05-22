@@ -187,6 +187,8 @@ MonoBehaviour:
   camera: {fileID: 0}
   superPrefab: {fileID: 1516640886044026, guid: 12f75d4d3260a9843adf531d3d0f29cc,
     type: 2}
+  dataTrackerPrefab: {fileID: 1383368746634192, guid: 9130076096549ee4d9db2505a7950a90,
+    type: 2}
 --- !u!114 &114509458611876312
 MonoBehaviour:
   m_ObjectHideFlags: 1

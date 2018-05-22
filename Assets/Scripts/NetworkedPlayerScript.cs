@@ -6,9 +6,8 @@ using UnityEngine.Networking;
 public class NetworkedPlayerScript : LocalPlayerScript {
 
     private NetworkAnimator networkAnimator;
-    private int IDCounter = 2;
     private GameObject IDAssigner;
-    private GameObject dataManager;
+    private GameObject dataTracker;
 
     public override void OnStartAuthority()
     {
@@ -23,15 +22,13 @@ public class NetworkedPlayerScript : LocalPlayerScript {
                 {
                     setPlayerID(1);
                     gameObject.layer = 2;
-                    continue;
                 }
                 else
                 {
                     i.GetComponent<NetworkedPlayerScript>().setPlayerID(IDAssigner.GetComponent<IDAssigner>().getID());
-                    IDCounter++;
                 }
             }
-           CmdNewPlayer();
+            CmdNewPlayer();
         }
     }
 
@@ -51,7 +48,7 @@ public class NetworkedPlayerScript : LocalPlayerScript {
     //this function is used for non-local versions of this player
     public void newPlayer()
     {
-        if (!hasAuthority)
+        if (!hasAuthority && (getPlayerID() == 0))
         {
             IDAssigner = GameObject.Find("ID Assigner");
             setPlayerID(IDAssigner.GetComponent<IDAssigner>().getID());
@@ -264,12 +261,6 @@ public class NetworkedPlayerScript : LocalPlayerScript {
         GetComponent<Transform>().eulerAngles = rotation;
     }
 
-    public override void killPlayer(GameObject go)
-    {
-        go.GetComponent<LocalPlayerScript>().removeMeter();
-        CmdKillPlayer(go);
-    }
-
     protected override void updateComboHits(int hits)
     {
         CmdUpdateComboHits(hits);
@@ -294,6 +285,16 @@ public class NetworkedPlayerScript : LocalPlayerScript {
         NetworkServer.Spawn(projectile);
     }
 
+    public bool getHasAuthority()
+    {
+        return hasAuthority;
+    }
+
+    public override void killPlayer(GameObject go)
+    {
+        CmdKillPlayer(go);
+    }
+
     /*
     * Script that tells server to kill player on clients
     */
@@ -309,38 +310,39 @@ public class NetworkedPlayerScript : LocalPlayerScript {
     [ClientRpc]
     void RpcKillPlayer(GameObject player)
     {
-        base.killPlayer(player);
+        if (hasAuthority)
+        {
+            kills++;
+        }
+        player.GetComponent<NetworkedPlayerScript>().playerDeath();
+    }
+
+    void playerDeath()
+    {
+        if (hasAuthority)
+        {
+            compileData();
+        }
     }
 
     [Command]
     void CmdUpdateStats(int mc, int hn, int hp, int k) { 
-    Debug.Log("updating stats");
-        maxCombo = mc;
-        hitNumber = hn;
-        kills = k;
         RpcReplaceStats(mc, hn, hp, k);
     }
 
     [ClientRpc]
     void RpcReplaceStats(int mc, int hn, int hp, int k)
     {
-        Debug.Log("replace stats called");
-        if (!hasAuthority)
-        {
-            Debug.Log("replacing stats");
-            dataManager = GameObject.FindGameObjectWithTag("DataTracker");
-            dataManager.GetComponent<LocalDataTracker>().replaceStats(mc, hn, hp, k);
-            Debug.Log(mc + hn + hp + k);
-        }
+        GameObject dataManager = GameObject.FindGameObjectWithTag("DataTracker");
+        dataManager.GetComponent<LocalDataTracker>().replaceStats(mc, hn, hp, k, gameObject);
     }
 
     public override int[] compileData()
     {
         if (hasAuthority)
         {
-            Debug.Log("has authority");
-            CmdUpdateStats(maxCombo, hitNumber,getHitPercentage(), kills);
+            CmdUpdateStats(maxCombo, hitNumber, getHitPercentage(), kills);
         }
-        return base.compileData();
+        return null;
     }
 }

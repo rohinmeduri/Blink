@@ -7,6 +7,7 @@ TagManager:
   - Combo Counter
   - PlayerAI
   - DataTracker
+  - Music Player
   layers:
   - Default
   - TransparentFX

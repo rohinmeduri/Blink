@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Networking;
 
-public class LocalDataTracker : MonoBehaviour {
+public class LocalDataTracker : NetworkBehaviour {
 
     public Text place1;
     public Text place2;
@@ -16,7 +17,7 @@ public class LocalDataTracker : MonoBehaviour {
     private static int numberAlive;
     private static int sum = 0;
 
-    private void Start()
+    protected virtual void Start()
     {
         //cpn = new ChangePlayerNumber();
         //numberOfPlayers = cpn.getNumberOfAI() + cpn.getNumberOfPlayers();
@@ -35,7 +36,7 @@ public class LocalDataTracker : MonoBehaviour {
     }
 
 
-    public void playerDeath(GameObject lostPlayer, GameObject wonPlayer)
+    public virtual void playerDeath(GameObject lostPlayer, GameObject wonPlayer)
     {
         LocalPlayerScript lostPlayerScript = lostPlayer.GetComponent<LocalPlayerScript>();
         LocalPlayerScript wonPlayerScript = wonPlayer.GetComponent<LocalPlayerScript>();
@@ -45,17 +46,38 @@ public class LocalDataTracker : MonoBehaviour {
 
         int playerIndex = lostPlayerScript.getPlayerID();
         sum += playerIndex;
-        
+
         numberAlive--;
-
-        
-        // insert code for updating other player stats
-
-        if(numberAlive == 1)
+        if(numberAlive == 0)
         {
-            Debug.Log(numberAlive);
             displayResults();
         }
+    }
+
+    public int reducePlayers(GameObject player)
+    {
+        numberAlive--;
+        if(numberAlive > 0)
+        {
+            player.GetComponent<LocalPlayerScript>().removeMeter();
+            Destroy(player);
+
+            if (numberAlive == 1)
+            {
+
+                NetworkedPlayerScript winningPlayer = GameObject.FindGameObjectWithTag("Player").GetComponent<NetworkedPlayerScript>();
+                if (winningPlayer.getHasAuthority())
+                {
+                    winningPlayer.compileData();
+                }
+            }
+        }
+
+        else
+        {
+            displayResults();
+        }
+        return numberOfPlayers;
     }
 
     private int[] compileData(LocalPlayerScript lps)
@@ -75,8 +97,14 @@ public class LocalDataTracker : MonoBehaviour {
 
         place1.text = "1st\n" + formatStats(placing[0]);
         place2.text = "2nd\n" + formatStats(placing[1]);
-        place3.text = "3rd\n" + formatStats(placing[2]);
-        place4.text = "4th\n" + formatStats(placing[3]);
+        if (numberOfPlayers > 2)
+        {
+            place3.text = "3rd\n" + formatStats(placing[2]);
+        }
+        if (numberOfPlayers > 3)
+        {
+            place4.text = "4th\n" + formatStats(placing[3]);
+        }
 
     }
 
@@ -90,12 +118,22 @@ public class LocalDataTracker : MonoBehaviour {
         return output;
     }
 
-    public void  replaceStats(int mc, int hn, int hp, int k)
+    public void  replaceStats(int mc, int hn, int hp, int k, GameObject player)
     {
         Debug.Log("replacing stats pt 2");
-        placing[numberAlive][1] = mc;
-        placing[numberAlive][2] = hn;
-        placing[numberAlive][3] = hp;
-        placing[numberAlive][4] = k;
+        placing[numberAlive - 1][0] = player.GetComponent<LocalPlayerScript>().getPlayerID();
+        placing[numberAlive - 1][1] = mc;
+        placing[numberAlive - 1][2] = hn;
+        placing[numberAlive - 1][3] = hp;
+        placing[numberAlive - 1][4] = k;
+
+        if(numberAlive == 1)
+        {
+            displayResults();
+        }
+        else
+        {
+            reducePlayers(player);
+        }
     }
 }

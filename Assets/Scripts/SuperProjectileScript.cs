@@ -20,19 +20,15 @@ public class SuperProjectileScript : NetworkBehaviour {
         sender = s;
     }
 
-    protected virtual void OnCollisionEnter2D(Collision2D collision)
+    protected virtual void OnTriggerEnter2D(Collider2D collider)
     {
-        Debug.Log("collision detected");
-        if(collision.gameObject.tag != "Player" && collision.gameObject.tag != "PlayerAI")
+        if(collider.gameObject.tag != "Player" && collider.gameObject.tag != "PlayerAI")
         {
             Destroy(gameObject);
-            Debug.Log("wall collision");
-
         }
         else
         {
-            sender.GetComponent<LocalPlayerScript>().killPlayer(collision.gameObject);
-            Debug.Log("player collision");
+            sender.GetComponent<LocalPlayerScript>().killPlayer(collider.gameObject);
         }
     }
 }

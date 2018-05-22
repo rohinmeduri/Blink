@@ -70,16 +70,11 @@ public class LocalPlayerScript : NetworkBehaviour
     protected bool superInput = false;
     private bool gamePauseBtnClick = false;
     private bool gamePaused = false;
-    [SyncVar]
     protected int playerID;
     protected int controllerID = 0;
-    [SyncVar]
     protected int maxCombo = 0;
-    [SyncVar]
     protected int hitNumber = 0;
-    [SyncVar]
     protected int attackNumber = 0;
-    [SyncVar]
     protected int kills = 0;
 
     // constants
@@ -483,7 +478,7 @@ public class LocalPlayerScript : NetworkBehaviour
 
     protected virtual void wallStickFlipSprite()
     {
-        facingRight = currentNormal.x > 0;
+        facingRight = currentNormal.x < 0;
     }
 
     /**
