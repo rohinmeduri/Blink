@@ -38,7 +38,7 @@ public class SuperProjectileScript : NetworkBehaviour {
         GetComponent<CircleCollider2D>().enabled = true;
     }
 
-    public void rotate(Vector2 direction)
+    public virtual void rotate(Vector2 direction)
     {
         GetComponent<Transform>().eulerAngles = new Vector3(0, 0, Mathf.Rad2Deg * Mathf.Atan2(direction.y, direction.x) - 90f);
     }

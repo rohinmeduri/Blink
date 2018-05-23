@@ -755,14 +755,19 @@ public class LocalPlayerScript : NetworkBehaviour
         if (hasSuper && superInput)
         {
             //cancel momentum
-            superPrefab.GetComponent<Transform>().position = transform.position;
-            projectile = Instantiate(superPrefab);
+            spawnSuper();
             rb2D.velocity = Vector2.zero;
             actionLock = true;
             actionWaitFrames = SUPER_CHARGE_FRAMES + SUPER_END_LAG;
             startedSuper = true;
             superAnimation();
         }
+    }
+
+    protected virtual void spawnSuper()
+    {
+        superPrefab.GetComponent<Transform>().position = transform.position;
+        projectile = Instantiate(superPrefab);
     }
     
     void rotateSuperProjectile()
@@ -801,7 +806,7 @@ public class LocalPlayerScript : NetworkBehaviour
             projectile = Instantiate(superPrefab);
             projectile.GetComponent<SuperProjectileScript>().setSender(gameObject);
             projectile.GetComponent<Rigidbody2D>().velocity = direction * 25;*/
-            spawnProjectile(direction);
+            activateProjectile(direction);
             /*Vector2 origin = new Vector2(gameObject.GetComponent<Transform>().position.x, gameObject.GetComponent<Transform>().position.y);
             gameObject.layer = 2;
             RaycastHit2D hit = Physics2D.CircleCast(origin: origin, radius: superRadius, direction: direction, distance: Mathf.Infinity);
@@ -814,7 +819,7 @@ public class LocalPlayerScript : NetworkBehaviour
         }
     }
 
-    protected virtual void spawnProjectile(Vector2 direction)
+    protected virtual void activateProjectile(Vector2 direction)
     {
         projectile.GetComponent<SuperProjectileScript>().setSender(gameObject);
         projectile.GetComponent<SuperProjectileScript>().activate(direction);
