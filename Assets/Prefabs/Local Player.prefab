@@ -106,7 +106,6 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &114945665282527020
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -152,6 +151,10 @@ MonoBehaviour:
   camera: {fileID: 0}
   superPrefab: {fileID: 1127662235417580, guid: b284844ca23c54742a7860d4411681e5,
     type: 2}
+  mageAnimatorController: {fileID: 9100000, guid: b50c4cabe9365264694455807a5e4e9a,
+    type: 2}
+  rebelAnimatorController: {fileID: 22100000, guid: 0e4b0a419db3dcf45967d6c077fe312a,
+    type: 2}
 --- !u!212 &212091731836323832
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -165,7 +168,6 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:

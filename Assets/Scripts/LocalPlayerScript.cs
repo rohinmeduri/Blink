@@ -30,6 +30,8 @@ public class LocalPlayerScript : NetworkBehaviour
     public float lastGloryIncrease = 0;
     public GameObject camera;
     public GameObject superPrefab;
+    public RuntimeAnimatorController mageAnimatorController;
+    public RuntimeAnimatorController rebelAnimatorController;
 
     // private variables
     private int characterSelection = 2;
@@ -136,6 +138,8 @@ public class LocalPlayerScript : NetworkBehaviour
         camera = GameObject.Find("Main Camera");
 
         Time.timeScale = 1;
+
+        setPlayerType("Rebel");
     }
 
 
@@ -228,6 +232,20 @@ public class LocalPlayerScript : NetworkBehaviour
             controllerID = playerID;
         }
     }
+
+    protected virtual void setPlayerType(string playerType)
+    {
+        if (playerType.Equals("Mage"))
+        {
+            GetComponent<Animator>().runtimeAnimatorController = mageAnimatorController;
+        }
+        else if (playerType.Equals("Rebel"))
+        {
+            GetComponent<Animator>().runtimeAnimatorController = rebelAnimatorController;
+        }
+    }
+
+
 
     // Update is called once per frame
     virtual protected void Update()
