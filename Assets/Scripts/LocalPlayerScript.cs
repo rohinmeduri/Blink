@@ -789,8 +789,8 @@ public class LocalPlayerScript : NetworkBehaviour
 
     protected virtual void spawnSuper()
     {
-        superPrefab.GetComponent<Transform>().position = transform.position;
         projectile = Instantiate(superPrefab);
+        projectile.GetComponent<Transform>().position = transform.position;
     }
     
     void rotateSuperProjectile()
