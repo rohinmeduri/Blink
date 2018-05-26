@@ -58,7 +58,7 @@ public class CameraShake : MonoBehaviour {
 
 
             //zoom in - max zoom is 7
-            if (GetComponent<Camera>().orthographicSize > 7)
+            if (GetComponent<Camera>().orthographicSize > 4.25)
             {
                 GetComponent<Camera>().orthographicSize -= 0.01f;
             }
@@ -108,7 +108,7 @@ public class CameraShake : MonoBehaviour {
     {
         gameObject.GetComponent<Transform>().position += (originalPosition - gameObject.GetComponent<Transform>().position) / 50;
         gameObject.GetComponent<Transform>().rotation = originalRotation;
-        if (GetComponent<Camera>().orthographicSize < 8)
+        if (GetComponent<Camera>().orthographicSize < 5.25)
         {
             GetComponent<Camera>().orthographicSize += 0.02f;
         }

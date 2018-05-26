@@ -138,8 +138,6 @@ public class LocalPlayerScript : NetworkBehaviour
         camera = GameObject.Find("Main Camera");
 
         Time.timeScale = 1;
-
-        setPlayerType("Rebel");
     }
 
 
@@ -195,17 +193,24 @@ public class LocalPlayerScript : NetworkBehaviour
     public void setPlayerID(int ID)
     {
         //change colors so players are distinguishable
-        if (ID == 2)
+        if(ID == 1)
+        {
+            setPlayerType("Mage");
+        }
+        else if (ID == 2)
         {
             GetComponent<SpriteRenderer>().material.SetColor("_Color", new Color(1, 0, 0, 1));
+            setPlayerType("Rebel");
         }
         else if (ID == 3)
         {
             GetComponent<SpriteRenderer>().material.SetColor("_Color", new Color(0, 1, 0, 1));
+            setPlayerType("Mage");
         }
         else if (ID == 4)
         {
             GetComponent<SpriteRenderer>().material.SetColor("_Color", new Color(0, 0, 1, 1));
+            setPlayerType("Rebel");
         }
 
         playerID = ID;
