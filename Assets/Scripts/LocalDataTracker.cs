@@ -48,7 +48,7 @@ public class LocalDataTracker : NetworkBehaviour {
         sum += playerIndex;
 
         numberAlive--;
-        if(numberAlive == 0)
+        if(numberAlive == 1)
         {
             displayResults();
         }

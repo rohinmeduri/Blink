@@ -9,7 +9,7 @@ using System.Collections;
 
 namespace Prototype.NetworkLobby
 {
-    public class LobbyManager : NetworkLobbyManager 
+    public class LobbyManager : NetworkLobbyManager
     {
         static short MsgKicked = MsgType.Highest + 1;
 
@@ -48,18 +48,23 @@ namespace Prototype.NetworkLobby
         public bool _isMatchmaking = false;
 
         protected bool _disconnectServer = false;
-        
+
         protected ulong _currentMatchID;
 
         protected LobbyHook _lobbyHooks;
+
 
         void Start()
         {
             s_Singleton = this;
             _lobbyHooks = GetComponent<Prototype.NetworkLobby.LobbyHook>();
+            
             currentPanel = mainMenuPanel;
 
-            backButton.gameObject.SetActive(false);
+            backDelegate = LocalMenuClbk;
+            
+            backButton.gameObject.SetActive(true);
+            
             GetComponent<Canvas>().enabled = true;
 
             DontDestroyOnLoad(gameObject);
@@ -100,6 +105,7 @@ namespace Prototype.NetworkLobby
                 else
                 {
                     ChangeTo(mainMenuPanel);
+                    backDelegate = LocalMenuClbk;
                 }
 
                 topPanel.ToggleVisibility(true);
@@ -131,16 +137,16 @@ namespace Prototype.NetworkLobby
 
             currentPanel = newPanel;
 
-            if (currentPanel != mainMenuPanel)
-            {
-                backButton.gameObject.SetActive(true);
-            }
-            else
-            {
-                backButton.gameObject.SetActive(false);
-                SetServerInfo("Offline", "None");
-                _isMatchmaking = false;
-            }
+            //if (currentPanel != mainMenuPanel)
+            //{
+            backButton.gameObject.SetActive(true);
+            //}
+            //else
+            //{
+            //backButton.gameObject.SetActive(false);
+            SetServerInfo("Offline", "None");
+            _isMatchmaking = false;
+            //}
         }
 
         public void DisplayIsConnecting()
@@ -161,7 +167,7 @@ namespace Prototype.NetworkLobby
         public void GoBackButton()
         {
             backDelegate();
-			topPanel.isInGame = false;
+            topPanel.isInGame = false;
         }
 
         // ----------------- Server management
@@ -179,22 +185,25 @@ namespace Prototype.NetworkLobby
         public void SimpleBackClbk()
         {
             ChangeTo(mainMenuPanel);
+            backDelegate = LocalMenuClbk;
         }
-                 
+
         public void StopHostClbk()
         {
             if (_isMatchmaking)
             {
-				matchMaker.DestroyMatch((NetworkID)_currentMatchID, 0, OnDestroyMatch);
-				_disconnectServer = true;
+                matchMaker.DestroyMatch((NetworkID)_currentMatchID, 0, OnDestroyMatch);
+                _disconnectServer = true;
             }
             else
             {
                 StopHost();
             }
 
-            
+
             ChangeTo(mainMenuPanel);
+            backDelegate = LocalMenuClbk;
+
         }
 
         public void StopClientClbk()
@@ -207,12 +216,23 @@ namespace Prototype.NetworkLobby
             }
 
             ChangeTo(mainMenuPanel);
+            backDelegate = LocalMenuClbk;
+
         }
 
         public void StopServerClbk()
         {
             StopServer();
             ChangeTo(mainMenuPanel);
+            backDelegate = LocalMenuClbk;
+
+        }
+
+        public void LocalMenuClbk()
+        {
+            ChangeTo(null);
+            
+            SceneManager.LoadScene(0);
         }
 
         class KickMsg : MessageBase { }
@@ -410,11 +430,15 @@ namespace Prototype.NetworkLobby
         {
             base.OnClientDisconnect(conn);
             ChangeTo(mainMenuPanel);
+            backDelegate = LocalMenuClbk;
+
         }
 
         public override void OnClientError(NetworkConnection conn, int errorCode)
         {
             ChangeTo(mainMenuPanel);
+            backDelegate = LocalMenuClbk;
+
             infoPanel.Display("Cient error : " + (errorCode == 6 ? "timeout" : errorCode.ToString()), "Close", null);
         }
     }
