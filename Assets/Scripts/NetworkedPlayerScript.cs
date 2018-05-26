@@ -272,18 +272,43 @@ public class NetworkedPlayerScript : LocalPlayerScript {
         comboHits = hits;
     }
 
-    protected override void spawnProjectile(Vector3 position, Vector2 velocity, Vector3 rotation)
+    protected override void spawnSuper()
     {
-        CmdSpawnSuperProjectile(position, velocity, rotation);
+        CmdSpawnSuperProjectile();
     }
     
 
     [Command]
-    void CmdSpawnSuperProjectile(Vector3 position, Vector2 velocity, Vector3 rotation)
+    void CmdSpawnSuperProjectile()
     {
-        base.spawnProjectile(position, velocity, rotation);
-        NetworkServer.Spawn(projectile);
+        base.spawnSuper();
+        NetworkServer.SpawnWithClientAuthority(projectile, gameObject);
+        RpcAssignProjectile(projectile);
     }
+
+    [ClientRpc]
+    void RpcAssignProjectile(GameObject p)
+    {
+        projectile = p;
+    }
+
+    protected override void activateProjectile(Vector2 direction)
+    {
+        CmdActivateProjectile(direction);
+    }
+
+    [Command]
+    void CmdActivateProjectile(Vector2 direction)
+    {
+        RpcActivateProjectile(direction);
+    }
+
+    [ClientRpc]
+    void RpcActivateProjectile(Vector2 direction)
+    {
+        base.activateProjectile(direction);
+    }
+
 
     public bool getHasAuthority()
     {

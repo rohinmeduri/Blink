@@ -186,7 +186,9 @@ MonoBehaviour:
   camera: {fileID: 0}
   superPrefab: {fileID: 1516640886044026, guid: 12f75d4d3260a9843adf531d3d0f29cc,
     type: 2}
-  dataTrackerPrefab: {fileID: 1383368746634192, guid: 9130076096549ee4d9db2505a7950a90,
+  mageAnimatorController: {fileID: 9100000, guid: b50c4cabe9365264694455807a5e4e9a,
+    type: 2}
+  rebelAnimatorController: {fileID: 22100000, guid: 0e4b0a419db3dcf45967d6c077fe312a,
     type: 2}
 --- !u!114 &114509458611876312
 MonoBehaviour:

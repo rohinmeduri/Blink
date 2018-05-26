@@ -151,6 +151,10 @@ MonoBehaviour:
   camera: {fileID: 0}
   superPrefab: {fileID: 1127662235417580, guid: b284844ca23c54742a7860d4411681e5,
     type: 2}
+  mageAnimatorController: {fileID: 9100000, guid: b50c4cabe9365264694455807a5e4e9a,
+    type: 2}
+  rebelAnimatorController: {fileID: 22100000, guid: 0e4b0a419db3dcf45967d6c077fe312a,
+    type: 2}
 --- !u!212 &212091731836323832
 SpriteRenderer:
   m_ObjectHideFlags: 1

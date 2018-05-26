@@ -5,15 +5,9 @@ using UnityEngine.Networking;
 
 public class SuperProjectileScript : NetworkBehaviour {
     private GameObject sender;
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    private bool active = false;
+    public Sprite chargingSuper;
+    public Sprite activatedSuper;
 
     public void setSender(GameObject s)
     {
@@ -22,13 +16,32 @@ public class SuperProjectileScript : NetworkBehaviour {
 
     protected virtual void OnTriggerEnter2D(Collider2D collider)
     {
-        if(collider.gameObject.tag != "Player" && collider.gameObject.tag != "PlayerAI")
+        if (active)
         {
-            Destroy(gameObject);
-        }
-        else
-        {
-            sender.GetComponent<LocalPlayerScript>().killPlayer(collider.gameObject);
+            if (collider.gameObject.tag != "Player" && collider.gameObject.tag != "PlayerAI")
+            {
+                Destroy(gameObject);
+            }
+            else
+            {
+                sender.GetComponent<LocalPlayerScript>().killPlayer(collider.gameObject);
+            }
         }
     }
+
+    public void activate(Vector2 direction)
+    {
+        active = true;
+        rotate(direction);
+        GetComponent<Rigidbody2D>().velocity = direction * 25;
+        GetComponent<BoxCollider2D>().enabled = true;
+        GetComponent<CircleCollider2D>().enabled = true;
+    }
+
+    public virtual void rotate(Vector2 direction)
+    {
+        GetComponent<Transform>().eulerAngles = new Vector3(0, 0, Mathf.Rad2Deg * Mathf.Atan2(direction.y, direction.x) - 90f);
+    }
 }
+
+
