@@ -163,11 +163,11 @@ public class LocalPlayerScript : NetworkBehaviour
 
         if (playerID == 1)
         {
-            gloryTransform.anchoredPosition = new Vector3(-143, 0, 0);
+            gloryTransform.anchoredPosition = new Vector3(-480, 50, 0);
         }
         else if (playerID == 2)
         {
-            gloryTransform.anchoredPosition = new Vector3(53, 0, 0);
+            gloryTransform.anchoredPosition = new Vector3(150, 50, 0);
 
             glorySlider.GetComponent<RectTransform>().Rotate(0, -180, 0);
             glorySlider.GetComponent<RectTransform>().anchoredPosition = new Vector3(18, -20, 0);
@@ -175,11 +175,11 @@ public class LocalPlayerScript : NetworkBehaviour
         }
         else if (playerID == 3)
         {
-            gloryTransform.anchoredPosition = new Vector3(-143, -40, 0);
+            gloryTransform.anchoredPosition = new Vector3(-480, -50, 0);
         }
         else
         {
-            gloryTransform.anchoredPosition = new Vector3(53, -40, 0);
+            gloryTransform.anchoredPosition = new Vector3(150, -50, 0);
 
             glorySlider.GetComponent<RectTransform>().Rotate(0, -180, 0);
             glorySlider.GetComponent<RectTransform>().anchoredPosition = new Vector3(18, -20, 0);
