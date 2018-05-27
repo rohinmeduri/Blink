@@ -130,7 +130,7 @@ public class NetworkedPlayerScript : LocalPlayerScript {
     protected override void wallStickFlipSprite()
     {
         //flip sprite away from wall
-        bool facingRightNow = currentNormal.x > 0;
+        bool facingRightNow = currentNormal.x < 0;
         if (facingRightNow != facingRight)
         {
             CmdFlipSprite(facingRightNow);
@@ -155,6 +155,32 @@ public class NetworkedPlayerScript : LocalPlayerScript {
     {
         numGlory = myGlory;
         otherPlayer.GetComponent<LocalPlayerScript>().numGlory = otherGlory;
+    }
+
+    protected override void blinkOutAnimation()
+    {
+        networkAnimator.SetTrigger("blinking");
+    }
+
+    protected override void blinkInAnimation()
+    {
+        base.blinkInAnimation();
+        CmdBlinkInAnimation();
+    }
+
+    [Command]
+    public void CmdBlinkInAnimation()
+    {
+        RpcBlinkInAnimation();
+    }
+
+    [ClientRpc]
+    public void RpcBlinkInAnimation()
+    {
+        if (!hasAuthority)
+        {
+            base.blinkInAnimation();
+        }
     }
 
     protected override void reversalAnimation()

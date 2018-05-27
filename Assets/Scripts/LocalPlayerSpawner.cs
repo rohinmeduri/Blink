@@ -27,7 +27,7 @@ public class LocalPlayerSpawner : MonoBehaviour{
             else
             {
                 player = Instantiate(AIPrefab);
-                player.GetComponent<PlayerAIScript>().setPlayerDifficulty(i - 1 - numPlayers);
+                player.GetComponent<PlayerAIScript>().setPlayerDifficulty(AIDifficulties[i - 1 - numPlayers]);
             }
             player.GetComponent<LocalPlayerScript>().setPlayerID(i);
         }

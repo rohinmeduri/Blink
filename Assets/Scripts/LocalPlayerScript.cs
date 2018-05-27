@@ -32,6 +32,8 @@ public class LocalPlayerScript : NetworkBehaviour
     public GameObject superPrefab;
     public RuntimeAnimatorController mageAnimatorController;
     public RuntimeAnimatorController rebelAnimatorController;
+    public GameObject mageBlinkIn;
+    public GameObject rebelBlinkIn;
 
     // private variables
     private int characterSelection = 2;
@@ -78,6 +80,7 @@ public class LocalPlayerScript : NetworkBehaviour
     protected int hitNumber = 0;
     protected int attackNumber = 0;
     protected int kills = 0;
+    private GameObject blinkAnimation;
 
     // constants
     public const float GROUND_RUN_FORCE = 2; // How fast player can attain intended velocity on ground
@@ -110,6 +113,7 @@ public class LocalPlayerScript : NetworkBehaviour
     public const float BLINK_VELOCITY = 30; //target blink speed
     public const float BLINK_TIME = 0.2f; //how long the velocity blink lasts
     public const float BLINK_FRAMES = 1.3f; //how long the player needs to wait until velocity blinking again
+    public const float BLINK_DURATION = 0.188f;
     public const int TELEPORT_DISTANCE = 6; //teleport distance
     public const float TELEPORT_FRAMES = 2.5f; //frames until teleportation can happen again
     public const float TELEPORT_TIME = 0.25f; //frames until player can move again
@@ -198,21 +202,22 @@ public class LocalPlayerScript : NetworkBehaviour
         }
         else if (ID == 2)
         {
-            GetComponent<SpriteRenderer>().material.SetColor("_Color", new Color(1, 0, 0, 1));
+            //GetComponent<SpriteRenderer>().material.SetColor("_Color", new Color(1, 0, 0, 1));
             setPlayerType("Rebel");
         }
         else if (ID == 3)
         {
-            GetComponent<SpriteRenderer>().material.SetColor("_Color", new Color(0, 1, 0, 1));
+            //GetComponent<SpriteRenderer>().material.SetColor("_Color", new Color(0, 1, 0, 1));
             setPlayerType("Mage");
         }
         else if (ID == 4)
         {
-            GetComponent<SpriteRenderer>().material.SetColor("_Color", new Color(0, 0, 1, 1));
+            //GetComponent<SpriteRenderer>().material.SetColor("_Color", new Color(0, 0, 1, 1));
             setPlayerType("Rebel");
         }
 
         playerID = ID;
+        GetComponent<SpriteRenderer>().material.SetColor("_Color", getColor());
         createMeter();
 
         //unity's joystick numbers are inconsistent, so need to manually assign controller IDs
@@ -237,15 +242,18 @@ public class LocalPlayerScript : NetworkBehaviour
         }
     }
 
+
     protected virtual void setPlayerType(string playerType)
     {
         if (playerType.Equals("Mage"))
         {
             GetComponent<Animator>().runtimeAnimatorController = mageAnimatorController;
+            blinkAnimation = mageBlinkIn;
         }
         else if (playerType.Equals("Rebel"))
         {
             GetComponent<Animator>().runtimeAnimatorController = rebelAnimatorController;
+            blinkAnimation = rebelBlinkIn;
         }
     }
 
@@ -711,6 +719,9 @@ public class LocalPlayerScript : NetworkBehaviour
                 //bool teleported is to prevent the user from simply hold down the button
                 if (blinkInput && !teleported)
                 {//currently set to 'b'
+                    blinkInAnimation();
+                    blinkOutAnimation();
+
                     float distance = TELEPORT_DISTANCE;
 
                     int layerMask = LayerMask.GetMask("Ignore Raycast");
@@ -729,6 +740,9 @@ public class LocalPlayerScript : NetworkBehaviour
                         rb2D.position.y + distance * getDirection().y);
 
                     teleported = true;
+
+                    actionLock = true;
+                    actionWaitFrames = BLINK_DURATION;
                 }
                 else
                 {
@@ -739,6 +753,38 @@ public class LocalPlayerScript : NetworkBehaviour
                 break;
             default:
                 break;
+        }
+    }
+
+    protected virtual void blinkOutAnimation()
+    {
+        animator.SetTrigger("blinking");
+    }
+
+    protected virtual void blinkInAnimation()
+    {
+        GameObject blinkSprite = Instantiate(blinkAnimation);
+        blinkSprite.GetComponent<Transform>().position = transform.position;
+        blinkSprite.GetComponent<SpriteRenderer>().material.SetColor("_Color", getColor());
+    }
+
+    Color getColor()
+    {
+        if(playerID == 1)
+        {
+            return new Color(1, 1, 1, 1);
+        }
+        else if(playerID == 2)
+        {
+            return new Color(1, 0, 0, 1);
+        }
+        else if(playerID == 3)
+        {
+            return new Color(0, 1, 0, 1);
+        }
+        else
+        {
+            return new Color(0, 0, 1, 1);
         }
     }
 
