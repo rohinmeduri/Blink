@@ -147,19 +147,18 @@ public class LocalPlayerScript : NetworkBehaviour
     public void createMeter()
     {
         //instantiate UI element and place on canvas
-        glory = Instantiate(gloryPrefab);
-        var canvas = GameObject.Find("Canvas");
-        RectTransform gloryTransform = glory.GetComponent<RectTransform>();
-        gloryTransform.SetParent(canvas.transform);
+        var gloryString = "Glory" + playerID;
+        glory = GameObject.Find(gloryString);
+        glory.GetComponent<CanvasGroup>().alpha = 1;
 
         //assign slider and combo text images to variables so they can be modified easily
         glorySlider = glory.transform.Find("Slider").gameObject.GetComponent<Slider>();
-        comboHitsImage = glory.transform.Find("HitsText").gameObject.GetComponent<Image>();
-        comboTens = glory.transform.Find("TensPlace").gameObject.GetComponent<Image>();
-        comboOnes = glory.transform.Find("OnesPlace").gameObject.GetComponent<Image>();
+        comboHitsImage = glory.transform.Find("ComboText").transform.Find("HitsText").gameObject.GetComponent<Image>();
+        comboTens = glory.transform.Find("ComboText").transform.Find("TensPlace").gameObject.GetComponent<Image>();
+        comboOnes = glory.transform.Find("ComboText").transform.Find("OnesPlace").gameObject.GetComponent<Image>();
         glorySlider.value = numGlory;
 
-        if (playerID == 1)
+        /*if (playerID == 1)
         {
             gloryTransform.anchoredPosition = new Vector3(-480, 50, 0);
         }
@@ -182,12 +181,12 @@ public class LocalPlayerScript : NetworkBehaviour
             glorySlider.GetComponent<RectTransform>().Rotate(0, -180, 0);
             glorySlider.GetComponent<RectTransform>().anchoredPosition = new Vector3(18, -20, 0);
             glory.transform.Find("Meter Cover").gameObject.GetComponent<RectTransform>().Rotate(0, -180, 0);
-        }
+        }*/
     }
 
     public virtual void removeMeter()
     {
-        Destroy(glory);
+        glory.GetComponent<CanvasGroup>().alpha = 0;
     }
 
     public void setPlayerID(int ID)
