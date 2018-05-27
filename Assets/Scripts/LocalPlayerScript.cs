@@ -283,6 +283,10 @@ public class LocalPlayerScript : NetworkBehaviour
         {
             attackNum = 2;
         }
+        else if (angle < 3 * Mathf.PI / 8)
+        {
+            attackNum = 1;
+        }
         else if (angle < 5 * Mathf.PI / 8)
         {
             attackNum = 0;
