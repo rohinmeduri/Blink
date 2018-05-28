@@ -158,7 +158,7 @@ MonoBehaviour:
     type: 2}
   mageBlinkIn: {fileID: 1730829665728188, guid: 81ba33e1998b4e446a8baea432948abb,
     type: 2}
-  rebelBlinkIn: {fileID: 1730829665728188, guid: 81ba33e1998b4e446a8baea432948abb,
+  rebelBlinkIn: {fileID: 1730829665728188, guid: ad017b7627e3e934693c6ce95b2a329a,
     type: 2}
 --- !u!212 &212091731836323832
 SpriteRenderer:

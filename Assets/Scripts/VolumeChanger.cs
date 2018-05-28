@@ -6,7 +6,7 @@ public class VolumeChanger : MonoBehaviour {
 
     public void changeVolume(float value)
     {
-        GameObject musicPlayer = GameObject.FindGameObjectWithTag("Music Player");
+        GameObject musicPlayer = GameObject.Find("MusicPlayer");
         musicPlayer.GetComponent<AudioSource>().volume = value;
     }
 }
