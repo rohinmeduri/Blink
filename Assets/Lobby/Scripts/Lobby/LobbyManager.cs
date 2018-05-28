@@ -56,6 +56,7 @@ namespace Prototype.NetworkLobby
 
         void Start()
         {
+            Debug.Log("actual called?");
             s_Singleton = this;
             _lobbyHooks = GetComponent<Prototype.NetworkLobby.LobbyHook>();
             
