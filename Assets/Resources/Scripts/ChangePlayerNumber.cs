@@ -93,12 +93,10 @@ public class ChangePlayerNumber : MonoBehaviour {
     }
     public int getNumberOfPlayers()
     {
-        Debug.Log("num players:" + numberOfPlayers);
         return numberOfPlayers;
     }
     public int getNumberOfAI()
     {
-        Debug.Log("num AI:" + numberOfAI);
         return numberOfAI;
     }
 	public void updateNumberElements()
@@ -109,8 +107,8 @@ public class ChangePlayerNumber : MonoBehaviour {
     public int[] getAIDifficulties()
     {
         int[] Fresh = {AI1Difficulty, AI2Difficulty, AI3Difficulty};
-        int[] Dank = new int[numberOfPlayers];
-        for(int i = 0; i < numberOfPlayers; i++)
+        int[] Dank = new int[numberOfAI];
+        for(int i = 0; i < numberOfAI; i++)
         {
             Dank[i] = Fresh[i];
         }
