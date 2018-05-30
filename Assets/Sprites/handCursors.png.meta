@@ -1,11 +1,10 @@
 fileFormatVersion: 2
-guid: 764468897f477e041b737001bb35dffd
+guid: ee134b0129ff5434cbb06210fd8c3c8c
 TextureImporter:
   fileIDToRecycleName:
-    21300000: MageIdle_KG_0
-    21300002: MageIdle_KG_1
-    21300004: MageIdle_KG_2
-    21300006: MageIdle_KG_4
+    21300000: Cursor1
+    21300002: Cursor2
+    21300004: Cursor3
   externalObjects: {}
   serializedVersion: 5
   mipmaps:
@@ -47,7 +46,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 180
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -97,81 +96,61 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: MageIdle_KG_0
+      name: Cursor1
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 134
-        height: 332
+        y: 86
+        width: 284
+        height: 309
       alignment: 9
-      pivot: {x: 0.545, y: 0.478}
+      pivot: {x: 0.12441314, y: 0.8819832}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 473d0e0c0f435eb4fb8e9ca9d99bbbd6
+      spriteID: 73c2c29770275714c998850493a55307
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MageIdle_KG_1
+      name: Cursor2
       rect:
         serializedVersion: 2
-        x: 152
-        y: 1
-        width: 155
-        height: 331
-      alignment: 9
-      pivot: {x: 0.495, y: 0.47628734}
+        x: 356
+        y: 86
+        width: 286
+        height: 309
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3cc4fb1a16778274d84be33be05d2704
+      spriteID: a04a9dd05a7f8bb47a26ca5ac2713d66
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: MageIdle_KG_2
+      name: Cursor3
       rect:
         serializedVersion: 2
-        x: 325
-        y: 1
-        width: 118
-        height: 331
-      alignment: 9
-      pivot: {x: 0.5, y: 0.478}
+        x: 676
+        y: 86
+        width: 284
+        height: 309
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 716af348550dd00449cc423a93141f2c
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MageIdle_KG_4
-      rect:
-        serializedVersion: 2
-        x: 484
-        y: 0
-        width: 111
-        height: 332
-      alignment: 9
-      pivot: {x: 0.5, y: 0.478}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 1e2acb1acc3d00b44990ef09f5c05bd8
+      spriteID: fa14842648dc69f48b9f4d550adc403d
       vertices: []
       indices: 
       edges: []
@@ -179,7 +158,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 047b0e44b6530ee48ae7a53aaba62c40
     vertices: []
     indices: 
     edges: []

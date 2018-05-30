@@ -8,6 +8,7 @@ TagManager:
   - PlayerAI
   - DataTracker
   - Music Player
+  - LobbyManager
   layers:
   - Default
   - TransparentFX
