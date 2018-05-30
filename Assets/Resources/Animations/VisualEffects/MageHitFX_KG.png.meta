@@ -1,7 +1,23 @@
 fileFormatVersion: 2
 guid: 115a8cae69e12ac42868223e671df6cf
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: MageHitFX_KG_0
+    21300002: MageHitFX_KG_1
+    21300004: MageHitFX_KG_2
+    21300006: MageHitFX_KG_3
+    21300008: MageHitFX_KG_4
+    21300010: MageHitFX_KG_5
+    21300012: MageHitFX_KG_6
+    21300014: MageHitFX_KG_7
+    21300016: MageHitFX_KG_8
+    21300018: MageHitFX_KG_9
+    21300020: MageHitFX_KG_10
+    21300022: MageHitFX_KG_11
+    21300024: MageHitFX_KG_12
+    21300026: MageHitFX_KG_13
+    21300028: MageHitFX_KG_14
+    21300030: MageHitFX_KG_15
   externalObjects: {}
   serializedVersion: 5
   mipmaps:
@@ -80,7 +96,327 @@ TextureImporter:
     androidETC2FallbackOverride: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: MageHitFX_KG_0
+      rect:
+        serializedVersion: 2
+        x: 77
+        y: 1415
+        width: 191
+        height: 330
+      alignment: 9
+      pivot: {x: 0.36971328, y: 0.4515233}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0a9efd205f34bc741952e26dd13e1fa0
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MageHitFX_KG_1
+      rect:
+        serializedVersion: 2
+        x: 298
+        y: 1395
+        width: 214
+        height: 350
+      alignment: 9
+      pivot: {x: 0.33387998, y: 0.47460762}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b235c41a974677e46a0557218c6e6afa
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MageHitFX_KG_2
+      rect:
+        serializedVersion: 2
+        x: 554
+        y: 1399
+        width: 204
+        height: 333
+      alignment: 9
+      pivot: {x: 0.29959765, y: 0.47864905}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bf717a384d46fbd43b33f8c1dccec7cd
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MageHitFX_KG_3
+      rect:
+        serializedVersion: 2
+        x: 793
+        y: 1392
+        width: 258
+        height: 360
+      alignment: 9
+      pivot: {x: 0.31742895, y: 0.47037557}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e7051383b6363ed4ca99f0e21f894c24
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MageHitFX_KG_4
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 1055
+        width: 139
+        height: 175
+      alignment: 9
+      pivot: {x: 0.3864443, y: 0.5039223}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 145b03df30b09dd4195e051a1f529ec1
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MageHitFX_KG_5
+      rect:
+        serializedVersion: 2
+        x: 313
+        y: 991
+        width: 165
+        height: 288
+      alignment: 9
+      pivot: {x: 0.32947186, y: 0.50238335}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 278e727606bbc154cbaf9fee9361d66f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MageHitFX_KG_6
+      rect:
+        serializedVersion: 2
+        x: 540
+        y: 978
+        width: 217
+        height: 311
+      alignment: 9
+      pivot: {x: 0.28810984, y: 0.4867603}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 125bd13d35838954faa22ff8905d1628
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MageHitFX_KG_7
+      rect:
+        serializedVersion: 2
+        x: 799
+        y: 975
+        width: 243
+        height: 372
+      alignment: 9
+      pivot: {x: 0.31360516, y: 0.46863842}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 78c21a5a7f0074946905c49e7cb0f00b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MageHitFX_KG_8
+      rect:
+        serializedVersion: 2
+        x: 84
+        y: 686
+        width: 174
+        height: 188
+      alignment: 9
+      pivot: {x: 0.4408386, y: 0.46349674}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e3723f4886a43f940bbe8c6850752505
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MageHitFX_KG_9
+      rect:
+        serializedVersion: 2
+        x: 262
+        y: 648
+        width: 204
+        height: 233
+      alignment: 9
+      pivot: {x: 0.49663603, y: 0.5117819}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a93b06c31e0276347b6dc59822f5af46
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MageHitFX_KG_10
+      rect:
+        serializedVersion: 2
+        x: 485
+        y: 648
+        width: 246
+        height: 233
+      alignment: 9
+      pivot: {x: 0.5390563, y: 0.4823281}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f42779bf4607b524b9543c4209a638c1
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MageHitFX_KG_11
+      rect:
+        serializedVersion: 2
+        x: 763
+        y: 635
+        width: 263
+        height: 249
+      alignment: 9
+      pivot: {x: 0.49739057, y: 0.47243908}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 199053045d168a344ad30fddbe9a6377
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MageHitFX_KG_12
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 204
+        width: 191
+        height: 191
+      alignment: 9
+      pivot: {x: 0.3059755, y: 0.41017413}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6ec06e01633ad124e97e84eb4e06e9b1
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MageHitFX_KG_13
+      rect:
+        serializedVersion: 2
+        x: 262
+        y: 178
+        width: 233
+        height: 237
+      alignment: 9
+      pivot: {x: 0.27320632, y: 0.39575633}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0b3b06a00074fb34fa85243fa4ccc5ba
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MageHitFX_KG_14
+      rect:
+        serializedVersion: 2
+        x: 514
+        y: 162
+        width: 256
+        height: 275
+      alignment: 9
+      pivot: {x: 0.27481723, y: 0.43262163}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 23badc13e0efc3b418f33aa4df0923e8
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MageHitFX_KG_15
+      rect:
+        serializedVersion: 2
+        x: 809
+        y: 156
+        width: 239
+        height: 288
+      alignment: 9
+      pivot: {x: 0.2702859, y: 0.4023022}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 38e5fbf30cd5de741ab35ba09fbf3035
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
