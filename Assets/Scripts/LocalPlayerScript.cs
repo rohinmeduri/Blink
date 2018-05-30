@@ -201,12 +201,12 @@ public class LocalPlayerScript : NetworkBehaviour
         //change colors so players are distinguishable
         if(ID == 1)
         {
-            setPlayerType("Mage");
+            setPlayerType("Rebel");
         }
         else if (ID == 2)
         {
             //GetComponent<SpriteRenderer>().material.SetColor("_Color", new Color(1, 0, 0, 1));
-            setPlayerType("Rebel");
+            setPlayerType("Mage");
         }
         else if (ID == 3)
         {
