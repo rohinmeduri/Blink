@@ -48,8 +48,10 @@ public class LocalPlayerScript : NetworkBehaviour
     private float actionWaitedFrames = 0;
     private float blinkFrames = 0;
     private float blinkTimer = 0;
+    private bool blinking = false;
     private bool teleported = false;
     private bool reversalEffective = false;
+    private bool reversalLanded = false;
     private Vector2 reversalDirection;
     protected GameObject glory;
     [SyncVar]
@@ -84,6 +86,7 @@ public class LocalPlayerScript : NetworkBehaviour
     private GameObject effectsPlayer;
     private GameObject soundEffectPlayer;
     private GameObject[] visualEffectCreator;
+    private bool attackLanded = false;
 
     // constants
     public const float GROUND_RUN_FORCE = 2; // How fast player can attain intended velocity on ground
@@ -374,6 +377,9 @@ public class LocalPlayerScript : NetworkBehaviour
                 actionLock = false;
                 reversalEffective = false;
                 actionWaitedFrames = 0;
+                attackLanded = false;
+                reversalLanded = false;
+                blinking = false;
             }
 
         }
@@ -426,14 +432,19 @@ public class LocalPlayerScript : NetworkBehaviour
             rb2D.sharedMaterial = regularMaterial;
             rotate(Vector3.zero);
 
+            if (!startedSuper && !teleported && !attackLanded && !reversalLanded)
+            {
+                gravity();
+                run();
+            }
+
             if (blinkTimer <= 0)
             { //blinkTimer is the amount of time the blink takes to complete, not the amount of frames until next blink
                 if (!actionLock)
                 {
                     startBlink();
-                    gravity();
+                    //gravity();
                     jump();
-                    run();
                     boost();
                     flipSprite();
                     attack();
@@ -442,7 +453,7 @@ public class LocalPlayerScript : NetworkBehaviour
                 }
                 else if (actionWaitedFrames >= 20)
                 {
-                    gravity();
+                    //gravity();
                 }
             }
             else
@@ -483,6 +494,10 @@ public class LocalPlayerScript : NetworkBehaviour
     {
         // changes velocity gradually to a goal velocity determined by controls
         float goalSpeed = sticky();
+        if (actionLock)
+        {
+            goalSpeed = 0;
+        }
         float runForce;
 
         // determine whether should use ground acceleration or air acceleration
@@ -675,7 +690,7 @@ public class LocalPlayerScript : NetworkBehaviour
             float angle = Mathf.Atan2(getDirection().x, getDirection().y);
 
             //cancel attacker's momentum
-            rb2D.velocity = Vector2.zero;
+            //rb2D.velocity = Vector2.zero;
 
             //raycast to see if someone is hit with the attack - mask out attacker's layer
             Vector2 direction = getDirection();
@@ -691,6 +706,9 @@ public class LocalPlayerScript : NetworkBehaviour
             //if attack is successful:
             if (hit.rigidbody != null)
             {
+                rb2D.velocity = Vector2.zero;
+                attackLanded = true;
+
                 createSoundEffect(2, Mathf.Max(1f-1f*comboHits/5, 0));
                 createSoundEffect(3, Mathf.Min(1f*comboHits/5, 1));
 
@@ -778,6 +796,7 @@ public class LocalPlayerScript : NetworkBehaviour
                 //bool teleported is to prevent the user from simply hold down the button
                 if (blinkInput && !teleported)
                 {//currently set to 'b'
+                    blinking = true;
                     blinkInAnimation();
                     blinkOutAnimation();
 
@@ -1110,6 +1129,7 @@ public class LocalPlayerScript : NetworkBehaviour
         if (reversalEffective && Vector2.Angle(reversalDirection, dir) > 90f)
         {
             reversalLandedAnimation();
+            reversalLanded = true;
             updateComboHits(comboHits + 1);
             reversalGloryUpdate(attacker, comboHits);
             startKnockback(attacker, reversalDirection, comboHits);
@@ -1443,7 +1463,6 @@ public class LocalPlayerScript : NetworkBehaviour
             hasSuper = false;
         }
     }
-
 
     public virtual int[] compileData()
     {
