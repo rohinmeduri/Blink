@@ -276,6 +276,7 @@ public class LocalPlayerScript : NetworkBehaviour
             visualEffectCreator[i].AddComponent<SpriteRenderer>();
             visualEffectCreator[i].GetComponent<SpriteRenderer>().sortingOrder = 1;
             visualEffectCreator[i].GetComponent<VisualEffectCreator>().setVisualEffects(playerType, i);
+            //visualEffectCreator[i].GetComponent<SpriteRenderer>().material.SetColor("_Color", getColor());
             visualEffectCreator[i].transform.parent = effectsPlayer.transform;
         }
     }
@@ -285,7 +286,7 @@ public class LocalPlayerScript : NetworkBehaviour
         soundEffectPlayer.GetComponent<SoundEffectPlayer>().playSoundEffect(index, volume);
     }
 
-    private void setVisualEffects(int index)
+    private void createVisualEffect(int index)
     {
         visualEffectCreator[index].GetComponent<VisualEffectCreator>().triggerEffect(gameObject);
     }
@@ -574,7 +575,7 @@ public class LocalPlayerScript : NetworkBehaviour
         {
             rb2D.velocity = new Vector2(xInputTracker[0] * BOOST_SPEED, rb2D.velocity.y);
 
-            setVisualEffects(4);
+            createVisualEffect(4);
             // goalSpeed = rb2D.velocity.x; (maybe not necessary)
             boosting = false;
             for(int i = 1; i < xInputTracker.Length; i++)
@@ -598,15 +599,15 @@ public class LocalPlayerScript : NetworkBehaviour
             {
                 if (isGround())
                 {
-                    setVisualEffects(0);
+                    createVisualEffect(0);
                 }
                 else if (isAirborn())
                 {
-                    setVisualEffects(1);
+                    createVisualEffect(1);
                 }
                 else if (isWall()) 
                 {
-                    setVisualEffects(2);
+                    createVisualEffect(2);
                 }
                 rb2D.velocity = new Vector2(WALLJUMP_SPEED * currentNormal.x + rb2D.velocity.x, JUMP_SPEED);
             }
@@ -691,6 +692,7 @@ public class LocalPlayerScript : NetworkBehaviour
             //if attack is successful:
             if (hit.rigidbody != null)
             {
+                createVisualEffect(5);
                 createSoundEffect(2, Mathf.Max(1f-1f*comboHits/5, 0));
                 createSoundEffect(3, Mathf.Min(1f*comboHits/5, 1));
 
@@ -969,7 +971,7 @@ public class LocalPlayerScript : NetworkBehaviour
     /**
      * Script for determining direction of player actions (attacks, reversals, and blinks)
      */
-    protected virtual Vector2 getDirection()
+    public virtual Vector2 getDirection()
     {
         //determine horizontal component of attack's direction
         float horizontalDirection;

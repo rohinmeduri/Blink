@@ -135,7 +135,7 @@ public class PlayerAIScript : LocalPlayerScript {
         }
     }
 
-    protected override Vector2 getDirection()
+    public override Vector2 getDirection()
     {
         //determine horizontal component of attack's direction
         float horizontalDirection;
