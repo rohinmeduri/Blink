@@ -81,7 +81,9 @@ public class LocalPlayerScript : NetworkBehaviour
     protected int attackNumber = 0;
     protected int kills = 0;
     private GameObject blinkAnimation;
+    private GameObject effectsPlayer;
     private GameObject soundEffectPlayer;
+    private GameObject[] visualEffectCreator;
 
     // constants
     public const float GROUND_RUN_FORCE = 2; // How fast player can attain intended velocity on ground
@@ -258,14 +260,35 @@ public class LocalPlayerScript : NetworkBehaviour
             blinkAnimation = rebelBlinkIn;
         }
 
+        effectsPlayer = new GameObject("Effects Player");
 
         soundEffectPlayer = new GameObject("Sound Effect Player");
-        soundEffectPlayer.transform.parent = gameObject.transform;
+        soundEffectPlayer.transform.parent = effectsPlayer.transform;
         soundEffectPlayer.AddComponent<SoundEffectPlayer>();
         soundEffectPlayer.GetComponent<SoundEffectPlayer>().setSoundEffects(playerType);
+
+
+        visualEffectCreator = new GameObject[6];
+        for(int i = 0; i < 6; i++)
+        {
+            visualEffectCreator[i] = new GameObject("Visual Effect Creator " + i);
+            visualEffectCreator[i].AddComponent<VisualEffectCreator>();
+            visualEffectCreator[i].AddComponent<SpriteRenderer>();
+            visualEffectCreator[i].GetComponent<SpriteRenderer>().sortingOrder = 1;
+            visualEffectCreator[i].GetComponent<VisualEffectCreator>().setVisualEffects(playerType, i);
+            visualEffectCreator[i].transform.parent = effectsPlayer.transform;
+        }
+    }
+    
+    private void createSoundEffect(int index, float volume)
+    {
+        soundEffectPlayer.GetComponent<SoundEffectPlayer>().playSoundEffect(index, volume);
     }
 
-
+    private void setVisualEffects(int index)
+    {
+        visualEffectCreator[index].GetComponent<VisualEffectCreator>().triggerEffect(gameObject);
+    }
 
     // Update is called once per frame
     protected virtual void Update()
@@ -550,8 +573,14 @@ public class LocalPlayerScript : NetworkBehaviour
         if (xVelTracker[xVelTracker.Length - 1] * xVelTracker[xVelTracker.Length - 2] <= 0 && boosting)
         {
             rb2D.velocity = new Vector2(xInputTracker[0] * BOOST_SPEED, rb2D.velocity.y);
+
+            setVisualEffects(4);
             // goalSpeed = rb2D.velocity.x; (maybe not necessary)
             boosting = false;
+            for(int i = 1; i < xInputTracker.Length; i++)
+            {
+                xInputTracker[i] = xInputTracker[0];
+            }
         }
     }
 
@@ -563,9 +592,22 @@ public class LocalPlayerScript : NetworkBehaviour
         // checks if touching walls
         if (jumpInput && canJump)
         {
+
             // if have midair jumps or attempted jump isn't midair or on a wall that's too steep
             if (jumps > 0 || !(currentNormal.y < Mathf.Sin(MAX_WJABLE_ANGLE) || isAirborn()))
             {
+                if (isGround())
+                {
+                    setVisualEffects(0);
+                }
+                else if (isAirborn())
+                {
+                    setVisualEffects(1);
+                }
+                else if (isWall()) 
+                {
+                    setVisualEffects(2);
+                }
                 rb2D.velocity = new Vector2(WALLJUMP_SPEED * currentNormal.x + rb2D.velocity.x, JUMP_SPEED);
             }
             // if jumping in midair or on a wall that's too steep
@@ -628,7 +670,7 @@ public class LocalPlayerScript : NetworkBehaviour
     {
         if (attackInput)
         {
-            soundEffectPlayer.GetComponent<SoundEffectPlayer>().playSoundEffect(0, 1f);
+            createSoundEffect(0, 1f);
 
             float angle = Mathf.Atan2(getDirection().x, getDirection().y);
 
@@ -649,8 +691,8 @@ public class LocalPlayerScript : NetworkBehaviour
             //if attack is successful:
             if (hit.rigidbody != null)
             {
-                soundEffectPlayer.GetComponent<SoundEffectPlayer>().playSoundEffect(2, Mathf.Max(1f-1f*comboHits/5, 0));
-                soundEffectPlayer.GetComponent<SoundEffectPlayer>().playSoundEffect(3, Mathf.Min(1f*comboHits/5, 1));
+                createSoundEffect(2, Mathf.Max(1f-1f*comboHits/5, 0));
+                createSoundEffect(3, Mathf.Min(1f*comboHits/5, 1));
 
                 comboHits++;
                 var trueHit = (comboHitInterval <= STUN_DURATION) && (comboHits > 1);
@@ -840,7 +882,7 @@ public class LocalPlayerScript : NetworkBehaviour
         if (hasSuper && superInput)
         {
             //cancel momentum
-            soundEffectPlayer.GetComponent<SoundEffectPlayer>().playSoundEffect(4, 1f);
+            createSoundEffect(4, 1f);
             spawnSuper();
             rb2D.velocity = Vector2.zero;
             actionLock = true;

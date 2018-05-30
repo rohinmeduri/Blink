@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 95320855955461750}
   - component: {fileID: 114487566454952280}
   m_Layer: 0
-  m_Name: Rebel_Blink_In
+  m_Name: RebelBlinkIn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
