@@ -99,7 +99,7 @@ public class LocalPlayerScript : NetworkBehaviour
     public const float MAX_WJABLE_ANGLE = -Mathf.PI / 18; // largest negative angle of a wall where counts as walljump
     public const float MIN_JUMP_RECOVERY_ANGLE = Mathf.PI / 4; // smallest angle of a wall where air jumps are recovered
     public const float STICKY_WJ_DURATION = 0.375f; // amount of seconds that player sticks to a wall after touching it
-    public const float ATTACK_WAIT_FRAMES = 0.625f; // number of seconds a player must wait between attacks
+    public const float ATTACK_WAIT_FRAMES = 0.5f; // number of seconds a player must wait between attacks
     public const float ATTACK_FREEZE_FRAMES = 0.3f; //number of seconds a player freezes while attacking [DEPRECIATED]
     public const float COMBO_HIT_TIMER = 2.5f; //number of seconds a player must land the next attack within to continue a combo
     public const float TRUE_HIT_MULTIPLIER = 1.5f; //multiplier for glory increase for true hits 
@@ -108,7 +108,7 @@ public class LocalPlayerScript : NetworkBehaviour
     public const float KNOCKBACK_DAMPENING_COEF = 0.985f; // factor that knockback speed slows every second
     public const float DI_FORCE = 0.1f; // amount of influence of DI
     public const float REVERSAL_EFFECTIVE_TIME = 0.4f; //number of seconds in which a reversal is effective
-    public const float REVERSAL_DURATION = 1.625f; //number of seconds a reversal lasts (effective time + end lag)
+    public const float REVERSAL_DURATION = 1.6f; //number of seconds a reversal lasts (effective time + end lag)
     public const float REVERSAL_SUCCESS_ANGLE = 90; //minimum angle between reversal and attack for reversal to be successful
     public const float SUPER_LOSS_GLORY = 85; //glory at which super is lost if player falls below
 
@@ -429,21 +429,23 @@ public class LocalPlayerScript : NetworkBehaviour
 
             if (blinkTimer <= 0)
             { //blinkTimer is the amount of time the blink takes to complete, not the amount of frames until next blink
+                gravity();
+             
                 if (!actionLock)
                 {
                     startBlink();
-                    gravity();
                     jump();
-                    run();
+                    run(false);
                     boost();
                     flipSprite();
                     attack();
                     reversal();
                     StartSuper();
                 }
-                else if (actionWaitedFrames >= 20)
+                else
                 {
-                    gravity();
+                    run(true);
+                    if (startedSuper || teleported || reversalEffective) rb2D.velocity = new Vector2(0, 0);
                 }
             }
             else
@@ -480,10 +482,10 @@ public class LocalPlayerScript : NetworkBehaviour
     /**
      * Script for Running
      */
-    void run()
+    void run(bool actionlocked)
     {
         // changes velocity gradually to a goal velocity determined by controls
-        float goalSpeed = sticky();
+        float goalSpeed = actionlocked? 0 : getGoalSpeed();
         float runForce;
 
         // determine whether should use ground acceleration or air acceleration
@@ -505,7 +507,7 @@ public class LocalPlayerScript : NetworkBehaviour
     /**
      * Script for checking sticky walljump
      */
-    protected virtual float sticky()
+    protected virtual float getGoalSpeed()
     {
         float goalSpeed = 0;
         // If standing on flat enough ground or in air, reset sticky timer
@@ -676,7 +678,7 @@ public class LocalPlayerScript : NetworkBehaviour
             float angle = Mathf.Atan2(getDirection().x, getDirection().y);
 
             //cancel attacker's momentum
-            rb2D.velocity = Vector2.zero;
+            //rb2D.velocity = Vector2.zero;
 
             //raycast to see if someone is hit with the attack - mask out attacker's layer
             Vector2 direction = getDirection();
@@ -858,7 +860,7 @@ public class LocalPlayerScript : NetworkBehaviour
         if (reversalInput)
         {
             //cancel momentum
-            rb2D.velocity = Vector2.zero;
+            //rb2D.velocity = Vector2.zero;
 
             reversalDirection = getDirection();
             actionLock = true;

@@ -42,11 +42,9 @@ public class VisualEffectCreator : MonoBehaviour {
         {
             case 0:
                 gameObject.transform.position = player.transform.position + new Vector3(0, -0.8f, 0);
-                //effectsAnimator.SetTrigger("Jump");
                 break;
             case 1:
                 gameObject.transform.position = player.transform.position + new Vector3(0, -0.8f, 0);
-                //effectsAnimator.SetTrigger("AirJump");
                 break;
             case 2:
                 gameObject.GetComponent<SpriteRenderer>().flipX = player.GetComponent<SpriteRenderer>().flipX;
@@ -54,7 +52,6 @@ public class VisualEffectCreator : MonoBehaviour {
                     gameObject.transform.position = player.transform.position + new Vector3(-0.35f, 0, 0);
                 else
                     gameObject.transform.position = player.transform.position + new Vector3(0.35f, 0, 0);
-                //effectsAnimator.SetTrigger("WallJump");
                 break;
             case 3:
                 break;
@@ -64,13 +61,11 @@ public class VisualEffectCreator : MonoBehaviour {
                     gameObject.transform.position = player.transform.position + new Vector3(-0.5f, -0.5f, 0);
                 else
                     gameObject.transform.position = player.transform.position + new Vector3(0.5f, -0.5f, 0);
-                //effectsAnimator.SetTrigger("DashBurst");
                 break;
             case 5:
                 Vector2 direction = player.GetComponent<LocalPlayerScript>().getDirection();
                 rotate(-direction);
                 gameObject.transform.position = player.transform.position + new Vector3(direction.x, direction.y, 0);
-                //effectsAnimator.SetTrigger("Attack");
                 break;
             default:
                 break;
