@@ -48,8 +48,10 @@ public class LocalPlayerScript : NetworkBehaviour
     private float actionWaitedFrames = 0;
     private float blinkFrames = 0;
     private float blinkTimer = 0;
+    private bool blinking = false;
     private bool teleported = false;
     private bool reversalEffective = false;
+    private bool reversalLanded = false;
     private Vector2 reversalDirection;
     protected GameObject glory;
     [SyncVar]
@@ -84,6 +86,7 @@ public class LocalPlayerScript : NetworkBehaviour
     private GameObject effectsPlayer;
     private GameObject soundEffectPlayer;
     private GameObject[] visualEffectCreator;
+    private bool attackLanded = false;
 
     // constants
     public const float GROUND_RUN_FORCE = 2; // How fast player can attain intended velocity on ground
@@ -375,6 +378,9 @@ public class LocalPlayerScript : NetworkBehaviour
                 actionLock = false;
                 reversalEffective = false;
                 actionWaitedFrames = 0;
+                attackLanded = false;
+                reversalLanded = false;
+                blinking = false;
             }
 
         }
@@ -445,7 +451,7 @@ public class LocalPlayerScript : NetworkBehaviour
                 else
                 {
                     run(true);
-                    if (startedSuper || teleported || reversalEffective) rb2D.velocity = new Vector2(0, 0);
+                    if (startedSuper || teleported || reversalEffective || reversalLanded || blinking || attackLanded) rb2D.velocity = new Vector2(0, 0);
                 }
             }
             else
@@ -694,6 +700,8 @@ public class LocalPlayerScript : NetworkBehaviour
             //if attack is successful:
             if (hit.rigidbody != null)
             {
+                rb2D.velocity = Vector2.zero;
+                attackLanded = true;
                 createVisualEffect(5);
                 createSoundEffect(2, Mathf.Max(1f-1f*comboHits/5, 0));
                 createSoundEffect(3, Mathf.Min(1f*comboHits/5, 1));
@@ -782,6 +790,7 @@ public class LocalPlayerScript : NetworkBehaviour
                 //bool teleported is to prevent the user from simply hold down the button
                 if (blinkInput && !teleported)
                 {//currently set to 'b'
+                    blinking = true;
                     blinkInAnimation();
                     blinkOutAnimation();
 
@@ -1114,6 +1123,7 @@ public class LocalPlayerScript : NetworkBehaviour
         if (reversalEffective && Vector2.Angle(reversalDirection, dir) > 90f)
         {
             reversalLandedAnimation();
+            reversalLanded = true;
             updateComboHits(comboHits + 1);
             reversalGloryUpdate(attacker, comboHits);
             startKnockback(attacker, reversalDirection, comboHits);
@@ -1447,7 +1457,6 @@ public class LocalPlayerScript : NetworkBehaviour
             hasSuper = false;
         }
     }
-
 
     public virtual int[] compileData()
     {
