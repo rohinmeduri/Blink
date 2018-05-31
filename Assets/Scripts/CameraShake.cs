@@ -16,8 +16,8 @@ public class CameraShake : MonoBehaviour {
     GameObject playerToFollow;
 
     public const int ZOOM_DURATION = 150;
-    public const float CAMERA_MAX_DISPLACEMENT_X = 4.2f;
-    public const float CAMERA_MAX_DISPLACEMENT_Y = 3f;
+    public const float CAMERA_MAX_DISPLACEMENT_X = 2.1f;
+    public const float CAMERA_MAX_DISPLACEMENT_Y = 1.5f;
     
 
     private void Start()
@@ -58,10 +58,10 @@ public class CameraShake : MonoBehaviour {
 
 
             //zoom in - max zoom is 7
-            if (GetComponent<Camera>().orthographicSize > 4.25)
+            /*if (GetComponent<Camera>().orthographicSize > 4.25)
             {
                 GetComponent<Camera>().orthographicSize -= 0.01f;
-            }
+            }*/
 
             //shake the camera by moving it randomly in the vicinity of its position
             Vector2 shakeFactor = Random.insideUnitCircle * shakeIntensity;
