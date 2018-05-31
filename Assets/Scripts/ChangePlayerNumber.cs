@@ -4,11 +4,11 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class ChangePlayerNumber : MonoBehaviour {
-    private static int numberOfPlayers = 1;     //keep track of number of players
-    private static int numberOfAI = 1;          //keep track of number of AI
-    private static int AI1Difficulty = 1;
-    private static int AI2Difficulty = 1;
-    private static int AI3Difficulty = 1;
+    private static int numberOfPlayers;     //keep track of number of players
+    private static int numberOfAI;          //keep track of number of AI
+    private static int AI1Difficulty;
+    private static int AI2Difficulty;
+    private static int AI3Difficulty;
     public Text players;
     public Text AI;
     public Text AIDiff1;
@@ -16,6 +16,14 @@ public class ChangePlayerNumber : MonoBehaviour {
     public Text AIDiff3;
     private static string[] Difficulties = { "Easy", "Medium", "Hard" };
 
+    private void Start()
+    {
+        numberOfPlayers = 1;
+        numberOfAI = 1;
+        AI1Difficulty = 1;
+        AI2Difficulty = 1;
+        AI3Difficulty = 1;
+}
 
     //set limit in unity editor on AI
     public void changeNumberOfPlayersBy(int n)      //used by playerCountGroup buttons
