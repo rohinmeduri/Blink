@@ -36,6 +36,7 @@ public class LocalPlayerScript : NetworkBehaviour
     public GameObject rebelBlinkIn;
 
     // private variables
+    private float startCounter = 0;
     private int characterSelection = 2;
     private int jumps;
     private bool canJump;
@@ -89,6 +90,7 @@ public class LocalPlayerScript : NetworkBehaviour
     private bool attackLanded = false;
 
     // constants
+    public const float GAME_START_TIME = 4f;
     public const float GROUND_RUN_FORCE = 2; // How fast player can attain intended velocity on ground
     public const float AIR_RUN_FORCE = 0.5f; // .... in air
     public const float MAX_SPEED = 10; // maximum horizontal speed
@@ -167,31 +169,6 @@ public class LocalPlayerScript : NetworkBehaviour
         comboTens = glory.transform.Find("ComboText").transform.Find("TensPlace").gameObject.GetComponent<Image>();
         comboOnes = glory.transform.Find("ComboText").transform.Find("OnesPlace").gameObject.GetComponent<Image>();
         glorySlider.value = numGlory;
-
-        /*if (playerID == 1)
-        {
-            gloryTransform.anchoredPosition = new Vector3(-480, 50, 0);
-        }
-        else if (playerID == 2)
-        {
-            gloryTransform.anchoredPosition = new Vector3(150, 50, 0);
-
-            glorySlider.GetComponent<RectTransform>().Rotate(0, -180, 0);
-            glorySlider.GetComponent<RectTransform>().anchoredPosition = new Vector3(18, -20, 0);
-            glory.transform.Find("Meter Cover").gameObject.GetComponent<RectTransform>().Rotate(0, -180, 0);
-        }
-        else if (playerID == 3)
-        {
-            gloryTransform.anchoredPosition = new Vector3(-480, -50, 0);
-        }
-        else
-        {
-            gloryTransform.anchoredPosition = new Vector3(150, -50, 0);
-
-            glorySlider.GetComponent<RectTransform>().Rotate(0, -180, 0);
-            glorySlider.GetComponent<RectTransform>().anchoredPosition = new Vector3(18, -20, 0);
-            glory.transform.Find("Meter Cover").gameObject.GetComponent<RectTransform>().Rotate(0, -180, 0);
-        }*/
     }
 
     public virtual void removeMeter()
@@ -202,24 +179,32 @@ public class LocalPlayerScript : NetworkBehaviour
     public void setPlayerID(int ID)
     {
         //change colors so players are distinguishable
+        var yPosition = -3.94f;
+
         if(ID == 1)
         {
             setPlayerType("Rebel");
+            transform.position = new Vector3(-2f, yPosition);
         }
         else if (ID == 2)
         {
             //GetComponent<SpriteRenderer>().material.SetColor("_Color", new Color(1, 0, 0, 1));
             setPlayerType("Mage");
+            transform.position = new Vector3(2f, yPosition);
+            facingRight = false;
         }
         else if (ID == 3)
         {
             //GetComponent<SpriteRenderer>().material.SetColor("_Color", new Color(0, 1, 0, 1));
             setPlayerType("Mage");
+            transform.position = new Vector3(-6f, yPosition);
         }
         else if (ID == 4)
         {
             //GetComponent<SpriteRenderer>().material.SetColor("_Color", new Color(0, 0, 1, 1));
             setPlayerType("Rebel");
+            transform.position = new Vector3(6f, yPosition);
+            facingRight = false;
         }
 
         playerID = ID;
@@ -297,7 +282,15 @@ public class LocalPlayerScript : NetworkBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
-        assignInputs();
+        startCounter += Time.deltaTime;
+        if (startCounter <= GAME_START_TIME)
+        {
+            deadInputs();
+        }
+        else
+        {
+            assignInputs();
+        }
 
         pauseGame();
 
@@ -396,6 +389,17 @@ public class LocalPlayerScript : NetworkBehaviour
         reversalInput = Input.GetAxisRaw(("Reversal" + controllerID)) != 0;
         blinkInput = Input.GetAxisRaw(("Blink" + controllerID)) != 0;
         superInput = Input.GetAxisRaw(("Super" + controllerID)) != 0;
+    }
+
+    void deadInputs()
+    {
+        inputX = 0;
+        inputY = 0;
+        jumpInput = false;
+        attackInput = false;
+        reversalInput = false;
+        blinkInput = false;
+        superInput = false;
     }
 
     protected virtual void pauseGame()
