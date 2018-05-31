@@ -202,24 +202,30 @@ public class LocalPlayerScript : NetworkBehaviour
     public void setPlayerID(int ID)
     {
         //change colors so players are distinguishable
+        var yPosition = -3.94f;
+
         if(ID == 1)
         {
             setPlayerType("Rebel");
+            transform.position = new Vector3(-2f, -yPosition);
         }
         else if (ID == 2)
         {
             //GetComponent<SpriteRenderer>().material.SetColor("_Color", new Color(1, 0, 0, 1));
             setPlayerType("Mage");
+            transform.position = new Vector3(2f, yPosition);
         }
         else if (ID == 3)
         {
             //GetComponent<SpriteRenderer>().material.SetColor("_Color", new Color(0, 1, 0, 1));
             setPlayerType("Mage");
+            transform.position = new Vector3(-6f, yPosition);
         }
         else if (ID == 4)
         {
             //GetComponent<SpriteRenderer>().material.SetColor("_Color", new Color(0, 0, 1, 1));
             setPlayerType("Rebel");
+            transform.position = new Vector3(6f, yPosition);
         }
 
         playerID = ID;
