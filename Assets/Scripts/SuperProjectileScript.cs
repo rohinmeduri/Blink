@@ -41,7 +41,7 @@ public class SuperProjectileScript : NetworkBehaviour {
         active = true;
         rotate(direction);
         GetComponent<Rigidbody2D>().velocity = direction * 25;
-        GetComponent<BoxCollider2D>().enabled = true;
+        //GetComponent<BoxCollider2D>().enabled = true;
         GetComponent<CircleCollider2D>().enabled = true;
     }
 

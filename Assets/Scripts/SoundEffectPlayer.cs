@@ -57,4 +57,9 @@ public class SoundEffectPlayer : MonoBehaviour {
         soundEffectSource[index].Play();
     }
 
+    public virtual void stopSoundEffect(int index)
+    {
+        soundEffectSource[index].Stop();
+    }
+
 }

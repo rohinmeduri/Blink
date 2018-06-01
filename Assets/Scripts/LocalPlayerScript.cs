@@ -274,6 +274,11 @@ public class LocalPlayerScript : NetworkBehaviour
         soundEffectPlayer.GetComponent<SoundEffectPlayer>().playSoundEffect(index, volume);
     }
 
+    private void stopSoundEffect(int index)
+    {
+        soundEffectPlayer.GetComponent<SoundEffectPlayer>().stopSoundEffect(index);
+    }
+
     private void createVisualEffect(int index)
     {
         visualEffectCreator[index].GetComponent<VisualEffectCreator>().triggerEffect(gameObject);
@@ -1142,6 +1147,7 @@ public class LocalPlayerScript : NetworkBehaviour
             if (startedSuper)
             {
                 Destroy(projectile);
+                stopSoundEffect(4);
             }
             reversalEffective = false;
             startedSuper = false;
