@@ -8,6 +8,8 @@ public class NetworkedPlayerScript : LocalPlayerScript {
     private NetworkAnimator networkAnimator;
     private GameObject IDAssigner;
     private GameObject dataTracker;
+    [SyncVar(hook = "OnPlayerNumber")]
+    private int playerNumber;
 
     public override void OnStartAuthority()
     {
@@ -30,6 +32,27 @@ public class NetworkedPlayerScript : LocalPlayerScript {
             }
             CmdNewPlayer();
         }
+    }
+
+    public void setPlayerNumber(int number)
+    {
+        playerNumber = number;
+    }
+
+    public void OnPlayerNumber(int num)
+    {
+        playerNumber = num;
+        callSetPlayerPosition(num); 
+        Debug.Log("playerNumber" + playerNumber);
+    }
+
+    protected override void setPlayerPosition(int posNum){
+        return;
+    }
+
+    void callSetPlayerPosition(int num)
+    {
+        base.setPlayerPosition(num);
     }
 
     [Command]

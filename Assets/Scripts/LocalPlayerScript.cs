@@ -178,36 +178,29 @@ public class LocalPlayerScript : NetworkBehaviour
 
     public void setPlayerID(int ID)
     {
-        //change colors so players are distinguishable
-        var yPosition = -3.94f;
+        playerID = ID;
 
         if(ID == 1)
         {
             setPlayerType("Rebel");
-            transform.position = new Vector3(-2f, yPosition);
         }
         else if (ID == 2)
         {
-            //GetComponent<SpriteRenderer>().material.SetColor("_Color", new Color(1, 0, 0, 1));
             setPlayerType("Mage");
-            transform.position = new Vector3(2f, yPosition);
             facingRight = false;
         }
         else if (ID == 3)
         {
-            //GetComponent<SpriteRenderer>().material.SetColor("_Color", new Color(0, 1, 0, 1));
             setPlayerType("Mage");
-            transform.position = new Vector3(-6f, yPosition);
         }
         else if (ID == 4)
         {
-            //GetComponent<SpriteRenderer>().material.SetColor("_Color", new Color(0, 0, 1, 1));
             setPlayerType("Rebel");
-            transform.position = new Vector3(6f, yPosition);
             facingRight = false;
         }
 
-        playerID = ID;
+        setPlayerPosition(ID);
+
         //Debug.Log(playerID);
         GetComponent<SpriteRenderer>().material.SetColor("_Color", getColor());
         createMeter();
@@ -231,6 +224,30 @@ public class LocalPlayerScript : NetworkBehaviour
         if (controllerID == 0 || playerID > joyStickCounter)
         {
             controllerID = playerID;
+        }
+    }
+
+    protected virtual void setPlayerPosition(int posNum)
+    {
+        var yPosition = -3.94f;
+
+        if (posNum == 1)
+        {
+            transform.position = new Vector3(-2f, yPosition);
+        }
+        else if (posNum == 2)
+        {
+            transform.position = new Vector3(2f, yPosition);
+            facingRight = false;
+        }
+        else if (posNum == 3)
+        {
+            transform.position = new Vector3(-6f, yPosition);
+        }
+        else if (posNum == 4)
+        {
+            transform.position = new Vector3(6f, yPosition);
+            facingRight = false;
         }
     }
 
@@ -1336,8 +1353,6 @@ public class LocalPlayerScript : NetworkBehaviour
 
         // set player normal
         setPlayerNormal();
-
-
     }
 
     /**

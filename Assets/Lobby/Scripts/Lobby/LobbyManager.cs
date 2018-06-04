@@ -53,6 +53,7 @@ namespace Prototype.NetworkLobby
 
         protected LobbyHook _lobbyHooks;
 
+        private int numPlayersJoined = 0;
 
         void Start()
         {
@@ -295,7 +296,12 @@ namespace Prototype.NetworkLobby
         //But OnLobbyClientConnect isn't called on hosting player. So we override the lobbyPlayer creation
         public override GameObject OnLobbyServerCreateLobbyPlayer(NetworkConnection conn, short playerControllerId)
         {
+            numPlayersJoined++;
+
+            Debug.Log("number of player joined: " + numPlayersJoined);
             GameObject obj = Instantiate(lobbyPlayerPrefab.gameObject) as GameObject;
+
+            obj.GetComponent<LobbyPlayer>().connectionNumber = numPlayersJoined;
 
             LobbyPlayer newPlayer = obj.GetComponent<LobbyPlayer>();
             newPlayer.ToggleJoinButton(numPlayers + 1 >= minPlayers);
