@@ -63,11 +63,12 @@ public class CursorScript : MonoBehaviour {
         {
             Vector3 clickPoint = transform.position;
 
-            Debug.Log("click");
             Transform[] children = Canvas.GetComponentsInChildren<Transform>();
             foreach (Transform child in children)
             {
-                if (RectTransformUtility.RectangleContainsScreenPoint(child.GetComponent<RectTransform>(), clickPoint) && (child.GetComponent<Button>() != null))
+                if (RectTransformUtility.RectangleContainsScreenPoint(child.GetComponent<RectTransform>(), clickPoint) 
+                    && (child.GetComponent<Button>() != null) 
+                    && child.GetComponent<Button>().interactable == true)
                 {
                     child.GetComponent<Button>().onClick.Invoke();
                 }
