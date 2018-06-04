@@ -22,7 +22,7 @@ public class VisualEffectCreator : MonoBehaviour {
         this.index = index;
         effectsAnimator = gameObject.AddComponent<Animator>() as Animator;
         //Debug.Log("Animations/VisualEffects/" + playerType + "/EffectsAnimator" + index);
-        effectsAnimator.runtimeAnimatorController = Resources.Load("Animations/VisualEffects/" + playerType + "/EffectsAnimator" + index) as RuntimeAnimatorController;
+        effectsAnimator.runtimeAnimatorController = Resources.Load("VisualEffects/" + playerType + "/EffectsAnimator" + index) as RuntimeAnimatorController;
     }
 
     /**
