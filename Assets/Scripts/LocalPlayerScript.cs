@@ -984,6 +984,8 @@ public class LocalPlayerScript : NetworkBehaviour
     public virtual void killPlayer(GameObject go)
     {
         go.GetComponent<LocalPlayerScript>().removeMeter();
+        go.GetComponent<LocalPlayerScript>().stopSoundEffect(4);
+        Destroy(go.GetComponent<LocalPlayerScript>().projectile);
         Destroy(go);
         kills++;
 

@@ -24,11 +24,13 @@ public class SoundEffectPlayer : MonoBehaviour {
      * 2: HitSoft
      * 3: HitHard
      * 4: Super
-     * 5: Jump
-     * 6: Reversal
-     * 7: Run
-     * 8: Land
-     * 9: Splat
+     * 5: SuperUp
+     * 6: SuperDown
+     * 7: Jump
+     * 8: Reversal
+     * 9: Run
+     * 10: Land
+     * 11: Splat
      * 
      */
     public virtual void setSoundEffects(string playerType)
