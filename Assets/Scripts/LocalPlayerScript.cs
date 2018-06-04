@@ -304,6 +304,7 @@ public class LocalPlayerScript : NetworkBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
+        hasSuper = true;
         startCounter += Time.deltaTime;
         if (startCounter <= GAME_START_TIME)
         {
@@ -1001,11 +1002,20 @@ public class LocalPlayerScript : NetworkBehaviour
     public virtual void killPlayer(GameObject go)
     {
         go.GetComponent<LocalPlayerScript>().removeMeter();
+        go.GetComponent<LocalPlayerScript>().cancelSuperAnimation();
         Destroy(go);
         kills++;
 
         LocalDataTracker ldt = GameObject.Find("Data Tracker").GetComponent<LocalDataTracker>();
         ldt.playerDeath(go, gameObject);
+    }
+
+    public void cancelSuperAnimation()
+    {
+        if (projectile)
+        {
+            Destroy(projectile);
+        }
     }
 
     /**

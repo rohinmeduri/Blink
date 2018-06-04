@@ -60,6 +60,7 @@ public class LocalDataTracker : NetworkBehaviour {
         if(numberAlive > 0)
         {
             player.GetComponent<LocalPlayerScript>().removeMeter();
+            player.GetComponent<LocalPlayerScript>().cancelSuperAnimation();
             Destroy(player);
 
             if (numberAlive == 1)
