@@ -215,7 +215,6 @@ public class LocalPlayerScript : NetworkBehaviour
         //unity's joystick numbers are inconsistent, so need to manually assign controller IDs
         string[] joysticks = Input.GetJoystickNames();
         int joyStickCounter = 0;
-        Debug.Log(joysticks.Length);
         for (var i = 0; i < joysticks.Length; i++)
         {
             if (joysticks[i].Length > 0)
@@ -1070,14 +1069,12 @@ public class LocalPlayerScript : NetworkBehaviour
         if (numGlory == 100)
         {
             if(!hasSuper) createSoundEffect(5, 1.0f);
-            Debug.Log("got super");
             hasSuper = true;
             
         }
         else if (hasSuper && numGlory < SUPER_LOSS_GLORY)
         {
             if(hasSuper) createSoundEffect(6, 1.0f);
-            Debug.Log("rip super");
             hasSuper = false;
         }
     }
