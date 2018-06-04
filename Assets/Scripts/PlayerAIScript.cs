@@ -55,20 +55,7 @@ public class PlayerAIScript : LocalPlayerScript {
             difficulty = 0;
         }
         playerDifficulty = difficulty;
-        //Debug.Log(playerDifficulty);
-        //Debug.Log(GetComponent<SpriteRenderer>().material.color);
     }
-
-    /*public override void createMeter()
-    {
-        base.createMeter();
-
-        RectTransform gloryTransform = glory.GetComponent<RectTransform>();
-        gloryTransform.anchorMin = new Vector2(1, 1);
-        gloryTransform.anchorMax = new Vector2(1, 1);
-        gloryTransform.pivot = new Vector2(1, 1);
-        gloryTransform.anchoredPosition = new Vector3(-100, 0, 0);
-    }*/
 
     protected override void assignInputs()
     {
@@ -87,8 +74,22 @@ public class PlayerAIScript : LocalPlayerScript {
                 Vector2 input = (enemyTransform - myTransform);
                 Vector2 directionInput = input;
                 directionInput.Normalize();
-                directionInput.x += Random.Range(-0.25f, 0.25f);
-                directionInput.y += Random.Range(-0.25f, 0.25f);
+                if (playerDifficulty == 0)
+                {
+                    directionInput.x += Random.Range(-0.3f, 0.3f);
+                    directionInput.y += Random.Range(-0.3f, 0.3f);
+                }
+                if (playerDifficulty == 1)
+                {
+                    directionInput.x += Random.Range(-0.2f, 0.2f);
+                    directionInput.y += Random.Range(-0.2f, 0.2f);
+                }
+                if (playerDifficulty == 1)
+                {
+                    directionInput.x += Random.Range(-0.1f, 0.1f);
+                    directionInput.y += Random.Range(-0.1f, 0.1f);
+                }
+
                 directionInput.Normalize();
                 directionInputX = directionInput.x;
                 directionInputY = directionInput.y;
@@ -161,29 +162,32 @@ public class PlayerAIScript : LocalPlayerScript {
 
     protected override void DI()
     {
-        //DI away from enemy
-        Vector2 direction = new Vector2(inputX * -1, inputY * -1); 
-        direction.Normalize();
-        Vector2 origin = new Vector2(gameObject.GetComponent<Transform>().position.x, gameObject.GetComponent<Transform>().position.y);
-
-        //make sure not DI'ing into a wall
-        int layerMask = LayerMask.GetMask("Ignore Raycast");
-        RaycastHit2D hit = Physics2D.Raycast(origin: origin, direction: direction, distance: attackRadius * 2, layerMask: layerMask);
-        if (hit.collider != null)
+        if (playerDifficulty > 1)
         {
-            //DI perpendicular to direction if heading towards a wall
-            direction = Quaternion.Euler(0, 0, 90) * direction;
-            hit = Physics2D.Raycast(origin: origin, direction: direction, distance: attackRadius * 2, layerMask: layerMask);
+            //DI away from enemy
+            Vector2 direction = new Vector2(inputX * -1, inputY * -1);
+            direction.Normalize();
+            Vector2 origin = new Vector2(gameObject.GetComponent<Transform>().position.x, gameObject.GetComponent<Transform>().position.y);
 
-            //if now heading toward another wall (i.e. in a corner), flip DI 180 degrees
+            //make sure not DI'ing into a wall
+            int layerMask = LayerMask.GetMask("Ignore Raycast");
+            RaycastHit2D hit = Physics2D.Raycast(origin: origin, direction: direction, distance: attackRadius * 2, layerMask: layerMask);
             if (hit.collider != null)
             {
-                direction = Quaternion.Euler(0, 0, 180) * direction;
-            }
-        }
+                //DI perpendicular to direction if heading towards a wall
+                direction = Quaternion.Euler(0, 0, 90) * direction;
+                hit = Physics2D.Raycast(origin: origin, direction: direction, distance: attackRadius * 2, layerMask: layerMask);
 
-        inputX = direction.x;
-        inputY = direction.y;
-        base.DI();
+                //if now heading toward another wall (i.e. in a corner), flip DI 180 degrees
+                if (hit.collider != null)
+                {
+                    direction = Quaternion.Euler(0, 0, 180) * direction;
+                }
+            }
+
+            inputX = direction.x;
+            inputY = direction.y;
+            base.DI();
+        }
     }
 }
