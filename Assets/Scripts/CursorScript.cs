@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class CursorScript : MonoBehaviour {
     private float CURSOR_SPEED = Screen.height / 50;
@@ -34,6 +35,11 @@ public class CursorScript : MonoBehaviour {
         {
             inactiveCounter = 0;
             visible = true;
+        }
+
+        if(SceneManager.GetActiveScene().name == "Multiplayer Battle Scene")
+        {
+            visible = false;
         }
 
         GetComponent<Image>().enabled = visible;
