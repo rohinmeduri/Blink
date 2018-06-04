@@ -41,18 +41,18 @@ public class SoundEffectPlayer : MonoBehaviour {
             soundEffectSource[i] = gameObject.AddComponent<AudioSource>();
             soundEffectSource[i].playOnAwake = false;
         }
-        soundEffectSource[0].clip = Resources.Load("Audio/Effects/" + playerType + "/Attack") as AudioClip;
-        soundEffectSource[1].clip = Resources.Load("Audio/Effects/" + playerType + "/Blink") as AudioClip;
-        soundEffectSource[2].clip = Resources.Load("Audio/Effects/" + playerType + "/HitSoft") as AudioClip;
-        soundEffectSource[3].clip = Resources.Load("Audio/Effects/" + playerType + "/HitHard") as AudioClip;
+        soundEffectSource[0].clip = Resources.Load("Effects/" + playerType + "/Attack") as AudioClip;
+        soundEffectSource[1].clip = Resources.Load("Effects/" + playerType + "/Blink") as AudioClip;
+        soundEffectSource[2].clip = Resources.Load("Effects/" + playerType + "/HitSoft") as AudioClip;
+        soundEffectSource[3].clip = Resources.Load("Effects/" + playerType + "/HitHard") as AudioClip;
         soundEffectSource[4].clip = Resources.Load("Audio/Effects/" + playerType + "/Super") as AudioClip;
         soundEffectSource[5].clip = Resources.Load("Audio/Effects/" + playerType + "/SuperUp") as AudioClip;
         soundEffectSource[6].clip = Resources.Load("Audio/Effects/" + playerType + "/SuperDown") as AudioClip;
-        soundEffectSource[7].clip = Resources.Load("Audio/Effects/" + playerType + "/Jump") as AudioClip;
-        soundEffectSource[8].clip = Resources.Load("Audio/Effects/" + playerType + "/Reversal") as AudioClip;
-        soundEffectSource[9].clip = Resources.Load("Audio/Effects/" + playerType + "/Run") as AudioClip;
-        soundEffectSource[10].clip = Resources.Load("Audio/Effects/" + playerType + "/Land") as AudioClip;
-        soundEffectSource[11].clip = Resources.Load("Audio/Effects/" + playerType + "/Splat") as AudioClip;
+        soundEffectSource[7].clip = Resources.Load("Effects/" + playerType + "/Jump") as AudioClip;
+        soundEffectSource[8].clip = Resources.Load("Effects/" + playerType + "/Reversal") as AudioClip;
+        soundEffectSource[9].clip = Resources.Load("Effects/" + playerType + "/Run") as AudioClip;
+        soundEffectSource[10].clip = Resources.Load("Effects/" + playerType + "/Land") as AudioClip;
+        soundEffectSource[11].clip = Resources.Load("Effects/" + playerType + "/Splat") as AudioClip;
     }
 
     public virtual void playSoundEffect(int index, float volume)
