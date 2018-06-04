@@ -1,0 +1,5 @@
+sound effect for gaining and losing super
+camping on ground
+make post-teleport time shorter (instantaneous?)
+invisible buttons
+make the backwards hitstun line thickness thicker

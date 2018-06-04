@@ -117,16 +117,16 @@ public class LocalPlayerScript : NetworkBehaviour
     public const float REVERSAL_SUCCESS_ANGLE = 90; //minimum angle between reversal and attack for reversal to be successful
     public const float SUPER_LOSS_GLORY = 85; //glory at which super is lost if player falls below
 
-    public const float GLORY_ON_SUPER_MISS = 75; //glory player drops to for losing super
+    public const float GLORY_ON_SUPER_MISS = 75; //glory player drops to for losing super [DEPRECIATED]
     public const float BLINK_VELOCITY = 30; //target blink speed
     public const float BLINK_TIME = 0.2f; //how long the velocity blink lasts
     public const float BLINK_FRAMES = 1.3f; //how long the player needs to wait until velocity blinking again
-    public const float BLINK_DURATION = 0.188f;
+    public const float BLINK_DURATION = 0.05f;
     public const int TELEPORT_DISTANCE = 6; //teleport distance
     public const float TELEPORT_FRAMES = 2.5f; //frames until teleportation can happen again
     public const float TELEPORT_TIME = 0.25f; //frames until player can move again
     public const float SUPER_CHARGE_FRAMES = 1.1f; //number of frames a super takes to charge
-    public const float SUPER_END_LAG = 1.25f; //number of frames player stalls without doing anything after a super
+    public const float SUPER_END_LAG = 1.0f; //number of frames player stalls without doing anything after a super
     // if turn speed to 1 or -1 with a change of at least the threshold in at most timelimit number of frames, boost applied
     public const int BOOST_TIMELIMIT = 2;
     public const float BOOST_THRESHOLD = 0.75f;
@@ -215,6 +215,7 @@ public class LocalPlayerScript : NetworkBehaviour
         //unity's joystick numbers are inconsistent, so need to manually assign controller IDs
         string[] joysticks = Input.GetJoystickNames();
         int joyStickCounter = 0;
+        Debug.Log(joysticks.Length);
         for (var i = 0; i < joysticks.Length; i++)
         {
             if (joysticks[i].Length > 0)
@@ -438,7 +439,9 @@ public class LocalPlayerScript : NetworkBehaviour
 
     protected virtual void FixedUpdate()
     {
-        if (stunTimer <= 0){
+        if (stunTimer <= 0)
+        {
+            rb2D.freezeRotation = true;
             rb2D.sharedMaterial = regularMaterial;
             rotate(Vector3.zero);
 
@@ -470,6 +473,7 @@ public class LocalPlayerScript : NetworkBehaviour
         }
         else
         {
+            rb2D.freezeRotation = false;
             rb2D.sharedMaterial = stunMaterial;
             DI();
         }
@@ -1065,10 +1069,15 @@ public class LocalPlayerScript : NetworkBehaviour
         //check if player has super or not
         if (numGlory == 100)
         {
+            if(!hasSuper) createSoundEffect(5, 1.0f);
+            Debug.Log("got super");
             hasSuper = true;
+            
         }
         else if (hasSuper && numGlory < SUPER_LOSS_GLORY)
         {
+            if(hasSuper) createSoundEffect(6, 1.0f);
+            Debug.Log("rip super");
             hasSuper = false;
         }
     }
@@ -1298,11 +1307,18 @@ public class LocalPlayerScript : NetworkBehaviour
             // set player normal
             setPlayerNormal();
 
-            // triggers landing animation if landed on ground
-            if (isGround() && !isWall(getNormal(collision)))
+            if(stunTimer > 0)
             {
-                animator.SetTrigger("hitGround");
-                actionWaitFrames = 0.1f;
+                //rotate(2* new Vector3(0, 0, Mathf.Rad2Deg * Mathf.Atan2(currentNormal.y, currentNormal.x)) - gameObject.GetComponent<Transform>().eulerAngles);
+            }
+            else
+            {
+                // triggers landing animation if landed on ground
+                if (isGround() && !isWall(getNormal(collision)))
+                {
+                    animator.SetTrigger("hitGround");
+                    actionWaitFrames = 0.1f;
+                }
             }
         }
 
