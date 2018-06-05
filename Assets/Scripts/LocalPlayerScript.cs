@@ -91,6 +91,7 @@ public class LocalPlayerScript : NetworkBehaviour
     private GameObject[] visualEffectCreator;
     private bool attackLanded = false;
     private string playerType;
+    private CanvasGroup pauseMenu;
 
     // constants
     public const float GAME_START_TIME = 4f;
@@ -149,8 +150,12 @@ public class LocalPlayerScript : NetworkBehaviour
 
         rb2D = gameObject.GetComponent<Rigidbody2D>();
 
+        pauseMenu = GameObject.Find("Pause Menu").GetComponent<CanvasGroup>();
+        setInteractable(pauseMenu, false);
+
         animator = GetComponent<Animator>();
         camera = GameObject.Find("Main Camera");
+        
 
         Time.timeScale = 1;
     }
@@ -313,7 +318,6 @@ public class LocalPlayerScript : NetworkBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
-        hasSuper = true;
         startCounter += Time.deltaTime;
         if (startCounter <= GAME_START_TIME)
         {
@@ -479,7 +483,7 @@ public class LocalPlayerScript : NetworkBehaviour
 
     protected virtual void pauseGame()
     {
-        CanvasGroup pauseMenu = GameObject.Find("Pause Menu").GetComponent<CanvasGroup>();
+
         if (gamePauseBtnClick == false && Input.GetButton("Pause"))
         {
             gamePauseBtnClick = true;
