@@ -11,6 +11,8 @@ public class LocalDataTracker : NetworkBehaviour {
     public Text place3;
     public Text place4;
 
+    CanvasGroup endScreen;
+
     //private ChangePlayerNumber cpn;
     private static int numberOfPlayers;
     private static int[][] placing;
@@ -21,7 +23,18 @@ public class LocalDataTracker : NetworkBehaviour {
     {
         //cpn = new ChangePlayerNumber();
         //numberOfPlayers = cpn.getNumberOfAI() + cpn.getNumberOfPlayers();
+        endScreen = GameObject.Find("End Screen").GetComponent<CanvasGroup>();
+        setInteractable(endScreen, false);
         Invoke("findPlayers", 2);
+    }
+
+    private void setInteractable(CanvasGroup go, bool interactable)
+    {
+        go.interactable = interactable;
+        foreach (Button child in go.GetComponentsInChildren<Button>())
+        {
+            child.interactable = interactable;
+        }
     }
 
     private void findPlayers()
@@ -90,10 +103,8 @@ public class LocalDataTracker : NetworkBehaviour {
 
     private void displayResults()
     {
-        CanvasGroup endScreen = GameObject.Find("End Screen").GetComponent<CanvasGroup>();
-
         endScreen.alpha = 1;
-        endScreen.interactable = true;
+        setInteractable(endScreen, true);
         endScreen.GetComponent<RectTransform>().SetAsLastSibling();
 
         place1.text = "1st\n" + formatStats(placing[0]);

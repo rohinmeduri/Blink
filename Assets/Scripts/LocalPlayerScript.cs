@@ -431,35 +431,6 @@ public class LocalPlayerScript : NetworkBehaviour
         superInput = false;
     }
 
-    protected virtual void pauseGame()
-    {
-        CanvasGroup pauseMenu = GameObject.Find("Pause Menu").GetComponent<CanvasGroup>();
-        if (gamePauseBtnClick == false && Input.GetButton("Pause"))
-        {
-            gamePauseBtnClick = true;
-
-            if (!gamePaused)
-            {
-                Time.timeScale = 0;
-                gamePaused = true;
-                pauseMenu.alpha = 1;
-                pauseMenu.interactable = true;
-                pauseMenu.GetComponent<RectTransform>().SetAsLastSibling();
-            }
-            else
-            {
-                Time.timeScale = 1;
-                gamePaused = false;
-                pauseMenu.alpha = 0;
-                pauseMenu.interactable = false;
-            }
-        }
-        else if (!Input.GetButton("Pause"))
-        {
-            gamePauseBtnClick = false;
-        }
-    }
-
     protected virtual void FixedUpdate()
     {
         if (stunTimer <= 0)
@@ -501,6 +472,44 @@ public class LocalPlayerScript : NetworkBehaviour
             DI();
         }
         rotateSuperProjectile();
+    }
+
+    protected virtual void pauseGame()
+    {
+        CanvasGroup pauseMenu = GameObject.Find("Pause Menu").GetComponent<CanvasGroup>();
+        if (gamePauseBtnClick == false && Input.GetButton("Pause"))
+        {
+            gamePauseBtnClick = true;
+
+            if (!gamePaused)
+            {
+                Time.timeScale = 0;
+                gamePaused = true;
+                pauseMenu.alpha = 1;
+                setInteractable(pauseMenu, true);
+                pauseMenu.GetComponent<RectTransform>().SetAsLastSibling();
+            }
+            else
+            {
+                Time.timeScale = 1;
+                gamePaused = false;
+                pauseMenu.alpha = 0;
+                setInteractable(pauseMenu, false);
+            }
+        }
+        else if (!Input.GetButton("Pause"))
+        {
+            gamePauseBtnClick = false;
+        }
+    }
+
+    private void setInteractable(CanvasGroup go, bool interactable)
+    {
+        go.interactable = interactable;
+        foreach(Button child in go.GetComponentsInChildren<Button>())
+        {
+            child.interactable = interactable;
+        }
     }
 
     protected virtual void flipSprite()
