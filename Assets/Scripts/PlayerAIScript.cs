@@ -11,6 +11,8 @@ public class PlayerAIScript : LocalPlayerScript {
     private List<float> timeTracker = new List<float>();
     private float timeCounter = 0;
     private int playerDifficulty;
+    private bool blinkCheck = false;
+    private bool superCheck = false;
 
     public readonly float[] REACTION_TIME = {0.5f, 0.4f, 0.25f}; //how long AI takes to react to other player's movements
     public readonly float[] BLINK_DISTANCE_FACTOR = {4f, 2f, 1.2f};
@@ -123,6 +125,11 @@ public class PlayerAIScript : LocalPlayerScript {
                     timeTracker.RemoveAt(0);
                 }
             }
+
+            if (hasSuper && playerDifficulty == 2)
+            {
+                winCombo();
+            }
         }
         else
         {
@@ -134,6 +141,48 @@ public class PlayerAIScript : LocalPlayerScript {
             inputX = 0;
             inputY = 0;
         }
+    }
+
+    void winCombo()
+    {
+        blinkInput = true;
+        if (blinking)
+        {
+            blinkCheck = true;
+        }
+        if (blinkCheck)
+        {
+            blinkInput = false;
+            superInput = true;
+        }
+        else
+        {
+            superInput = false;
+            Vector2 enemyTransform = positionTracker[0];
+            Vector2 myTransform = GetComponent<Transform>().position;
+            Vector2 input = (myTransform - enemyTransform);
+            Vector2 directionInput = input;
+            directionInput.y = 1;
+            directionInput.Normalize();
+            inputX = directionInput.x;
+            inputY = directionInput.y;
+        }
+
+        if (superCheck)
+        {
+            superInput = false;
+            blinkCheck = false;
+            superCheck = false;
+        }
+
+        if (launchedSuper)
+        {
+            superCheck = true;
+        }
+        
+        jumpInput = true;
+        attackInput = false;
+        reversalInput = false;
     }
 
     public override Vector2 getDirection()
@@ -162,7 +211,7 @@ public class PlayerAIScript : LocalPlayerScript {
 
     protected override void DI()
     {
-        if (playerDifficulty > 1)
+        if (playerDifficulty > 0)
         {
             //DI away from enemy
             Vector2 direction = new Vector2(inputX * -1, inputY * -1);

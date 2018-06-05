@@ -51,7 +51,7 @@ public class LocalPlayerScript : NetworkBehaviour
     private float actionWaitedFrames = 0;
     private float blinkFrames = 0;
     private float blinkTimer = 0;
-    private bool blinking = false;
+    protected bool blinking = false;
     private bool teleported = false;
     private bool reversalEffective = false;
     private bool reversalLanded = false;
@@ -59,7 +59,7 @@ public class LocalPlayerScript : NetworkBehaviour
     protected GameObject glory;
     [SyncVar]
     protected bool hasSuper = false;
-    private bool startedSuper = false;
+    protected bool startedSuper = false;
     protected GameObject projectile;
     protected Animator animator;
     private List<GameObject> touchingObjects = new List<GameObject>();
@@ -91,6 +91,7 @@ public class LocalPlayerScript : NetworkBehaviour
     private GameObject[] visualEffectCreator;
     private bool attackLanded = false;
     private string playerType;
+    protected bool launchedSuper;
 
     // constants
     public const float GAME_START_TIME = 4f;
@@ -406,6 +407,7 @@ public class LocalPlayerScript : NetworkBehaviour
                 attackLanded = false;
                 reversalLanded = false;
                 blinking = false;
+                launchedSuper = false;
             }
 
         }
@@ -978,6 +980,7 @@ public class LocalPlayerScript : NetworkBehaviour
             Vector2 direction = getDirection();
             direction.Normalize();
             activateProjectile(direction);
+            launchedSuper = true;
         }
     }
 
