@@ -1009,6 +1009,8 @@ public class LocalPlayerScript : NetworkBehaviour
     {
         go.GetComponent<LocalPlayerScript>().removeMeter();
         go.GetComponent<LocalPlayerScript>().cancelSuperAnimation();
+        go.GetComponent<LocalPlayerScript>().stopSoundEffect(4);
+        Destroy(go.GetComponent<LocalPlayerScript>().projectile);
         Destroy(go);
         kills++;
 
