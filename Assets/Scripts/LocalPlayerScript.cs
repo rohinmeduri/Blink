@@ -295,17 +295,17 @@ public class LocalPlayerScript : NetworkBehaviour
         }
     }
     
-    private void createSoundEffect(int index, float volume)
+    protected virtual void createSoundEffect(int index, float volume)
     {
         soundEffectPlayer.GetComponent<SoundEffectPlayer>().playSoundEffect(index, volume);
     }
 
-    private void stopSoundEffect(int index)
+    protected virtual void stopSoundEffect(int index)
     {
         soundEffectPlayer.GetComponent<SoundEffectPlayer>().stopSoundEffect(index);
     }
 
-    private void createVisualEffect(int index)
+    protected virtual void createVisualEffect(int index)
     {
         visualEffectCreator[index].GetComponent<VisualEffectCreator>().triggerEffect(gameObject);
     }
