@@ -423,7 +423,7 @@ public class LocalPlayerScript : NetworkBehaviour
         superInput = Input.GetAxisRaw(("Super" + controllerID)) != 0;
     }
 
-    void deadInputs()
+    public void deadInputs()
     {
         inputX = 0;
         inputY = 0;

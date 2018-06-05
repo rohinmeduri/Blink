@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class ChangePlayerNumber : MonoBehaviour {
     private static int numberOfPlayers = 1;     //keep track of number of players
@@ -22,6 +23,17 @@ public class ChangePlayerNumber : MonoBehaviour {
     public GameObject DecreasePlayers;
     public GameObject IncreasePlayers;
     private static string[] Difficulties = { "Easy", "Medium", "Hard" };
+
+    private void Start()
+    {
+        if (SceneManager.GetActiveScene().name.Equals("Local Lobby Menu"))
+        {
+            UpdateAIGroups();
+            updateCountGroups();
+            updateNumberElements();
+        }
+            
+    }
 
     //set limit in unity editor on AI
     /*
@@ -196,11 +208,12 @@ public class ChangePlayerNumber : MonoBehaviour {
     public int[] getAIDifficulties()
     {
         int[] Fresh = {AI1Difficulty, AI2Difficulty, AI3Difficulty};
-        int[] Dank = new int[numberOfPlayers];
-        for(int i = 0; i < numberOfPlayers; i++)
+        int[] Dank = new int[numberOfAI];
+        for(int i = 0; i < numberOfAI; i++)
         {
             Dank[i] = Fresh[i];
         }
+        Debug.Log(numberOfAI);
         return Dank;
     }
     public void UpdateAIGroups()
