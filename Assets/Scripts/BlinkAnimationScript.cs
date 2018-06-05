@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BlinkAnimationScript : MonoBehaviour {
-    public const float ANIMATION_TIME = 0.188f;
+    public const float ANIMATION_TIME = 0.250f;
 
     private float timeCounter = 0;
 	
