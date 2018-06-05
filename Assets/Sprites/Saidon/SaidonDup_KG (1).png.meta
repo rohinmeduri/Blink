@@ -1,15 +1,19 @@
 fileFormatVersion: 2
-guid: 1313438a81a51b2468dd63cbd0980c59
+guid: 7cd1e38bf88f331469a1319553ae4bdc
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Saidon_Idle_3
-    21300002: SeidonIdle_Kg_1
-    21300004: Saidon_Idle_2
-    21300006: Saidon_Idle_1
-    21300008: SeidonIdle_Kg_4
-    21300010: SeidonIdle_Kg_5
-    21300012: SeidonIdle_Kg_6
-    21300014: SeidonIdle_Kg_7
+    21300000: SaidonDup_KG (1)_0
+    21300002: SaidonDup_KG (1)_1
+    21300004: SaidonDup_KG (1)_2
+    21300006: SaidonDup_KG (1)_3
+    21300008: Saidon_Dup_3
+    21300010: SaidonDup_KG (1)_5
+    21300012: SaidonDup_KG (1)_6
+    21300014: Saidon_Dup_5
+    21300016: SaidonDup_KG (1)_8
+    21300018: Saidon_Dup_4
+    21300020: Saidon_Dup_2
+    21300022: Saidon_Dup_1
   externalObjects: {}
   serializedVersion: 5
   mipmaps:
@@ -51,7 +55,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 150
+  spritePixelsToUnits: 135
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -101,32 +105,132 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Saidon_Idle_3
+      name: SaidonDup_KG (1)_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 128
-        height: 265
-      alignment: 9
-      pivot: {x: 0.71872777, y: 0.5020006}
+        x: 147
+        y: 598
+        width: 148
+        height: 132
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5b3aceeec66a77248b47fd9bf1c3eb48
+      spriteID: 7fa4aeb911825c24aa771c069f18b98d
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SeidonIdle_Kg_1
+      name: SaidonDup_KG (1)_1
       rect:
         serializedVersion: 2
-        x: 131
-        y: 100
-        width: 17
+        x: 173
+        y: 728
+        width: 16
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2213d207790d07d48b2a1fb8d56fe597
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SaidonDup_KG (1)_2
+      rect:
+        serializedVersion: 2
+        x: 269
+        y: 720
+        width: 18
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e66c95f8fb6f54c4ba569d53a3f186a4
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SaidonDup_KG (1)_3
+      rect:
+        serializedVersion: 2
+        x: 461
+        y: 572
+        width: 166
+        height: 164
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f6adce1c4ba2b8d4e90a0fe74c3c6807
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Saidon_Dup_3
+      rect:
+        serializedVersion: 2
+        x: 644
+        y: 368
+        width: 292
+        height: 368
+      alignment: 9
+      pivot: {x: 0.31665415, y: 0.3290597}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2f9fc1026c2dee241a79547809c54c3a
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SaidonDup_KG (1)_5
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 619
+        width: 37
+        height: 37
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5cf77e6b4391c9c44988464a41b45724
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SaidonDup_KG (1)_6
+      rect:
+        serializedVersion: 2
+        x: 299
+        y: 646
+        width: 10
         height: 18
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -135,59 +239,39 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 850513ac57efa4a46b3658d4a3a7e9da
+      spriteID: 99bb442d5c39d1040a71eb9ca2c411a0
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Saidon_Idle_2
+      name: Saidon_Dup_5
       rect:
         serializedVersion: 2
-        x: 131
-        y: 2
-        width: 139
-        height: 262
+        x: 8
+        y: 367
+        width: 310
+        height: 369
       alignment: 9
-      pivot: {x: 0.742365, y: 0.49810675}
+      pivot: {x: 0.301395, y: 0.32589582}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 56e679397461a1344bc2df205ab30af1
+      spriteID: dcb145b7d95e8c54696a7c2f7e4535ca
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Saidon_Idle_1
+      name: SaidonDup_KG (1)_8
       rect:
         serializedVersion: 2
-        x: 280
-        y: 1
-        width: 143
-        height: 264
-      alignment: 9
-      pivot: {x: 0.6678475, y: 0.4999463}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b67dbce39622a0b449a76cad2a7dcefb
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SeidonIdle_Kg_4
-      rect:
-        serializedVersion: 2
-        x: 414
-        y: 99
+        x: 298
+        y: 606
         width: 9
-        height: 22
+        height: 14
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -195,67 +279,67 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a7b9a9d2c3603aa49b15c5c606cbe52d
+      spriteID: cbe233b79f82ad541a86af784bdbf8fb
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SeidonIdle_Kg_5
+      name: Saidon_Dup_4
       rect:
         serializedVersion: 2
-        x: 11
+        x: 324
+        y: 367
+        width: 309
+        height: 369
+      alignment: 9
+      pivot: {x: 0.30075222, y: 0.3222687}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 690e447591477c3428c7f8cd9e13b3b2
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Saidon_Dup_2
+      rect:
+        serializedVersion: 2
+        x: 6
         y: 0
-        width: 18
-        height: 15
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        width: 175
+        height: 260
+      alignment: 9
+      pivot: {x: 0.53824073, y: 0.47426105}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d43b2914fbc7077498b05efe87e49fad
+      spriteID: 59dc42add6fa10d4487076766efe29e3
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SeidonIdle_Kg_6
+      name: Saidon_Dup_1
       rect:
         serializedVersion: 2
-        x: 31
-        y: 2
-        width: 4
-        height: 4
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 324
+        y: 3
+        width: 168
+        height: 253
+      alignment: 9
+      pivot: {x: 0.5557678, y: 0.47883898}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 217a04c0dce8eac4fb414772cab2f936
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SeidonIdle_Kg_7
-      rect:
-        serializedVersion: 2
-        x: 314
-        y: 1
-        width: 5
-        height: 4
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 5fa5a51cf34953e42bc67d3308f01816
+      spriteID: 80fdec6bea4c7f946a101af1514fa01b
       vertices: []
       indices: 
       edges: []
@@ -263,7 +347,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 62f6de0d535330c4e88ec859780e19bc
+    spriteID: c282b227e492014439d36df107846a26
     vertices: []
     indices: 
     edges: []

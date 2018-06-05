@@ -1,7 +1,17 @@
 fileFormatVersion: 2
 guid: 2d2890fc7b2689c429a766d35af8009f
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: SidonHitStun_Kg_0
+    21300002: SidonHitStun_Kg_1
+    21300004: Saidon_Hitstun_1
+    21300006: Saidon_Hitstun_2
+    21300008: Saidon_Hitstun_3
+    21300010: SidonHitStun_Kg_5
+    21300012: SidonHitStun_Kg_6
+    21300014: SidonHitStun_Kg_7
+    21300016: SidonHitStun_Kg_8
+    21300018: SidonHitStun_Kg_9
   externalObjects: {}
   serializedVersion: 5
   mipmaps:
@@ -38,12 +48,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 150
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -67,9 +77,231 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: SidonHitStun_Kg_0
+      rect:
+        serializedVersion: 2
+        x: 19
+        y: 751
+        width: 48
+        height: 266
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bf1b875cbc4ae2a4baa2b9f086aad9a4
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SidonHitStun_Kg_1
+      rect:
+        serializedVersion: 2
+        x: 138
+        y: 752
+        width: 81
+        height: 264
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 99ec9285578d4234881ea2d8cfd70284
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Saidon_Hitstun_1
+      rect:
+        serializedVersion: 2
+        x: 238
+        y: 753
+        width: 119
+        height: 257
+      alignment: 9
+      pivot: {x: 0.28092304, y: 0.5144917}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 51246817fa685724bba669e6276fb0ba
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Saidon_Hitstun_2
+      rect:
+        serializedVersion: 2
+        x: 357
+        y: 753
+        width: 120
+        height: 256
+      alignment: 9
+      pivot: {x: 0.29826635, y: 0.52909636}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 45d88fc9959e1d94484e1ef5d18358a2
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Saidon_Hitstun_3
+      rect:
+        serializedVersion: 2
+        x: 476
+        y: 753
+        width: 120
+        height: 257
+      alignment: 9
+      pivot: {x: 0.2827489, y: 0.5217375}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f9e344f69428b1f4eb162d3de1c2ad52
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SidonHitStun_Kg_5
+      rect:
+        serializedVersion: 2
+        x: 646
+        y: 757
+        width: 42
+        height: 253
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 28f6a26207b6dce479ee1289f8e2d590
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SidonHitStun_Kg_6
+      rect:
+        serializedVersion: 2
+        x: 739
+        y: 756
+        width: 68
+        height: 254
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 28dceb0e551f6d94c81b7fce88f01186
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SidonHitStun_Kg_7
+      rect:
+        serializedVersion: 2
+        x: 833
+        y: 759
+        width: 120
+        height: 251
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6b689323ca164f64eba86585969e85f8
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SidonHitStun_Kg_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 479
+        width: 120
+        height: 251
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f8734d6b27c1bee49bdc7aaa9fc2e690
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SidonHitStun_Kg_9
+      rect:
+        serializedVersion: 2
+        x: 119
+        y: 479
+        width: 119
+        height: 251
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5b6fb504474cf7649a69acc3efb4fb46
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []

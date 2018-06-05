@@ -971,28 +971,9 @@ public class LocalPlayerScript : NetworkBehaviour
         if (startedSuper && actionWaitedFrames >= SUPER_CHARGE_FRAMES)
         {
             startedSuper = false;
-
-            //circlecast to see if someone is hit with the super - mask out attacker's layer
             Vector2 direction = getDirection();
             direction.Normalize();
-
-            // superPrefab.transform.rotation = Quaternion.LookRotation(direction);
-            /*superPrefab.transform.position = transform.position;
-            superPrefab.transform.eulerAngles = new Vector3(0, 0, Mathf.Rad2Deg * Mathf.Atan2(direction.y, direction.x) - 90f);
-
-            projectile = Instantiate(superPrefab);
-            projectile.GetComponent<SuperProjectileScript>().setSender(gameObject);
-            projectile.GetComponent<Rigidbody2D>().velocity = direction * 25;*/
             activateProjectile(direction);
-            /*Vector2 origin = new Vector2(gameObject.GetComponent<Transform>().position.x, gameObject.GetComponent<Transform>().position.y);
-            gameObject.layer = 2;
-            RaycastHit2D hit = Physics2D.CircleCast(origin: origin, radius: superRadius, direction: direction, distance: Mathf.Infinity);
-            gameObject.layer = 0;
-
-            if (hit.rigidbody != null && hit.rigidbody.gameObject.tag != null && (hit.rigidbody.gameObject.tag == "Player" || hit.rigidbody.gameObject.tag == "PlayerAI"))
-            {
-                killPlayer(hit.rigidbody.gameObject);
-            }*/
         }
     }
 
