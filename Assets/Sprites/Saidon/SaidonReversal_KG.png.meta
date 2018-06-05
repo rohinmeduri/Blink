@@ -1,0 +1,736 @@
+fileFormatVersion: 2
+guid: 8f4081a559f42394b90b4d6f78565c9e
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: Saidon_ReversalLanded_4
+    21300002: SaidonReversal_KG_1
+    21300004: SaidonReversal_KG_2
+    21300006: Saidon_ReversalLanded_3
+    21300008: SaidonReversal_KG_4
+    21300010: SaidonReversal_KG_5
+    21300012: SaidonReversal_KG_6
+    21300014: SaidonReversal_KG_7
+    21300016: SaidonReversal_KG_8
+    21300018: SaidonReversal_KG_9
+    21300020: SaidonReversal_KG_10
+    21300022: SaidonReversal_KG_11
+    21300024: SaidonReversal_KG_12
+    21300026: Saidon_ReversalLanded_2
+    21300028: SaidonReversal_KG_14
+    21300030: SaidonReversal_KG_15
+    21300032: SaidonReversal_KG_16
+    21300034: SaidonReversal_KG_17
+    21300036: SaidonReversal_KG_18
+    21300038: Saidon_ReversalLanded_1
+    21300040: SaidonReversal_KG_20
+    21300042: Saidon_Reversal_4
+    21300044: Saidon_Reversal_3
+    21300046: SaidonReversal_KG_23
+    21300048: SaidonReversal_KG_24
+    21300050: SaidonReversal_KG_25
+    21300052: Saidon_Reversal_2
+    21300054: SaidonReversal_KG_27
+    21300056: Saidon_Reversal_1
+    21300058: SaidonReversal_KG_29
+  externalObjects: {}
+  serializedVersion: 5
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -1
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 150
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - serializedVersion: 2
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Saidon_ReversalLanded_4
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 693
+        width: 166
+        height: 250
+      alignment: 9
+      pivot: {x: 0.3552707, y: 0.4810293}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 60647c9fa3c369943bd7b0fc7b04ef34
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SaidonReversal_KG_1
+      rect:
+        serializedVersion: 2
+        x: 227
+        y: 897
+        width: 27
+        height: 46
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 498947c0f9af0244bb544967e319346d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SaidonReversal_KG_2
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 852
+        width: 94
+        height: 121
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a253d3dd9a9472f499596e65b2b70b4b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Saidon_ReversalLanded_3
+      rect:
+        serializedVersion: 2
+        x: 223
+        y: 655
+        width: 266
+        height: 320
+      alignment: 9
+      pivot: {x: 0.5, y: 0.49999982}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 51c28aab63b323f4a9a6fb5edb7d9f9c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SaidonReversal_KG_4
+      rect:
+        serializedVersion: 2
+        x: 373
+        y: 863
+        width: 102
+        height: 108
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 26c53c6a78fcce34a9587a4708911630
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SaidonReversal_KG_5
+      rect:
+        serializedVersion: 2
+        x: 465
+        y: 912
+        width: 11
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1e17761996c75004ba7c26eed771dc90
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SaidonReversal_KG_6
+      rect:
+        serializedVersion: 2
+        x: 495
+        y: 899
+        width: 26
+        height: 46
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ea1be15efadc57a46adedca2505e2b1b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SaidonReversal_KG_7
+      rect:
+        serializedVersion: 2
+        x: 498
+        y: 853
+        width: 96
+        height: 122
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9024e99b1c7e22847a5366f524c0b65a
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SaidonReversal_KG_8
+      rect:
+        serializedVersion: 2
+        x: 554
+        y: 695
+        width: 166
+        height: 250
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c6a2276120031204cb9fe6baa69a05e3
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SaidonReversal_KG_9
+      rect:
+        serializedVersion: 2
+        x: 632
+        y: 855
+        width: 101
+        height: 118
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 87b9bd72a15607742993d7de331641d1
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SaidonReversal_KG_10
+      rect:
+        serializedVersion: 2
+        x: 245
+        y: 661
+        width: 92
+        height: 156
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d85284628c3b05240bd04ee881f64332
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SaidonReversal_KG_11
+      rect:
+        serializedVersion: 2
+        x: 375
+        y: 661
+        width: 100
+        height: 172
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4891032982c7a47468c91b3e20181a79
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SaidonReversal_KG_12
+      rect:
+        serializedVersion: 2
+        x: 475
+        y: 727
+        width: 8
+        height: 27
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 01854853e0b76444986e86ba98cc5c2a
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Saidon_ReversalLanded_2
+      rect:
+        serializedVersion: 2
+        x: 489
+        y: 662
+        width: 245
+        height: 313
+      alignment: 9
+      pivot: {x: 0.5072368, y: 0.4899446}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f5d5d4e92b53478408a65d2b57d0a320
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SaidonReversal_KG_14
+      rect:
+        serializedVersion: 2
+        x: 626
+        y: 661
+        width: 107
+        height: 172
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fa95b730fea7c194db2ad1c7fc927916
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SaidonReversal_KG_15
+      rect:
+        serializedVersion: 2
+        x: 709
+        y: 709
+        width: 25
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 08a5144cdbb0a14489a14e87164fa06b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SaidonReversal_KG_16
+      rect:
+        serializedVersion: 2
+        x: 243
+        y: 671
+        width: 42
+        height: 52
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 68c8a99ab9d117f4c88bc00813bb4a60
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SaidonReversal_KG_17
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 560
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6f10a7193c8bca64fbc62ca6fa6d69a9
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SaidonReversal_KG_18
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 512
+        width: 84
+        height: 122
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 37c65840e4f4d214bb6b3253f03ad668
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Saidon_ReversalLanded_1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 315
+        width: 209
+        height: 335
+      alignment: 9
+      pivot: {x: 0.45758238, y: 0.49470708}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 26de6d176bcf1a0429f94a8c61194902
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SaidonReversal_KG_20
+      rect:
+        serializedVersion: 2
+        x: 113
+        y: 526
+        width: 71
+        height: 112
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 25793042eb027e34db54b8e8c713793d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Saidon_Reversal_4
+      rect:
+        serializedVersion: 2
+        x: 284
+        y: 329
+        width: 163
+        height: 306
+      alignment: 9
+      pivot: {x: 0.4345454, y: 0.49049088}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9764ea4cd6e66d843900c7cd32955848
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Saidon_Reversal_3
+      rect:
+        serializedVersion: 2
+        x: 544
+        y: 335
+        width: 160
+        height: 274
+      alignment: 9
+      pivot: {x: 0.42321318, y: 0.5128111}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 00ed075fceda9774ca71dc4bd7293eff
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SaidonReversal_KG_23
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 354
+        width: 29
+        height: 52
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a529473423c24b747b6eab32503228b2
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SaidonReversal_KG_24
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 328
+        width: 77
+        height: 162
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 128185fc63724214fa51409246335cdf
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SaidonReversal_KG_25
+      rect:
+        serializedVersion: 2
+        x: 116
+        y: 330
+        width: 71
+        height: 154
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 415fc24821173c344870e0524e3933a2
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Saidon_Reversal_2
+      rect:
+        serializedVersion: 2
+        x: 53
+        y: 13
+        width: 128
+        height: 260
+      alignment: 9
+      pivot: {x: 0.3120101, y: 0.49042588}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c4f88f46697396e488a2dacabd4f2988
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SaidonReversal_KG_27
+      rect:
+        serializedVersion: 2
+        x: 43
+        y: 0
+        width: 140
+        height: 289
+      alignment: 9
+      pivot: {x: 0.33702382, y: 0.4908903}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2af95f3547384ea49b1ce5d8d626940b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Saidon_Reversal_1
+      rect:
+        serializedVersion: 2
+        x: 306
+        y: 14
+        width: 143
+        height: 260
+      alignment: 9
+      pivot: {x: 0.3281696, y: 0.49324945}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 34cb32abe51d07a42b56f1b81f7110c1
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SaidonReversal_KG_29
+      rect:
+        serializedVersion: 2
+        x: 409
+        y: 90
+        width: 34
+        height: 119
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: de07a7d4dd9bf1b40af03403c99c894d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 48506f20190d5a340bd7421c0f2110b3
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

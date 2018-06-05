@@ -32,8 +32,10 @@ public class LocalPlayerScript : NetworkBehaviour
     public GameObject superPrefab;
     public RuntimeAnimatorController mageAnimatorController;
     public RuntimeAnimatorController rebelAnimatorController;
+    public RuntimeAnimatorController saidonAnimatorController;
     public GameObject mageBlinkIn;
     public GameObject rebelBlinkIn;
+    public GameObject saidonBlinkIn;
 
     // private variables
     private float startCounter = 0;
@@ -182,7 +184,7 @@ public class LocalPlayerScript : NetworkBehaviour
 
         if(ID == 1)
         {
-            setPlayerType("Rebel");
+            setPlayerType("Saidon");
         }
         else if (ID == 2)
         {
@@ -263,6 +265,11 @@ public class LocalPlayerScript : NetworkBehaviour
         {
             GetComponent<Animator>().runtimeAnimatorController = rebelAnimatorController;
             blinkAnimation = rebelBlinkIn;
+        }
+        else if (playerType.Equals("Saidon"))
+        {
+            GetComponent<Animator>().runtimeAnimatorController = saidonAnimatorController;
+            blinkAnimation = saidonBlinkIn;
         }
 
         effectsPlayer = new GameObject("Effects Player");
