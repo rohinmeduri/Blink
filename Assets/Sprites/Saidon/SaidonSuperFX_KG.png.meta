@@ -1,27 +1,24 @@
 fileFormatVersion: 2
-guid: 7286bfe2faa0cb448a30ca41a2ff288a
+guid: 9fc6df4bce9933849a5143202e17bb56
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Rebel_SuperCharge_1
-    21300002: Rebel_SuperCharge_2
-    21300004: Rebel_SuperCharge_3
-    21300006: Rebel_SuperCharge_4
-    21300008: Rebel_SuperCharge_5
-    21300010: RebelSuperFire_KG_5
-    21300012: Rebel_SuperCharge_6
-    21300014: RebelSuperFire_KG_7
-    21300016: RebelSuperFire_KG_8
-    21300018: RebelSuperFire_KG_9
-    21300020: RebelSuperFire_KG_10
-    21300022: RebelSuperFire_KG_11
-    21300024: RebelSuperFire_KG_12
-    21300026: RebelSuperFire_KG_13
-    21300028: RebelSuperFire_KG_14
-    21300030: RebelSuperFire_KG_15
-    21300032: RebelSuperFire_KG_16
-    21300034: RebelSuperFire_KG_17
-    21300036: RebelSuperFire_KG_18
-    21300038: RebelSuperFire_KG_19
+    21300000: SaidonSuperFX_KG_0
+    21300002: Saidon_SuperCharge_6
+    21300004: SaidonSuperFX_KG_2
+    21300006: SaidonSuperFX_KG_3
+    21300008: SaidonSuperFX_KG_4
+    21300010: Saidon_SuperCharge_5
+    21300012: SaidonSuperFX_KG_6
+    21300014: SaidonSuperFX_KG_7
+    21300016: SaidonSuperFX_KG_8
+    21300018: SaidonSuperFX_KG_9
+    21300020: SaidonSuperFX_KG_10
+    21300022: SaidonSuperFX_KG_11
+    21300024: Saidon_SuperCharge_4
+    21300026: Saidon_SuperCharge_3
+    21300028: Saidon_SuperCharge_2
+    21300030: Saidon_SuperCharge_1
+    21300032: SaidonSuperFX_KG_5
   externalObjects: {}
   serializedVersion: 5
   mipmaps:
@@ -113,401 +110,341 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Rebel_SuperCharge_1
+      name: SaidonSuperFX_KG_0
       rect:
         serializedVersion: 2
-        x: 61
-        y: 191
-        width: 54
-        height: 64
-      alignment: 9
-      pivot: {x: 0.517781, y: -0.88025117}
+        x: 21
+        y: 146
+        width: 4
+        height: 4
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c84ad0499dd22714da9827acbb2caed2
+      spriteID: 2d07b1d289ad41c41873c3d8a9b977ff
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Rebel_SuperCharge_2
-      rect:
-        serializedVersion: 2
-        x: 252
-        y: 182
-        width: 68
-        height: 82
-      alignment: 9
-      pivot: {x: 0.50706077, y: -0.5714145}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 2901891bed9607b47bbaed9911348c03
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Rebel_SuperCharge_3
-      rect:
-        serializedVersion: 2
-        x: 37
-        y: 77
-        width: 101
-        height: 68
-      alignment: 9
-      pivot: {x: 0.50475335, y: -0.7496392}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 580fddd30f8ddc240a0594d808334793
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Rebel_SuperCharge_4
-      rect:
-        serializedVersion: 2
-        x: 223
-        y: 102
-        width: 126
-        height: 42
-      alignment: 9
-      pivot: {x: 0.5152413, y: -1.7175474}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: fc267dc17ffd2414fa5be295a45d5053
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Rebel_SuperCharge_5
+      name: Saidon_SuperCharge_6
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 177
-        height: 36
-      alignment: 9
-      pivot: {x: 0.49186292, y: -1.9671159}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f700af863465d024490799fbe8d8584a
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: RebelSuperFire_KG_5
-      rect:
-        serializedVersion: 2
-        x: 188
-        y: 12
-        width: 6
-        height: 13
+        y: 128
+        width: 123
+        height: 26
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 30e0688382ec89c4897cc805de2a2b34
+      spriteID: 5d8d1f2fb407bba42b8043f84a8ee0fd
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Rebel_SuperCharge_6
+      name: SaidonSuperFX_KG_2
       rect:
         serializedVersion: 2
-        x: 185
-        y: 2
-        width: 198
-        height: 32
-      alignment: 9
-      pivot: {x: 0.5218221, y: -2.3655217}
+        x: 73
+        y: 148
+        width: 4
+        height: 4
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f4cdb29220ad95842b53d2b384090c6f
+      spriteID: 1ff21810259488346a554738d169e5fa
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RebelSuperFire_KG_7
+      name: SaidonSuperFX_KG_3
       rect:
         serializedVersion: 2
-        x: 334
-        y: 20
+        x: 89
+        y: 144
         width: 8
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b5541d2b7938818418b0c214a9b2295b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SaidonSuperFX_KG_4
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 143
+        width: 12
         height: 8
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 816c760c1d1314d4f822575b79cf7260
+      spriteID: 17968100941254a4da4094279c3aa988
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RebelSuperFire_KG_8
+      name: Saidon_SuperCharge_5
       rect:
         serializedVersion: 2
-        x: 377
-        y: 13
-        width: 6
-        height: 13
+        x: 130
+        y: 128
+        width: 104
+        height: 26
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e7feaae111be4b64fa17917bcbfc151d
+      spriteID: 2a6e241f3eb0c7146abb2bab267846bf
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RebelSuperFire_KG_9
+      name: SaidonSuperFX_KG_6
       rect:
         serializedVersion: 2
-        x: 38
-        y: 10
-        width: 28
-        height: 11
+        x: 196
+        y: 135
+        width: 22
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 711400a03ca600c4ea7a78a039db6b85
+      spriteID: e3e221a61364c3f45a6ac0855d75fe39
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RebelSuperFire_KG_10
+      name: SaidonSuperFX_KG_7
       rect:
         serializedVersion: 2
-        x: 127
-        y: 12
+        x: 0
+        y: 130
         width: 7
         height: 12
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 778e102fa5990b84196240d63aa710e0
+      spriteID: 663c8ca63e74d284d85a2f529e780b75
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RebelSuperFire_KG_11
+      name: SaidonSuperFX_KG_8
       rect:
         serializedVersion: 2
-        x: 161
-        y: 9
-        width: 14
-        height: 13
+        x: 20
+        y: 136
+        width: 9
+        height: 5
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b2d83685c7f984b4ab350a9c0f6f7112
+      spriteID: 8f828886091e2734fa9f52f41b1d8b52
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RebelSuperFire_KG_12
+      name: SaidonSuperFX_KG_9
+      rect:
+        serializedVersion: 2
+        x: 109
+        y: 130
+        width: 12
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 77a679b40161a924799f7eb44749fb1a
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SaidonSuperFX_KG_10
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 135
+        width: 26
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e00661d6b90b8c44da95947f63161935
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SaidonSuperFX_KG_11
       rect:
         serializedVersion: 2
         x: 224
-        y: 20
-        width: 5
-        height: 4
+        y: 130
+        width: 10
+        height: 13
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a5efade5c8e8c7640846c752554fae51
+      spriteID: 76907f534ea718e44af8a2983ddb6603
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RebelSuperFire_KG_13
+      name: Saidon_SuperCharge_4
       rect:
         serializedVersion: 2
-        x: 252
-        y: 16
-        width: 21
-        height: 8
+        x: 35
+        y: 67
+        width: 45
+        height: 34
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a50329730ee3dbf439ec6ec9b0510e76
+      spriteID: 7c9c09a485e4fa141857276c96f99e9e
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RebelSuperFire_KG_14
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 8
-        width: 14
-        height: 12
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 44ada46e421ba4140941065cfdec7def
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: RebelSuperFire_KG_15
-      rect:
-        serializedVersion: 2
-        x: 68
-        y: 12
-        width: 39
-        height: 8
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 85ff73642d9ceb14b829a8e11f528d07
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: RebelSuperFire_KG_16
-      rect:
-        serializedVersion: 2
-        x: 113
-        y: 8
-        width: 14
-        height: 4
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 05cf41176a003c54189c294538599364
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: RebelSuperFire_KG_17
-      rect:
-        serializedVersion: 2
-        x: 3
-        y: 2
-        width: 30
-        height: 6
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 93a9bde77c73e924292072f2fbe97ddd
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: RebelSuperFire_KG_18
-      rect:
-        serializedVersion: 2
-        x: 164
-        y: 4
-        width: 6
-        height: 4
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: dcd1243bdd43fb040b00ac8126dbffce
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: RebelSuperFire_KG_19
+      name: Saidon_SuperCharge_3
       rect:
         serializedVersion: 2
         x: 145
-        y: 0
-        width: 18
-        height: 4
+        y: 67
+        width: 61
+        height: 21
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ca75279972aa3944f904ff8ae1db32d3
+      spriteID: f8a6dac1abf5bed469f76a89112b43cc
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Saidon_SuperCharge_2
+      rect:
+        serializedVersion: 2
+        x: 42
+        y: 0
+        width: 32
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 95f6ceada032597409d412c5fec8e489
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Saidon_SuperCharge_1
+      rect:
+        serializedVersion: 2
+        x: 167
+        y: 15
+        width: 16
+        height: 34
+      alignment: 9
+      pivot: {x: 0.5175028, y: 0.36821148}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 62ff8684bcbfbea4d98264bc43f952c6
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SaidonSuperFX_KG_5
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 130
+        width: 33
+        height: 2
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c6b16feef879f9743ad7749243efd5b6
       vertices: []
       indices: 
       edges: []
@@ -515,7 +452,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 88faec41cf2a49949ab891e5e3e4d005
+    spriteID: 2eefbeae6fb577c47a4c13ec3f256e29
     vertices: []
     indices: 
     edges: []
