@@ -1,0 +1,925 @@
+fileFormatVersion: 2
+guid: 90c39543d1562eb4db8f97b8ef60461e
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: RebelReversal_KG_0
+    21300002: RebelReversal_KG_1
+    21300004: Rebel_SuccessfulReversal_1
+    21300006: Rebel_SuccessfulReversal_4
+    21300008: Rebel_SuccessfulReversal_3
+    21300010: RebelReversal_KG_5
+    21300012: RebelReversal_KG_6
+    21300014: RebelReversal_KG_7
+    21300016: Rebel_SuccessfulReversal_2
+    21300018: RebelReversal_KG_9
+    21300020: RebelReversal_KG_10
+    21300022: Rebel_Reversal_4
+    21300024: Rebel_Reversal_3
+    21300026: Rebel_Reversal_2
+    21300028: RebelReversal_KG_14
+    21300030: RebelReversal_KG_15
+    21300032: RebelReversal_KG_16
+    21300034: RebelReversal_KG_17
+    21300036: RebelReversal_KG_18
+    21300038: RebelReversal_KG_19
+    21300040: RebelReversal_KG_20
+    21300042: RebelReversal_KG_21
+    21300044: RebelReversal_KG_22
+    21300046: RebelReversal_KG_23
+    21300048: RebelReversal_KG_24
+    21300050: RebelReversal_KG_25
+    21300052: RebelReversal_KG_26
+    21300054: RebelReversal_KG_27
+    21300056: RebelReversal_KG_28
+    21300058: RebelReversal_KG_29
+    21300060: RebelReversal_KG_30
+    21300062: RebelReversal_KG_31
+    21300064: RebelReversal_KG_32
+    21300066: RebelReversal_KG_33
+    21300068: RebelReversal_KG_34
+    21300070: RebelReversal_KG_35
+    21300072: RebelReversal_KG_36
+    21300074: Rebel_Reversal_1
+    21300076: RebelReversal_KG_38
+  externalObjects: {}
+  serializedVersion: 5
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -1
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 195
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - serializedVersion: 2
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: RebelReversal_KG_0
+      rect:
+        serializedVersion: 2
+        x: 378
+        y: 902
+        width: 14
+        height: 43
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 72d8c30bacea3684e8446098d0236456
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RebelReversal_KG_1
+      rect:
+        serializedVersion: 2
+        x: 644
+        y: 865
+        width: 36
+        height: 80
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5bec0e87cd7a6d846b84d5a20591fd26
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rebel_SuccessfulReversal_1
+      rect:
+        serializedVersion: 2
+        x: 808
+        y: 451
+        width: 280
+        height: 494
+      alignment: 9
+      pivot: {x: 0.4693126, y: 0.4617343}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 787275ccda3eaf84ca1e85d99f37de6b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rebel_SuccessfulReversal_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 499
+        width: 194
+        height: 356
+      alignment: 9
+      pivot: {x: 0.49114174, y: 0.5096547}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a449ee59fdc5aa8448e143586f4fb0af
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rebel_SuccessfulReversal_3
+      rect:
+        serializedVersion: 2
+        x: 235
+        y: 448
+        width: 290
+        height: 497
+      alignment: 9
+      pivot: {x: 0.5, y: 0.4654229}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0461df34a29c8124e8d3e3333308d5a2
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RebelReversal_KG_5
+      rect:
+        serializedVersion: 2
+        x: 316
+        y: 834
+        width: 17
+        height: 30
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c2dff22a4e709e84ab9131bcb05ae68a
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RebelReversal_KG_6
+      rect:
+        serializedVersion: 2
+        x: 428
+        y: 846
+        width: 16
+        height: 28
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f740f312336820f4f896b0168a7c3edf
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RebelReversal_KG_7
+      rect:
+        serializedVersion: 2
+        x: 452
+        y: 836
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 35d176e7cbb265c4a84514d993760598
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rebel_SuccessfulReversal_2
+      rect:
+        serializedVersion: 2
+        x: 525
+        y: 422
+        width: 282
+        height: 523
+      alignment: 9
+      pivot: {x: 0.47562423, y: 0.49342862}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 80ea1129ce3758348aa53674f1358812
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RebelReversal_KG_9
+      rect:
+        serializedVersion: 2
+        x: 593
+        y: 827
+        width: 27
+        height: 42
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6712c2afeecdd2043a85dd2acbc9e51f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RebelReversal_KG_10
+      rect:
+        serializedVersion: 2
+        x: 704
+        y: 821
+        width: 59
+        height: 52
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 841254fa331a52b48af2a1a025f33382
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rebel_Reversal_4
+      rect:
+        serializedVersion: 2
+        x: 1120
+        y: 469
+        width: 192
+        height: 416
+      alignment: 9
+      pivot: {x: 0.4910501, y: 0.50826263}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b6b4b2308815a6646a09501f68dd0cef
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rebel_Reversal_3
+      rect:
+        serializedVersion: 2
+        x: 1400
+        y: 469
+        width: 192
+        height: 385
+      alignment: 9
+      pivot: {x: 0.49105135, y: 0.54463685}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 990b16c11dbbfa447bbc3a197274c987
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rebel_Reversal_2
+      rect:
+        serializedVersion: 2
+        x: 1696
+        y: 454
+        width: 176
+        height: 401
+      alignment: 9
+      pivot: {x: 0.4437783, y: 0.5643904}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 24e3c8273a95f2849b47208023664268
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RebelReversal_KG_14
+      rect:
+        serializedVersion: 2
+        x: 267
+        y: 786
+        width: 33
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4283c32af471d0e4495a924d5fcdf184
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RebelReversal_KG_15
+      rect:
+        serializedVersion: 2
+        x: 546
+        y: 775
+        width: 45
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1c4d29d7c5cd76948b4f756048ac0f25
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RebelReversal_KG_16
+      rect:
+        serializedVersion: 2
+        x: 254
+        y: 706
+        width: 25
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0315fb0367381ff4aada569966f83c3a
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RebelReversal_KG_17
+      rect:
+        serializedVersion: 2
+        x: 472
+        y: 744
+        width: 40
+        height: 30
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8d9ae48b7353c94478f873ea61351848
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RebelReversal_KG_18
+      rect:
+        serializedVersion: 2
+        x: 528
+        y: 695
+        width: 30
+        height: 60
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 147e074d1b2f6f642b6b8ade9c6959b2
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RebelReversal_KG_19
+      rect:
+        serializedVersion: 2
+        x: 752
+        y: 733
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 28f0a2617e2b1a140b93db5b765e3664
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RebelReversal_KG_20
+      rect:
+        serializedVersion: 2
+        x: 1836
+        y: 555
+        width: 36
+        height: 228
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8a0779a018bed3949b2f82522497ce6e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RebelReversal_KG_21
+      rect:
+        serializedVersion: 2
+        x: 488
+        y: 670
+        width: 32
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: be56293876e506b419bf101aba261525
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RebelReversal_KG_22
+      rect:
+        serializedVersion: 2
+        x: 758
+        y: 635
+        width: 50
+        height: 68
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 379e3bb06d4d5a346b03ba3b85364ba6
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RebelReversal_KG_23
+      rect:
+        serializedVersion: 2
+        x: 248
+        y: 622
+        width: 26
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 19841f0e425632747b6c718d7377eef4
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RebelReversal_KG_24
+      rect:
+        serializedVersion: 2
+        x: 478
+        y: 636
+        width: 46
+        height: 30
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c232863e52c69044ebada7f7d01f290a
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RebelReversal_KG_25
+      rect:
+        serializedVersion: 2
+        x: 528
+        y: 621
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2291ef92afc636b47b351366036c3269
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RebelReversal_KG_26
+      rect:
+        serializedVersion: 2
+        x: 264
+        y: 564
+        width: 42
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d95ca411af452f94fb89cc146dca2efc
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RebelReversal_KG_27
+      rect:
+        serializedVersion: 2
+        x: 438
+        y: 532
+        width: 44
+        height: 72
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2e0562b535373414db066b3f2d464b8e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RebelReversal_KG_28
+      rect:
+        serializedVersion: 2
+        x: 542
+        y: 561
+        width: 46
+        height: 42
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d9d9f44bfdb2c8940a18a787f5c7675e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RebelReversal_KG_29
+      rect:
+        serializedVersion: 2
+        x: 706
+        y: 531
+        width: 55
+        height: 83
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d5cb3ea341e4fe041b9ffa04da974d6d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RebelReversal_KG_30
+      rect:
+        serializedVersion: 2
+        x: 346
+        y: 476
+        width: 23
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 90a5854f2fa1ccd41981ddefae83433b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RebelReversal_KG_31
+      rect:
+        serializedVersion: 2
+        x: 391
+        y: 452
+        width: 21
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2b3eda0d632a9764c9c8595fe053bb42
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RebelReversal_KG_32
+      rect:
+        serializedVersion: 2
+        x: 424
+        y: 472
+        width: 20
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2648d55b84473b14387b85b81f247087
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RebelReversal_KG_33
+      rect:
+        serializedVersion: 2
+        x: 624
+        y: 463
+        width: 33
+        height: 38
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b3c7ab1cbff12094b8bd164880eee084
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RebelReversal_KG_34
+      rect:
+        serializedVersion: 2
+        x: 666
+        y: 451
+        width: 28
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 469e7b4b24f996344840a0c0dbcf9934
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RebelReversal_KG_35
+      rect:
+        serializedVersion: 2
+        x: 692
+        y: 471
+        width: 30
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e846965dc6114d1489e59af97761b104
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RebelReversal_KG_36
+      rect:
+        serializedVersion: 2
+        x: 1762
+        y: 469
+        width: 78
+        height: 82
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3efa3a739a294494e9ad7eff7b0a6c2f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rebel_Reversal_1
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 0
+        width: 191
+        height: 360
+      alignment: 9
+      pivot: {x: 0.41002652, y: 0.51909477}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2fe8a2e32a2bfd548a74e007b1b516d9
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RebelReversal_KG_38
+      rect:
+        serializedVersion: 2
+        x: 164
+        y: 140
+        width: 28
+        height: 146
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 34bce92778d80be45a2335a9d116bb47
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 3ae2a8c463fb356459d9b15e64a8b809
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
