@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class ChangePlayerNumber : MonoBehaviour {
     private static int numberOfPlayers = 1;     //keep track of number of players
@@ -25,9 +26,13 @@ public class ChangePlayerNumber : MonoBehaviour {
 
     private void Start()
     {
-        UpdateAIGroups();
-        updateCountGroups();
-        updateNumberElements();
+        if (SceneManager.GetActiveScene().name.Equals("Local Lobby Menu"))
+        {
+            UpdateAIGroups();
+            updateCountGroups();
+            updateNumberElements();
+        }
+            
     }
 
     //set limit in unity editor on AI

@@ -1490,6 +1490,13 @@ MonoBehaviour:
   AIDiff1: {fileID: 0}
   AIDiff2: {fileID: 0}
   AIDiff3: {fileID: 0}
+  AIGroup1: {fileID: 0}
+  AIGroup2: {fileID: 0}
+  AIGroup3: {fileID: 0}
+  DecreaseAI: {fileID: 0}
+  IncreaseAI: {fileID: 0}
+  DecreasePlayers: {fileID: 0}
+  IncreasePlayers: {fileID: 0}
 --- !u!4 &655318693
 Transform:
   m_ObjectHideFlags: 0
