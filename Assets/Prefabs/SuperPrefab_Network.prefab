@@ -110,8 +110,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a2a9a5d4bbbfa6459bb9dd9d7e9c3f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chargingSuper: {fileID: 0}
-  activatedSuper: {fileID: 21300000, guid: a719a8e8f5e8b644a9b5ad847d1e53fe, type: 3}
+  mageController: {fileID: 9100000, guid: a81fc6544f537514793342bcf2059a81, type: 2}
+  saidonController: {fileID: 22100000, guid: c3692f354056c3941a8ffad010f5ab5c, type: 2}
+  rebelController: {fileID: 22100000, guid: d2364a0e9691cf4429bc86632b728d5e, type: 2}
 --- !u!114 &114865276917232618
 MonoBehaviour:
   m_ObjectHideFlags: 1

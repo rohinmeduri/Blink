@@ -90,6 +90,7 @@ public class LocalPlayerScript : NetworkBehaviour
     private GameObject soundEffectPlayer;
     private GameObject[] visualEffectCreator;
     private bool attackLanded = false;
+    private string playerType;
 
     // constants
     public const float GAME_START_TIME = 4f;
@@ -184,7 +185,7 @@ public class LocalPlayerScript : NetworkBehaviour
 
         if(ID == 1)
         {
-            setPlayerType("Saidon");
+            setPlayerType("Rebel");
         }
         else if (ID == 2)
         {
@@ -254,8 +255,9 @@ public class LocalPlayerScript : NetworkBehaviour
     }
 
 
-    protected virtual void setPlayerType(string playerType)
+    protected virtual void setPlayerType(string pt)
     {
+        playerType = pt;
         if (playerType.Equals("Mage"))
         {
             GetComponent<Animator>().runtimeAnimatorController = mageAnimatorController;
@@ -311,6 +313,7 @@ public class LocalPlayerScript : NetworkBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
+        hasSuper = true;
         startCounter += Time.deltaTime;
         if (startCounter <= GAME_START_TIME)
         {
@@ -954,6 +957,7 @@ public class LocalPlayerScript : NetworkBehaviour
     {
         projectile = Instantiate(superPrefab);
         projectile.GetComponent<Transform>().position = transform.position;
+        projectile.GetComponent<SuperProjectileScript>().setType(playerType);
     }
     
     void rotateSuperProjectile()
