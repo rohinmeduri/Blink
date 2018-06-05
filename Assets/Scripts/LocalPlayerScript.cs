@@ -194,7 +194,7 @@ public class LocalPlayerScript : NetworkBehaviour
         }
         else if (ID == 2)
         {
-            setPlayerType("Mage");
+            setPlayerType("Saidon");
             facingRight = false;
         }
         else if (ID == 3)
