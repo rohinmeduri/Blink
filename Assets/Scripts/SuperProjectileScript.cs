@@ -6,8 +6,9 @@ using UnityEngine.Networking;
 public class SuperProjectileScript : NetworkBehaviour {
     private GameObject sender;
     private bool active = false;
-    public Sprite chargingSuper;
-    public Sprite activatedSuper;
+    public RuntimeAnimatorController mageController;
+    public RuntimeAnimatorController saidonController;
+    public RuntimeAnimatorController rebelController;
 
     public void setSender(GameObject s)
     {
@@ -48,6 +49,21 @@ public class SuperProjectileScript : NetworkBehaviour {
     public virtual void rotate(Vector2 direction)
     {
         GetComponent<Transform>().eulerAngles = new Vector3(0, 0, Mathf.Rad2Deg * Mathf.Atan2(direction.y, direction.x) - 90f);
+    }
+
+    public void setType(string type)
+    {
+        if (type.Equals("Mage")){
+            GetComponent<Animator>().runtimeAnimatorController = mageController;
+        }
+        else if (type.Equals("Rebel")){
+            GetComponent<Animator>().runtimeAnimatorController = rebelController;
+        }
+        else
+        {
+            GetComponent<Animator>().runtimeAnimatorController = saidonController;
+        }
+
     }
 }
 

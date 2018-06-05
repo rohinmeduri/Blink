@@ -4,18 +4,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 public class SuperProjectileNetworked : SuperProjectileScript {
-
-    /*protected override void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (hasAuthority)
-        {
-            base.OnCollisionEnter2D(collision);
-        }
-        else
-        {
-            Debug.Log("no have authority");
-        }
-    }*/
+    
     
    public override void rotate(Vector2 direction)
    {
