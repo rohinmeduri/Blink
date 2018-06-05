@@ -23,6 +23,13 @@ public class ChangePlayerNumber : MonoBehaviour {
     public GameObject IncreasePlayers;
     private static string[] Difficulties = { "Easy", "Medium", "Hard" };
 
+    private void Start()
+    {
+        UpdateAIGroups();
+        updateCountGroups();
+        updateNumberElements();
+    }
+
     //set limit in unity editor on AI
     /*
     public void changeNumberOfPlayersBy(int n)      //used by playerCountGroup buttons
@@ -196,11 +203,12 @@ public class ChangePlayerNumber : MonoBehaviour {
     public int[] getAIDifficulties()
     {
         int[] Fresh = {AI1Difficulty, AI2Difficulty, AI3Difficulty};
-        int[] Dank = new int[numberOfPlayers];
-        for(int i = 0; i < numberOfPlayers; i++)
+        int[] Dank = new int[numberOfAI];
+        for(int i = 0; i < numberOfAI; i++)
         {
             Dank[i] = Fresh[i];
         }
+        Debug.Log(numberOfAI);
         return Dank;
     }
     public void UpdateAIGroups()
