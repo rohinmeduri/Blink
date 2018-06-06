@@ -44,15 +44,15 @@ public class LocalPlayerScript : NetworkBehaviour
     private bool canJump;
     protected Vector2 currentNormal;
     protected float stickyWallTimer;
-    private float stunTimer;
+    protected float stunTimer;
     protected Rigidbody2D rb2D;
-    private bool actionLock = false;
+    protected bool actionLock = false;
     private float actionWaitFrames;
     private float actionWaitedFrames = 0;
     private float blinkFrames = 0;
     private float blinkTimer = 0;
     protected bool blinking = false;
-    private bool teleported = false;
+    protected bool teleported = false;
     private bool reversalEffective = false;
     private bool reversalLanded = false;
     private Vector2 reversalDirection;
@@ -89,7 +89,7 @@ public class LocalPlayerScript : NetworkBehaviour
     private GameObject effectsPlayer;
     private GameObject soundEffectPlayer;
     private GameObject[] visualEffectCreator;
-    private bool attackLanded = false;
+    protected bool attackLanded = false;
     private string playerType;
     protected bool launchedSuper;
 
@@ -1178,6 +1178,7 @@ public class LocalPlayerScript : NetworkBehaviour
                 Destroy(projectile);
                 stopSoundEffect(4);
             }
+            attackLanded = false;
             reversalEffective = false;
             startedSuper = false;
 
@@ -1185,7 +1186,7 @@ public class LocalPlayerScript : NetworkBehaviour
             updateComboHits(0);
             comboHitInterval = 0;
 
-            //send player slighty more upwards if they are on the ground
+            //send player slighty more upwards if they ares on the ground
             if (isGround() && dir.y < GROUND_KNOCKBACK_MODIFICATION)
             {
                 dir.y += GROUND_KNOCKBACK_MODIFICATION;
