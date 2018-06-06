@@ -191,11 +191,11 @@ public class LocalPlayerScript : NetworkBehaviour
 
         if(ID == 1)
         {
-            setPlayerType("Rebel");
+            setPlayerType("Saidon");
         }
         else if (ID == 2)
         {
-            setPlayerType("Saidon");
+            setPlayerType("Rebel");
             facingRight = false;
         }
         else if (ID == 3)
