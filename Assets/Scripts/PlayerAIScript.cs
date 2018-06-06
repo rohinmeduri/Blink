@@ -21,6 +21,7 @@ public class PlayerAIScript : LocalPlayerScript {
 
     protected override void Update()
     {
+        hasSuper = true;
         //find enemy player
         GameObject[] playerEnemies = GameObject.FindGameObjectsWithTag("Player");
         GameObject[] AIenemies = GameObject.FindGameObjectsWithTag("PlayerAI");
@@ -153,6 +154,9 @@ public class PlayerAIScript : LocalPlayerScript {
         }
     }
 
+    /*
+     * script that makes AI do a hit + super combo for medium, and hit + blink + super combo for hard
+     */
     void winCombo()
     {
         if (playerDifficulty == 2)
@@ -204,7 +208,7 @@ public class PlayerAIScript : LocalPlayerScript {
             superCheck = true;
         }
 
-        if (countBlink && blinkInput)
+        if (attackCheck & !blinkCheck)
         {
             Vector2 enemyTransform = positionTracker[0];
             Vector2 myTransform = GetComponent<Transform>().position;
@@ -214,6 +218,8 @@ public class PlayerAIScript : LocalPlayerScript {
             directionInput.Normalize();
             inputX = directionInput.x;
             inputY = directionInput.y;
+            directionInputX = directionInput.x;
+            directionInputY = directionInput.y;
             jumpInput = input.y <= 0;
         }
     }

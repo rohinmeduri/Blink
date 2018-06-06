@@ -197,7 +197,8 @@ MonoBehaviour:
     type: 2}
   rebelBlinkIn: {fileID: 1730829665728188, guid: ad017b7627e3e934693c6ce95b2a329a,
     type: 2}
-  saidonBlinkIn: {fileID: 0}
+  saidonBlinkIn: {fileID: 1730829665728188, guid: 81fe3a82f4b12ad4f9067191f76336e6,
+    type: 2}
 --- !u!114 &114509458611876312
 MonoBehaviour:
   m_ObjectHideFlags: 1
