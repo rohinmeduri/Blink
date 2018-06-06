@@ -60,23 +60,18 @@ public class TutorialStepManager : MonoBehaviour {
         return result; 
     }
 
-    void uAir(){
-        
+    bool getNextStep() {
+        return nextStep;
     }
 
-    void dAir(){
-        
+    void setNextStep(bool next)
+    {
+        nextStep = next;
     }
 
-    void blink(){
-        
+    int getTutorialStep()
+    {
+        return tutorialStep;
     }
-
-    void reversal(){
-        
-    }
-
-    void super(){
-        
     }
 }
