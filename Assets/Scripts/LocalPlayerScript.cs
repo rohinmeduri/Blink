@@ -44,22 +44,22 @@ public class LocalPlayerScript : NetworkBehaviour
     private bool canJump;
     protected Vector2 currentNormal;
     protected float stickyWallTimer;
-    private float stunTimer;
+    protected float stunTimer;
     protected Rigidbody2D rb2D;
-    private bool actionLock = false;
+    protected bool actionLock = false;
     private float actionWaitFrames;
     private float actionWaitedFrames = 0;
     private float blinkFrames = 0;
     private float blinkTimer = 0;
-    private bool blinking = false;
-    private bool teleported = false;
+    protected bool blinking = false;
+    protected bool teleported = false;
     private bool reversalEffective = false;
     private bool reversalLanded = false;
     private Vector2 reversalDirection;
     protected GameObject glory;
     [SyncVar]
     protected bool hasSuper = false;
-    private bool startedSuper = false;
+    protected bool startedSuper = false;
     protected GameObject projectile;
     protected Animator animator;
     private List<GameObject> touchingObjects = new List<GameObject>();
@@ -89,8 +89,9 @@ public class LocalPlayerScript : NetworkBehaviour
     private GameObject effectsPlayer;
     private GameObject soundEffectPlayer;
     private GameObject[] visualEffectCreator;
-    private bool attackLanded = false;
+    protected bool attackLanded = false;
     private string playerType;
+    protected bool launchedSuper;
     private CanvasGroup pauseMenu;
 
     // constants
@@ -190,11 +191,11 @@ public class LocalPlayerScript : NetworkBehaviour
 
         if(ID == 1)
         {
-            setPlayerType("Rebel");
+            setPlayerType("Saidon");
         }
         else if (ID == 2)
         {
-            setPlayerType("Saidon");
+            setPlayerType("Rebel");
             facingRight = false;
         }
         else if (ID == 3)
@@ -300,17 +301,17 @@ public class LocalPlayerScript : NetworkBehaviour
         }
     }
     
-    private void createSoundEffect(int index, float volume)
+    protected virtual void createSoundEffect(int index, float volume)
     {
         soundEffectPlayer.GetComponent<SoundEffectPlayer>().playSoundEffect(index, volume);
     }
 
-    private void stopSoundEffect(int index)
+    protected virtual void stopSoundEffect(int index)
     {
         soundEffectPlayer.GetComponent<SoundEffectPlayer>().stopSoundEffect(index);
     }
 
-    private void createVisualEffect(int index)
+    protected virtual void createVisualEffect(int index)
     {
         visualEffectCreator[index].GetComponent<VisualEffectCreator>().triggerEffect(gameObject);
     }
@@ -410,6 +411,7 @@ public class LocalPlayerScript : NetworkBehaviour
                 attackLanded = false;
                 reversalLanded = false;
                 blinking = false;
+                launchedSuper = false;
             }
 
         }
@@ -991,6 +993,7 @@ public class LocalPlayerScript : NetworkBehaviour
             Vector2 direction = getDirection();
             direction.Normalize();
             activateProjectile(direction);
+            launchedSuper = true;
         }
     }
 
@@ -1188,6 +1191,7 @@ public class LocalPlayerScript : NetworkBehaviour
                 Destroy(projectile);
                 stopSoundEffect(4);
             }
+            attackLanded = false;
             reversalEffective = false;
             startedSuper = false;
 
@@ -1195,7 +1199,7 @@ public class LocalPlayerScript : NetworkBehaviour
             updateComboHits(0);
             comboHitInterval = 0;
 
-            //send player slighty more upwards if they are on the ground
+            //send player slighty more upwards if they ares on the ground
             if (isGround() && dir.y < GROUND_KNOCKBACK_MODIFICATION)
             {
                 dir.y += GROUND_KNOCKBACK_MODIFICATION;

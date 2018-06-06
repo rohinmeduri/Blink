@@ -32,7 +32,7 @@ public class MusicPlayerScript : MonoBehaviour {
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        var lobbySceneNow = (scene.name == "_Main Menu" || scene.name == "Local Lobby Menu" || scene.name == "Multiplayer Lobby");
+        var lobbySceneNow = (scene.name == "_Main Menu" || scene.name == "Local Lobby Menu" || scene.name == "Multiplayer Lobby" || scene.name == "Tutorial");
         if(lobbySceneNow != lobbyScene)
         {
             lobbyScene = lobbySceneNow;

@@ -11,6 +11,10 @@ public class PlayerAIScript : LocalPlayerScript {
     private List<float> timeTracker = new List<float>();
     private float timeCounter = 0;
     private int playerDifficulty;
+    private bool attackCheck = false;
+    private bool blinkCheck = false;
+    private bool superCheck = false;
+    private bool countBlink = false;
 
     public readonly float[] REACTION_TIME = {0.5f, 0.4f, 0.25f}; //how long AI takes to react to other player's movements
     public readonly float[] BLINK_DISTANCE_FACTOR = {4f, 2f, 1.2f};
@@ -37,6 +41,14 @@ public class PlayerAIScript : LocalPlayerScript {
                     enemyDistance = distanceVector.magnitude;
                 }
             }
+        }
+
+        if(stunTimer > 0)
+        {
+            blinkCheck = false;
+            superCheck = false;
+            attackCheck = false;
+            countBlink = false;
         }
 
         base.Update();
@@ -123,6 +135,11 @@ public class PlayerAIScript : LocalPlayerScript {
                     timeTracker.RemoveAt(0);
                 }
             }
+
+            if (hasSuper && playerDifficulty > 0)
+            {
+                winCombo();
+            }
         }
         else
         {
@@ -133,6 +150,76 @@ public class PlayerAIScript : LocalPlayerScript {
             reversalInput = false;
             inputX = 0;
             inputY = 0;
+        }
+    }
+
+    /*
+     * script that makes AI do a hit + super combo for medium, and hit + blink + super combo for hard
+     */
+    void winCombo()
+    {
+        if (playerDifficulty == 2)
+        {
+            superInput = false;
+            if (attackCheck)
+            {
+                countBlink = true;
+                blinkInput = true;
+            }
+            if (attackLanded)
+            {
+                attackCheck = true;
+            }
+        }
+        else
+        {
+            countBlink = true;
+            blinkInput = true;
+            attackCheck = true;
+        }
+
+        if (superCheck)
+        {
+            superInput = false;
+            blinkCheck = false;
+            countBlink = false;
+            superCheck = false;
+            attackCheck = false;
+        }
+
+        if (blinkCheck)
+        {
+            blinkInput = false;
+            superInput = true;
+        }
+        else
+        {
+            superInput = false;
+        }
+
+        if (teleported && countBlink)
+        {
+            blinkCheck = true;
+        }
+
+        if (launchedSuper)
+        {
+            superCheck = true;
+        }
+
+        if (attackCheck & !blinkCheck)
+        {
+            Vector2 enemyTransform = positionTracker[0];
+            Vector2 myTransform = GetComponent<Transform>().position;
+            Vector2 input = (myTransform - enemyTransform);
+            Vector2 directionInput = input;
+            directionInput.y = 1;
+            directionInput.Normalize();
+            inputX = directionInput.x;
+            inputY = directionInput.y;
+            directionInputX = directionInput.x;
+            directionInputY = directionInput.y;
+            jumpInput = input.y <= 0;
         }
     }
 
@@ -162,7 +249,7 @@ public class PlayerAIScript : LocalPlayerScript {
 
     protected override void DI()
     {
-        if (playerDifficulty > 1)
+        if (playerDifficulty > 0)
         {
             //DI away from enemy
             Vector2 direction = new Vector2(inputX * -1, inputY * -1);

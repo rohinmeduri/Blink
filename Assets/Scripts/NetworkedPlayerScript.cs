@@ -358,6 +358,56 @@ public class NetworkedPlayerScript : LocalPlayerScript {
         base.activateProjectile(direction);
     }
 
+    protected override void createSoundEffect(int index, float volume)
+    {
+        CmdCreateSoundEffect(index, volume);
+    }
+
+    [Command]
+    public void CmdCreateSoundEffect(int index, float volume)
+    {
+        RpcCreateSoundEffect(index, volume);
+    }
+
+    [ClientRpc]
+    public void RpcCreateSoundEffect(int index, float volume)
+    {
+        base.createSoundEffect(index, volume);
+    }
+
+    protected override void stopSoundEffect(int index)
+    {
+        CmdStopSoundEffect(index);
+    }
+
+    [Command]
+    public void CmdStopSoundEffect(int index)
+    {
+        RpcStopSoundEffect(index);
+    }
+
+    [ClientRpc]
+    public void RpcStopSoundEffect(int index)
+    {
+        base.stopSoundEffect(index);
+    }
+
+    protected override void createVisualEffect(int index)
+    {
+        CmdCreateVisualEffect(index);
+    }
+
+    [Command]
+    public void CmdCreateVisualEffect(int index)
+    {
+        RpcCreateVisualEffect(index);
+    }
+
+    [ClientRpc]
+    public void RpcCreateVisualEffect(int index)
+    {
+        base.createVisualEffect(index);
+    }
 
     public bool getHasAuthority()
     {
