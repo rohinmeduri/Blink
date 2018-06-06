@@ -458,7 +458,6 @@ public class NetworkedPlayerScript : LocalPlayerScript {
     void RpcReplaceStats(int mc, int hn, int hp, int k)
     {
         GameObject dataManager = GameObject.FindGameObjectWithTag("DataTracker");
-        Debug.Log(dataManager == null);
         dataManager.GetComponent<LocalDataTracker>().replaceStats(mc, hn, hp, k, gameObject);
     }
 
