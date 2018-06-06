@@ -8,6 +8,7 @@ public class CameraShake : MonoBehaviour {
 
     float shakeIntensity;
     float shakeDecay;
+    float intensityMultipler = 1f;
     float xChange = 0;
     float yChange = 0;
     Vector3 difference;
@@ -94,12 +95,12 @@ public class CameraShake : MonoBehaviour {
     {
         xChange = 0;
         yChange = 0;
-        shakeIntensity = intensity;
+        shakeIntensity = intensity * intensityMultipler;
         if(shakeIntensity > 1.5f)
         {
             shakeIntensity = 1.5f;
         }
-        shakeDecay = intensity * 0.04f;
+        shakeDecay = shakeIntensity * 0.04f;
         playerToFollow = victim;
         followDuration = 0;
     }
@@ -112,6 +113,10 @@ public class CameraShake : MonoBehaviour {
         {
             GetComponent<Camera>().orthographicSize += 0.02f;
         }
+    }
 
+    public void changeShakeIntensity(float multiplier)
+    {
+        intensityMultipler = multiplier;
     }
 }
