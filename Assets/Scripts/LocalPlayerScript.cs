@@ -92,6 +92,7 @@ public class LocalPlayerScript : NetworkBehaviour
     protected bool attackLanded = false;
     private string playerType;
     protected bool launchedSuper;
+    private CanvasGroup pauseMenu;
 
     // constants
     public const float GAME_START_TIME = 4f;
@@ -150,8 +151,12 @@ public class LocalPlayerScript : NetworkBehaviour
 
         rb2D = gameObject.GetComponent<Rigidbody2D>();
 
+        pauseMenu = GameObject.Find("Pause Menu").GetComponent<CanvasGroup>();
+        setInteractable(pauseMenu, false);
+
         animator = GetComponent<Animator>();
         camera = GameObject.Find("Main Camera");
+        
 
         Time.timeScale = 1;
     }
@@ -190,7 +195,7 @@ public class LocalPlayerScript : NetworkBehaviour
         }
         else if (ID == 2)
         {
-            setPlayerType("Mage");
+            setPlayerType("Saidon");
             facingRight = false;
         }
         else if (ID == 3)
@@ -314,7 +319,6 @@ public class LocalPlayerScript : NetworkBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
-        hasSuper = true;
         startCounter += Time.deltaTime;
         if (startCounter <= GAME_START_TIME)
         {
@@ -436,35 +440,6 @@ public class LocalPlayerScript : NetworkBehaviour
         superInput = false;
     }
 
-    protected virtual void pauseGame()
-    {
-        CanvasGroup pauseMenu = GameObject.Find("Pause Menu").GetComponent<CanvasGroup>();
-        if (gamePauseBtnClick == false && Input.GetButton("Pause"))
-        {
-            gamePauseBtnClick = true;
-
-            if (!gamePaused)
-            {
-                Time.timeScale = 0;
-                gamePaused = true;
-                pauseMenu.alpha = 1;
-                pauseMenu.interactable = true;
-                pauseMenu.GetComponent<RectTransform>().SetAsLastSibling();
-            }
-            else
-            {
-                Time.timeScale = 1;
-                gamePaused = false;
-                pauseMenu.alpha = 0;
-                pauseMenu.interactable = false;
-            }
-        }
-        else if (!Input.GetButton("Pause"))
-        {
-            gamePauseBtnClick = false;
-        }
-    }
-
     protected virtual void FixedUpdate()
     {
         if (stunTimer <= 0)
@@ -506,6 +481,44 @@ public class LocalPlayerScript : NetworkBehaviour
             DI();
         }
         rotateSuperProjectile();
+    }
+
+    protected virtual void pauseGame()
+    {
+
+        if (gamePauseBtnClick == false && Input.GetButton("Pause"))
+        {
+            gamePauseBtnClick = true;
+
+            if (!gamePaused)
+            {
+                Time.timeScale = 0;
+                gamePaused = true;
+                pauseMenu.alpha = 1;
+                setInteractable(pauseMenu, true);
+                pauseMenu.GetComponent<RectTransform>().SetAsLastSibling();
+            }
+            else
+            {
+                Time.timeScale = 1;
+                gamePaused = false;
+                pauseMenu.alpha = 0;
+                setInteractable(pauseMenu, false);
+            }
+        }
+        else if (!Input.GetButton("Pause"))
+        {
+            gamePauseBtnClick = false;
+        }
+    }
+
+    private void setInteractable(CanvasGroup go, bool interactable)
+    {
+        go.interactable = interactable;
+        foreach(Button child in go.GetComponentsInChildren<Button>())
+        {
+            child.interactable = interactable;
+        }
     }
 
     protected virtual void flipSprite()

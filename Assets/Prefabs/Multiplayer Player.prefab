@@ -191,10 +191,13 @@ MonoBehaviour:
     type: 2}
   rebelAnimatorController: {fileID: 22100000, guid: 0e4b0a419db3dcf45967d6c077fe312a,
     type: 2}
+  saidonAnimatorController: {fileID: 22100000, guid: 7922bb83b0f17804da677602eab43af7,
+    type: 2}
   mageBlinkIn: {fileID: 1730829665728188, guid: 81ba33e1998b4e446a8baea432948abb,
     type: 2}
   rebelBlinkIn: {fileID: 1730829665728188, guid: ad017b7627e3e934693c6ce95b2a329a,
     type: 2}
+  saidonBlinkIn: {fileID: 0}
 --- !u!114 &114509458611876312
 MonoBehaviour:
   m_ObjectHideFlags: 1

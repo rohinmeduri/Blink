@@ -1,0 +1,11 @@
+Use joystick to move. Press 'A' to jump. Press 'X' to attack.
+Move the joystick up and press 'X' to launch an upwards attack.
+Move the joystick down and press 'X' to launch a downwards attack.
+Press 'B' to blink. Aim with joystick.
+Look! A challenger! Looks like they're about to attack. Press 'Y' to block it!
+This is your glory meter. Fill it up to unlock your "Super" attack. The meter fills when you successfully land attacks or reversals.
+Attack the challenger.
+Notice that the challenger entered "hit stun" when you attacked them. When you are in hit stun, you cannot perform any actions, but you can still affect you trajectory with the joystick.
+String together multiple attacks to get a combo! Combos will fill your meter faster.
+Looks like you unlocked your super! Press the right bumper to launch it! Aim with your joystick.
+Amazing! You're ready to fight.
