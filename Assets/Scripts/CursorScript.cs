@@ -69,7 +69,7 @@ public class CursorScript : MonoBehaviour {
         {
             Vector3 clickPoint = transform.position;
             //Vector3 clickPoint = GetComponent<RectTransform>().anchoredPosition3D;
-            Debug.Log(clickPoint.x + ", " + clickPoint.y + ", " + clickPoint.z);
+            //Debug.Log(clickPoint.x + ", " + clickPoint.y + ", " + clickPoint.z);
 
             Transform[] children = Canvas.GetComponentsInChildren<Transform>();
             foreach (Transform child in children)

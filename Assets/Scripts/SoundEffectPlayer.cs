@@ -52,7 +52,7 @@ public class SoundEffectPlayer : MonoBehaviour {
         soundEffectSource[8].clip = Resources.Load("SoundEffects/" + playerType + "/Reversal") as AudioClip;
         soundEffectSource[9].clip = Resources.Load("SoundEffects/" + playerType + "/Run") as AudioClip;
         soundEffectSource[10].clip = Resources.Load("SoundEffects/" + playerType + "/Land") as AudioClip;
-        soundEffectSource[11].clip = Resources.Load("SoundEffects/" + playerType + "/Splat") as AudioClip;
+        soundEffectSource[11].clip = Resources.Load("SoundEffects/" + playerType + "/Thump") as AudioClip;
     }
 
     public virtual void playSoundEffect(int index, float volume)
