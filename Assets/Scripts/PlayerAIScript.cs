@@ -21,7 +21,6 @@ public class PlayerAIScript : LocalPlayerScript {
 
     protected override void Update()
     {
-        hasSuper = true;
         //find enemy player
         GameObject[] playerEnemies = GameObject.FindGameObjectsWithTag("Player");
         GameObject[] AIenemies = GameObject.FindGameObjectsWithTag("PlayerAI");
