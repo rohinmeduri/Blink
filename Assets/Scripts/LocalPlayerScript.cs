@@ -1025,6 +1025,7 @@ public class LocalPlayerScript : NetworkBehaviour
         go.GetComponent<LocalPlayerScript>().stopSoundEffect(4);
         Destroy(go.GetComponent<LocalPlayerScript>().projectile);
         Destroy(go);
+        createSoundEffect(9, 0, 1.0f);
         kills++;
 
         LocalDataTracker ldt = GameObject.Find("Data Tracker").GetComponent<LocalDataTracker>();
@@ -1374,7 +1375,7 @@ public class LocalPlayerScript : NetworkBehaviour
             }
             else
             {
-                createSoundEffect(9, 0, 1.0f);
+                //createSoundEffect(9, 0, 1.0f);
             }
         }
 
