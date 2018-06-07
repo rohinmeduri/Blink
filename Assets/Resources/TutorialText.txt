@@ -1,6 +1,5 @@
-Welcome to the arena! Here, your survival depends on your ability to style. (press 'A' to proceed) 
-Perform combos to gain Glory. With enough Glory, you’ll be granted permission to finish your opponent!
-Keep this goal in mind. Let’s begin!
+Perform combos to gain Glory. With enough Glory, you will be granted permission to finish your opponent!
+Keep this goal in mind. Let us begin!
 Use joystick to move. Press 'A' to jump. Press 'X' to attack.
 Move the joystick up and press 'X' to launch an upwards attack.
 Move the joystick down and press 'X' to launch a downwards attack.

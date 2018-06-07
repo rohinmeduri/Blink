@@ -1,20 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System.IO;
 using System.Text.RegularExpressions;
 
 public class TutorialStepManager : MonoBehaviour {
 
-    public GameObject airDummy;
-    public GameObject reversalAI;
     public GameObject localPlayer;
 
     public int tutorialStep = 0; //current step tutorial is on
-    public int line = 0;
+    public Text instructions;
 
-    private bool nextStep = false; //is the tutorial moving on to the next step
-    private string text; 
+    private int line = 0;
+
+    private bool nextStep = true; //is the tutorial moving on to the next step
+    private bool input = false;
     private string[] tutorialText; //will contain the tutorial instructions
 	
 	void Start () {
@@ -25,10 +26,12 @@ public class TutorialStepManager : MonoBehaviour {
         for (int i = 0; i < tutorialText.Length; i++){
             Debug.Log(tutorialText[i]);
         }
+
         intro();
 	}
 
     void Update(){
+
         if (nextStep)
         {
             switch (tutorialStep)
@@ -84,28 +87,21 @@ public class TutorialStepManager : MonoBehaviour {
     {
         return tutorialStep;
     }
-
+    //Input.GetAxisRaw(("Jump" + localPlayer.GetComponent<LocalPlayerScript>().getControllerID())) == 0
     void intro() {
-        while (Input.GetAxisRaw(("Jump" + gameObject.GetComponent<LocalPlayerScript>().getControllerID())) == 0) {
-            displayLine(line);
-        }
-        while (Input.GetAxisRaw(("Jump" + gameObject.GetComponent<LocalPlayerScript>().getControllerID())) == 0)
-        {
-            displayLine(line);
-        }
-        while (Input.GetAxisRaw(("Jump" + gameObject.GetComponent<LocalPlayerScript>().getControllerID())) == 0)
-        {
-            displayLine(line);
-        }
+        StartCoroutine(waitInput(true, "Jump"));
+        StopAllCoroutines();
+        StartCoroutine(waitInput(true, "Attack"));
+        StopAllCoroutines();
+        tutorialStep++;
     }
 
     void uAir()
     {
-        
-        if (Input.GetAxisRaw(("Attack" + gameObject.GetComponent<LocalPlayerScript>().getControllerID())) != 0 && Input.GetAxisRaw(("Vertical" + gameObject.GetComponent<LocalPlayerScript>().getControllerID())) != 0)
-        {
-            nextStep = true;
-        }
+        StartCoroutine(waitInput(true, "Jump"));
+        StartCoroutine(waitInput(true, "Vertical"));
+        StopAllCoroutines();
+
     }
 
     void dAir()
@@ -129,7 +125,18 @@ public class TutorialStepManager : MonoBehaviour {
     }
 
     void displayLine(int i) {
-        text = tutorialText[i];
-        line++;
+        instructions.text = tutorialText[i];
+    }
+
+    IEnumerator waitInput(bool wait, string action) {
+        while (wait) {
+            if (Input.GetAxisRaw(action + 1) != 0) {
+                displayLine(line);
+                wait = false;
+                line += 1;
+                yield return new WaitForSeconds(1.5f);
+            }
+            yield return null;
+        }
     }
 }
