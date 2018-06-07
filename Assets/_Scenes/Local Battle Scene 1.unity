@@ -2498,6 +2498,11 @@ Prefab:
       propertyPath: Canvas
       value: 
       objectReference: {fileID: 1669838874}
+    - target: {fileID: 225452973826418556, guid: b73235bb8e0c4cc46aed11ae100ecd2f,
+        type: 2}
+      propertyPath: m_Alpha
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b73235bb8e0c4cc46aed11ae100ecd2f, type: 2}
   m_IsPrefabParent: 0
