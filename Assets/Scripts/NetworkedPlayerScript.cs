@@ -409,6 +409,23 @@ public class NetworkedPlayerScript : LocalPlayerScript {
         base.createVisualEffect(index);
     }
 
+    protected override void superEffect(bool active)
+    {
+        CmdSuperEffect(active);
+    }
+
+    [Command]
+    public void CmdSuperEffect(bool active)
+    {
+        RpcSuperEffect(active);
+    }
+
+    [ClientRpc]
+    public void RpcSuperEffect(bool active)
+    {
+        base.superEffect(active);
+    }
+
     public bool getHasAuthority()
     {
         return hasAuthority;

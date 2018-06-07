@@ -89,6 +89,8 @@ public class LocalPlayerScript : NetworkBehaviour
     private GameObject effectsPlayer;
     private GameObject soundEffectPlayer;
     private GameObject[] visualEffectCreator;
+    private GameObject superEffectCreator;
+    private Animator superEffectAnimator;
     protected bool attackLanded = false;
     private string playerType;
     protected bool launchedSuper;
@@ -303,8 +305,19 @@ public class LocalPlayerScript : NetworkBehaviour
             //visualEffectCreator[i].GetComponent<SpriteRenderer>().material.SetColor("_Color", getColor());
             visualEffectCreator[i].transform.parent = effectsPlayer.transform;
         }
+        superEffectCreator = new GameObject("Super Effect");
+        superEffectCreator.AddComponent<SpriteRenderer>();
+        superEffectCreator.transform.parent = gameObject.transform;
+        superEffectCreator.transform.position = gameObject.transform.position + new Vector3(0, 0, 1);
+        superEffectAnimator = superEffectCreator.AddComponent<Animator>() as Animator;
+        superEffectAnimator.runtimeAnimatorController = Resources.Load("VisualEffects/SuperEffect") as RuntimeAnimatorController;
     }
-    
+
+    protected virtual void superEffect(bool active)
+    {
+        superEffectAnimator.SetBool("Super", active);
+    }
+
     protected virtual void createSoundEffect(int index, int version, float volume)
     {
         soundEffectPlayer.GetComponent<SoundEffectPlayer>().playSoundEffect(index, version, volume);
@@ -337,6 +350,9 @@ public class LocalPlayerScript : NetworkBehaviour
 
         //flips sprite if necessary (on all clients)
         gameObject.GetComponent<SpriteRenderer>().flipX = !facingRight;
+
+        //keeps super effect non-rotated
+        superEffectCreator.transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, 0);
 
         // Updates Animator variables
         animator.SetFloat("xDir", inputX);
@@ -1099,13 +1115,21 @@ public class LocalPlayerScript : NetworkBehaviour
         //check if player has super or not
         if (numGlory == 100)
         {
-            if(!hasSuper) createSoundEffect(5, 0, 1.0f);
+            if (!hasSuper)
+            {
+                createSoundEffect(5, 0, 1.0f);
+                superEffect(true);
+            }
             hasSuper = true;
             
         }
         else if (hasSuper && numGlory < SUPER_LOSS_GLORY)
         {
-            if(hasSuper) createSoundEffect(5, 1, 1.0f);
+            if (hasSuper)
+            {
+                createSoundEffect(5, 1, 1.0f);
+                superEffect(false);
+            }
             hasSuper = false;
         }
     }
