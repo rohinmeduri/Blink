@@ -8,7 +8,7 @@ public class TutorialStepManager : MonoBehaviour {
 
     public GameObject airDummy;
     public GameObject reversalAI;
-    public GameObject localPlayer = GameObject.Find("Local Player");
+    public GameObject localPlayer;
 
     public int tutorialStep = 0; //current step tutorial is on
     public int line = 0;
@@ -18,6 +18,7 @@ public class TutorialStepManager : MonoBehaviour {
     private string[] tutorialText; //will contain the tutorial instructions
 	
 	void Start () {
+        localPlayer = GameObject.Find("Local Player");
 
         tutorialText = read();
 
