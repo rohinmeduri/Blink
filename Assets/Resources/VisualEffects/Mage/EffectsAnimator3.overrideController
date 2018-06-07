@@ -5,8 +5,8 @@ AnimatorOverrideController:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: EffectsAnimator5
+  m_Name: EffectsAnimator3
   m_Controller: {fileID: 9100000, guid: ed38af135efe19c4a852308d74ba3732, type: 2}
   m_Clips:
   - m_OriginalClip: {fileID: 7400000, guid: 1b48bf69b81bf414bbbb5d7b6de355eb, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: e4ea513681c4f2c4c89a6a8a82e17a76, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 36775564c4c589c4ca103f936559d168, type: 2}

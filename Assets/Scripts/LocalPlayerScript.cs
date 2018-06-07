@@ -305,9 +305,9 @@ public class LocalPlayerScript : NetworkBehaviour
         }
     }
     
-    protected virtual void createSoundEffect(int index, float volume)
+    protected virtual void createSoundEffect(int index, int version, float volume)
     {
-        soundEffectPlayer.GetComponent<SoundEffectPlayer>().playSoundEffect(index, volume);
+        soundEffectPlayer.GetComponent<SoundEffectPlayer>().playSoundEffect(index, version, volume);
     }
 
     protected virtual void stopSoundEffect(int index)
@@ -346,35 +346,9 @@ public class LocalPlayerScript : NetworkBehaviour
         animator.SetBool("isAirborn", isAirborn());
         animator.SetBool("onWall", isWall());
         animator.SetInteger("StunTimer", (int)stunTimer);
-        int attackNum = 0;
-        float angle = Mathf.Atan2(Mathf.Abs(getDirection().x), getDirection().y);
-        if (angle < Mathf.PI / 8)
-        {
-            attackNum = 2;
-        }
-        else if (angle < 3 * Mathf.PI / 8)
-        {
-            attackNum = 1;
-        }
-        else if (angle < 5 * Mathf.PI / 8)
-        {
-            attackNum = 0;
-        }
-        else if (angle < 7 * Mathf.PI / 8)
-        {
-            attackNum = -1;
-        }
-        else
-        {
-            attackNum = -2;
-        }
-        /* if (Mathf.Abs(inputY) > Mathf.Abs(inputX))
-         {
-             attackNum = (int)Mathf.Sign(inputY);
-         }*/
+        
 
-
-        animator.SetInteger("attackNum", attackNum);
+        animator.SetInteger("attackNum", attackType());
 
         // Decreases stun timer
         if (stunTimer > 0) stunTimer -= Time.deltaTime;
@@ -418,6 +392,31 @@ public class LocalPlayerScript : NetworkBehaviour
                 launchedSuper = false;
             }
 
+        }
+    }
+
+    private int attackType()
+    {
+        float angle = Mathf.Atan2(Mathf.Abs(getDirection().x), getDirection().y);
+        if (angle < Mathf.PI / 8)
+        {
+            return 2;
+        }
+        else if (angle < 3 * Mathf.PI / 8)
+        {
+            return 1;
+        }
+        else if (angle < 5 * Mathf.PI / 8)
+        {
+            return 0;
+        }
+        else if (angle < 7 * Mathf.PI / 8)
+        {
+            return -1;
+        }
+        else
+        {
+            return -2;
         }
     }
 
@@ -737,12 +736,10 @@ public class LocalPlayerScript : NetworkBehaviour
     {
         if (attackInput)
         {
-            createSoundEffect(0, 1f);
+            // 2-attackType() maps {2, 1, 0, -1, -2} to {0, 1, 2, 3, 4}
+            createSoundEffect(0, 2-attackType(), 1f);
 
             float angle = Mathf.Atan2(getDirection().x, getDirection().y);
-
-            //cancel attacker's momentum
-            //rb2D.velocity = Vector2.zero;
 
             //raycast to see if someone is hit with the attack - mask out attacker's layer
             Vector2 direction = getDirection();
@@ -761,8 +758,8 @@ public class LocalPlayerScript : NetworkBehaviour
                 rb2D.velocity = Vector2.zero;
                 attackLanded = true;
                 createVisualEffect(5);
-                createSoundEffect(2, Mathf.Max(1f-1f*comboHits/5, 0));
-                createSoundEffect(3, Mathf.Min(1f*comboHits/5, 1));
+                createSoundEffect(2, 0, Mathf.Max(1f-1f*comboHits/5, 0));
+                createSoundEffect(3, 0, Mathf.Min(1f*comboHits/5, 1));
 
                 comboHits++;
                 var trueHit = (comboHitInterval <= STUN_DURATION) && (comboHits > 1);
@@ -792,24 +789,21 @@ public class LocalPlayerScript : NetworkBehaviour
      */
     void startBlink()
     {
-        switch (characterSelection)
+        if (blinkInput && blinkFrames <= 0)
         {
-            case 1:
-                if (blinkInput && blinkFrames <= 0)
-                { //currently set to 'b'
+            createSoundEffect(1, 0, 1.0f);
+            switch (characterSelection) {
+                case 1:
                     blinkTimer = BLINK_TIME;
                     blinkFrames = BLINK_FRAMES;
-                }
-                break;
-            case 2:
-                if (blinkInput && blinkFrames <= 0)
-                { //currently set to 'b'
+                    break;
+                case 2:
                     blinkTimer = TELEPORT_TIME;
                     blinkFrames = TELEPORT_FRAMES;
-                }
-                break;
-            default:
-                break;
+                    break;
+                default:
+                    break;
+            }
         }
 
         if (blinkFrames > 0)
@@ -835,7 +829,7 @@ public class LocalPlayerScript : NetworkBehaviour
                     break;
                 }
                 if (blinkInput)
-                { //currently set to 'b'
+                {
                     rb2D.velocity = BLINK_VELOCITY * getDirection();
                 }
                 else
@@ -847,7 +841,7 @@ public class LocalPlayerScript : NetworkBehaviour
             case 2:
                 //bool teleported is to prevent the user from simply hold down the button
                 if (blinkInput && !teleported)
-                {//currently set to 'b'
+                {
                     blinking = true;
                     blinkInAnimation();
                     blinkOutAnimation();
@@ -926,8 +920,6 @@ public class LocalPlayerScript : NetworkBehaviour
         //check if player is pushing reversal button and can reversal
         if (reversalInput)
         {
-            //cancel momentum
-            //rb2D.velocity = Vector2.zero;
 
             reversalDirection = getDirection();
             actionLock = true;
@@ -953,7 +945,7 @@ public class LocalPlayerScript : NetworkBehaviour
         if (hasSuper && superInput)
         {
             //cancel momentum
-            createSoundEffect(4, 1f);
+            createSoundEffect(4, 0, 1f);
             spawnSuper();
             rb2D.velocity = Vector2.zero;
             actionLock = true;
@@ -974,7 +966,6 @@ public class LocalPlayerScript : NetworkBehaviour
     {
         if (startedSuper)
         {
-            //Debug.Log("rotating");
             Vector2 direction = getDirection();
             direction.Normalize();
             projectile.GetComponent<SuperProjectileScript>().rotate(direction);
@@ -1108,13 +1099,13 @@ public class LocalPlayerScript : NetworkBehaviour
         //check if player has super or not
         if (numGlory == 100)
         {
-            if(!hasSuper) createSoundEffect(5, 1.0f);
+            if(!hasSuper) createSoundEffect(5, 0, 1.0f);
             hasSuper = true;
             
         }
         else if (hasSuper && numGlory < SUPER_LOSS_GLORY)
         {
-            if(hasSuper) createSoundEffect(6, 1.0f);
+            if(hasSuper) createSoundEffect(5, 1, 1.0f);
             hasSuper = false;
         }
     }
@@ -1337,6 +1328,7 @@ public class LocalPlayerScript : NetworkBehaviour
         }
         else
         {
+
             // add collided object to list
             touchingNormals.Add(getNormal(collision));
             touchingObjects.Add(collision.gameObject);
@@ -1344,19 +1336,20 @@ public class LocalPlayerScript : NetworkBehaviour
 
             // set player normal
             setPlayerNormal();
-
-            if(stunTimer > 0)
-            {
-                //rotate(2* new Vector3(0, 0, Mathf.Rad2Deg * Mathf.Atan2(currentNormal.y, currentNormal.x)) - gameObject.GetComponent<Transform>().eulerAngles);
-            }
-            else
+            
+            if(stunTimer <= 0)
             {
                 // triggers landing animation if landed on ground
                 if (isGround() && !isWall(getNormal(collision)))
                 {
+                    createVisualEffect(3);
                     animator.SetTrigger("hitGround");
                     actionWaitFrames = 0.1f;
                 }
+            }
+            else
+            {
+                createSoundEffect(9, 0, 1.0f);
             }
         }
 
@@ -1436,26 +1429,10 @@ public class LocalPlayerScript : NetworkBehaviour
     {
         return playerID;
     }
-    /*
-    public int getCombo()
-    {
-        return maxCombo;
-    }
-    public int getHits()
-    {
-        return hitNumber;
-    }
-    */
     public int getHitPercentage()
     {
         return (attackNumber == 0) ? 0 : 100 * hitNumber / attackNumber;
     }
-    /*
-    public int getKills()
-    {
-        return kills;
-    }
-    */
 
     //Script used only for networked children to update comboHits on clients
     void OnChangeComboHits(int hits)

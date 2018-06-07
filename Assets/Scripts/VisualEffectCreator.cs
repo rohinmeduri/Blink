@@ -54,6 +54,7 @@ public class VisualEffectCreator : MonoBehaviour {
                     gameObject.transform.position = player.transform.position + new Vector3(0.35f, 0, 0);
                 break;
             case 3:
+                gameObject.transform.position = player.transform.position + new Vector3(0, -0.8f, 0);
                 break;
             case 4:
                 gameObject.GetComponent<SpriteRenderer>().flipX = player.GetComponent<Rigidbody2D>().velocity.x < 0;

@@ -358,21 +358,21 @@ public class NetworkedPlayerScript : LocalPlayerScript {
         base.activateProjectile(direction);
     }
 
-    protected override void createSoundEffect(int index, float volume)
+    protected override void createSoundEffect(int index, int version, float volume)
     {
-        CmdCreateSoundEffect(index, volume);
+        CmdCreateSoundEffect(index, version, volume);
     }
 
     [Command]
-    public void CmdCreateSoundEffect(int index, float volume)
+    public void CmdCreateSoundEffect(int index, int version, float volume)
     {
-        RpcCreateSoundEffect(index, volume);
+        RpcCreateSoundEffect(index, version, volume);
     }
 
     [ClientRpc]
-    public void RpcCreateSoundEffect(int index, float volume)
+    public void RpcCreateSoundEffect(int index, int version, float volume)
     {
-        base.createSoundEffect(index, volume);
+        base.createSoundEffect(index, version, volume);
     }
 
     protected override void stopSoundEffect(int index)
