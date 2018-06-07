@@ -1,0 +1,347 @@
+fileFormatVersion: 2
+guid: 866921f8ece7c76488b2b8dfa31ec3ab
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: RebelHitFX_KG_0
+    21300002: RebelHitFX_KG_1
+    21300004: RebelHitFX_KG_2
+    21300006: RebelHitFX_KG_3
+    21300008: RebelHitFX_KG_4
+    21300010: RebelHitFX_KG_5
+    21300012: RebelHitFX_KG_6
+    21300014: RebelHitFX_KG_7
+    21300016: RebelHitFX_KG_8
+    21300018: RebelHitFX_KG_9
+    21300020: RebelHitFX_KG_10
+    21300022: RebelHitFX_KG_11
+  externalObjects: {}
+  serializedVersion: 5
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -1
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - serializedVersion: 2
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: RebelHitFX_KG_0
+      rect:
+        serializedVersion: 2
+        x: 118
+        y: 1074
+        width: 99
+        height: 138
+      alignment: 9
+      pivot: {x: 0.25179282, y: 0.5111287}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d48e5fe68e6425e4982d3cf917612e23
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RebelHitFX_KG_1
+      rect:
+        serializedVersion: 2
+        x: 329
+        y: 1016
+        width: 142
+        height: 233
+      alignment: 9
+      pivot: {x: 0.25665432, y: 0.51977384}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c4d7aa48e4b9d844aa0b5f0fe88a0b04
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RebelHitFX_KG_2
+      rect:
+        serializedVersion: 2
+        x: 582
+        y: 998
+        width: 146
+        height: 272
+      alignment: 9
+      pivot: {x: 0.18442859, y: 0.51411575}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 739e324c1927bb8409d7df39bb47ae1e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RebelHitFX_KG_3
+      rect:
+        serializedVersion: 2
+        x: 822
+        y: 984
+        width: 203
+        height: 336
+      alignment: 9
+      pivot: {x: 0.19738318, y: 0.4794315}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eaf857a19a11a5346aa8671b225c9abb
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RebelHitFX_KG_4
+      rect:
+        serializedVersion: 2
+        x: 65
+        y: 228
+        width: 175
+        height: 145
+      alignment: 9
+      pivot: {x: 0.13580048, y: 0.36760506}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7a793b4ae1af9df4c8f4f534b1f67e16
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RebelHitFX_KG_5
+      rect:
+        serializedVersion: 2
+        x: 291
+        y: 203
+        width: 207
+        height: 184
+      alignment: 9
+      pivot: {x: 0.16613445, y: 0.37480047}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 871620779e2d9bf428066bdd804dc093
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RebelHitFX_KG_6
+      rect:
+        serializedVersion: 2
+        x: 528
+        y: 170
+        width: 234
+        height: 263
+      alignment: 9
+      pivot: {x: 0.18496756, y: 0.4562039}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f8f90737f4d7f16489ee482759ccb370
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RebelHitFX_KG_7
+      rect:
+        serializedVersion: 2
+        x: 830
+        y: 167
+        width: 205
+        height: 268
+      alignment: 9
+      pivot: {x: 0.12916498, y: 0.36533263}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c4c2ac3d38f80724fa02319f7a350570
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RebelHitFX_KG_8
+      rect:
+        serializedVersion: 2
+        x: 105
+        y: 1420
+        width: 162
+        height: 286
+      alignment: 9
+      pivot: {x: 0.2582567, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8b04ead57d9416d44b65b8a01ffbb9ab
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RebelHitFX_KG_9
+      rect:
+        serializedVersion: 2
+        x: 323
+        y: 1410
+        width: 174
+        height: 302
+      alignment: 9
+      pivot: {x: 0.27051535, y: 0.4872865}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3d379e41c4e887040a645b64355edc6d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RebelHitFX_KG_10
+      rect:
+        serializedVersion: 2
+        x: 582
+        y: 1410
+        width: 171
+        height: 303
+      alignment: 9
+      pivot: {x: 0.1991306, y: 0.48986253}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e4c3a7b9d4b5f3e478e0cab8fad3039a
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: RebelHitFX_KG_11
+      rect:
+        serializedVersion: 2
+        x: 823
+        y: 1403
+        width: 197
+        height: 335
+      alignment: 9
+      pivot: {x: 0.18426824, y: 0.4862465}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c104241bbcabe3941811596c36ef0c65
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 42708a698d814d14284345879d5f117a
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
