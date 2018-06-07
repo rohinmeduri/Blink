@@ -1095,7 +1095,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stage: {fileID: 21300000, guid: 056ba33d918a23b418d53e576166c9fb, type: 3}
-  frame: {fileID: 0}
+  frame: {fileID: 21300000, guid: f2e4eebcfa68f1b428e1b37bd420f2f0, type: 3}
 --- !u!4 &1141176845
 Transform:
   m_ObjectHideFlags: 0
