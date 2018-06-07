@@ -5,6 +5,7 @@ using UnityEngine;
 public class SoundEffectPlayer : MonoBehaviour {
 
     private AudioSource[] soundEffectSource;
+    private AudioClip[][] soundEffectClip;
 
 	// Use this for initialization
 	void Start () {
@@ -24,42 +25,50 @@ public class SoundEffectPlayer : MonoBehaviour {
      * 2: HitSoft
      * 3: HitHard
      * 4: Super
-     * 5: SuperUp
-     * 6: SuperDown
-     * 7: Jump
-     * 8: Reversal
-     * 9: Run
-     * 10: Land
-     * 11: Splat
+     * 5: SuperPowering
+     * 6: Jump/Land
+     * 7: Reversal
+     * 8: Run
+     * 9: Thump
      * 
      */
     public virtual void setSoundEffects(string playerType)
     {
-        soundEffectSource = new AudioSource[12];
+        soundEffectSource = new AudioSource[10];
+        soundEffectClip = new AudioClip[10][];
+        int[] clipSize = {5, 1, 1, 1, 1, 2, 2, 1, 1, 1};
         for (int i = 0; i < soundEffectSource.Length; i++)
         {
             soundEffectSource[i] = gameObject.AddComponent<AudioSource>();
             soundEffectSource[i].playOnAwake = false;
         }
-        soundEffectSource[0].clip = Resources.Load("SoundEffects/" + playerType + "/Attack") as AudioClip;
-        soundEffectSource[1].clip = Resources.Load("SoundEffects/" + playerType + "/Blink") as AudioClip;
-        soundEffectSource[2].clip = Resources.Load("SoundEffects/" + playerType + "/HitSoft") as AudioClip;
-        soundEffectSource[3].clip = Resources.Load("SoundEffects/" + playerType + "/HitHard") as AudioClip;
-        soundEffectSource[4].clip = Resources.Load("SoundEffects/" + playerType + "/Super") as AudioClip;
-        soundEffectSource[5].clip = Resources.Load("SoundEffects/" + playerType + "/SuperUp") as AudioClip;
-        soundEffectSource[6].clip = Resources.Load("SoundEffects/" + playerType + "/SuperDown") as AudioClip;
-        soundEffectSource[7].clip = Resources.Load("SoundEffects/" + playerType + "/Jump") as AudioClip;
-        soundEffectSource[8].clip = Resources.Load("SoundEffects/" + playerType + "/Reversal") as AudioClip;
-        soundEffectSource[9].clip = Resources.Load("SoundEffects/" + playerType + "/Run") as AudioClip;
-        soundEffectSource[10].clip = Resources.Load("SoundEffects/" + playerType + "/Land") as AudioClip;
-        soundEffectSource[11].clip = Resources.Load("SoundEffects/" + playerType + "/Splat") as AudioClip;
+        for(int i = 0; i < soundEffectClip.Length; i++)
+        {
+            soundEffectClip[i] = new AudioClip[clipSize[i]];
+        }
+        soundEffectClip[0][0] = Resources.Load("SoundEffects/" + playerType + "/UAttack") as AudioClip;
+        soundEffectClip[0][1] = Resources.Load("SoundEffects/" + playerType + "/DUAttack") as AudioClip;
+        soundEffectClip[0][2] = Resources.Load("SoundEffects/" + playerType + "/FAttack") as AudioClip;
+        soundEffectClip[0][3] = Resources.Load("SoundEffects/" + playerType + "/DDAttack") as AudioClip;
+        soundEffectClip[0][4] = Resources.Load("SoundEffects/" + playerType + "/DAttack") as AudioClip;
+        soundEffectClip[1][0] = Resources.Load("SoundEffects/" + playerType + "/Blink") as AudioClip;
+        soundEffectClip[2][0] = Resources.Load("SoundEffects/" + playerType + "/HitSoft") as AudioClip;
+        soundEffectClip[3][0] = Resources.Load("SoundEffects/" + playerType + "/HitHard") as AudioClip;
+        soundEffectClip[4][0] = Resources.Load("SoundEffects/" + playerType + "/Super") as AudioClip;
+        soundEffectClip[5][0] = Resources.Load("SoundEffects/" + playerType + "/SuperUp") as AudioClip;
+        soundEffectClip[5][1] = Resources.Load("SoundEffects/" + playerType + "/SuperDown") as AudioClip;
+        soundEffectClip[6][0] = Resources.Load("SoundEffects/" + playerType + "/Jump") as AudioClip;
+        soundEffectClip[6][1] = Resources.Load("SoundEffects/" + playerType + "/Land") as AudioClip;
+        soundEffectClip[7][0] = Resources.Load("SoundEffects/" + playerType + "/Reversal") as AudioClip;
+        soundEffectClip[8][0] = Resources.Load("SoundEffects/" + playerType + "/Run") as AudioClip;
     }
 
-    public virtual void playSoundEffect(int index, float volume)
+    public virtual void playSoundEffect(int index, int version, float volume)
     {
         soundEffectSource[index].volume = volume;
-        soundEffectSource[index].Play();
+        soundEffectSource[index].PlayOneShot(soundEffectClip[index][version]);
     }
+
 
     public virtual void stopSoundEffect(int index)
     {

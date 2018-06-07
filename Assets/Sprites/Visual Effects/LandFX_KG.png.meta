@@ -1,11 +1,10 @@
 fileFormatVersion: 2
-guid: 7ca30ad7d7088f04ca0fba6543b448b2
+guid: 8d39065383bd3eb409bc7987a10c30e6
 TextureImporter:
   fileIDToRecycleName:
-    21300000: DashBurst_KG_0
-    21300002: DashBurst_KG_1
-    21300004: DashBurst_KG_2
-    21300006: DashBurst_KG_3
+    21300000: LandFX_KG_0
+    21300002: LandFX_KG_1
+    21300004: LandFX_KG_2
   externalObjects: {}
   serializedVersion: 5
   mipmaps:
@@ -86,81 +85,61 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: DashBurst_KG_0
+      name: LandFX_KG_0
       rect:
         serializedVersion: 2
-        x: 209
-        y: 196
-        width: 132
+        x: 103
+        y: 457
+        width: 261
+        height: 100
+      alignment: 9
+      pivot: {x: 0.5, y: 0.27198577}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 311651af29ae8604f910f8149ed246f7
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LandFX_KG_1
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 279
+        width: 351
+        height: 114
+      alignment: 9
+      pivot: {x: 0.5061868, y: 0.2047435}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 09ebe51547540664e85fb74e714ce920
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LandFX_KG_2
+      rect:
+        serializedVersion: 2
+        x: 12
+        y: 52
+        width: 423
         height: 109
       alignment: 9
-      pivot: {x: 0.8814103, y: 0.44810206}
+      pivot: {x: 0.52823544, y: 0.14139298}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4b7817dc9dbdc964a81be99d0fb055c4
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: DashBurst_KG_1
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 182
-        height: 151
-      alignment: 9
-      pivot: {x: 0.9196031, y: 0.5224777}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 1fd3e94db1a5de84f853d200287ba383
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: DashBurst_KG_2
-      rect:
-        serializedVersion: 2
-        x: 182
-        y: 0
-        width: 212
-        height: 165
-      alignment: 9
-      pivot: {x: 0.97229534, y: 0.46571594}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: d74f332b8221811429a802ea817fc943
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: DashBurst_KG_3
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 164
-        width: 187
-        height: 171
-      alignment: 9
-      pivot: {x: 0.9446847, y: 0.4735351}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 1633ade3d1a47a94abb5e298c05f3db4
+      spriteID: 5b78e0c269f6dc34e891535941198472
       vertices: []
       indices: 
       edges: []
@@ -168,7 +147,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 09bb8bb4b35c0114980048e4a8077d2a
+    spriteID: 64077197bb204a846877916a7324eb35
     vertices: []
     indices: 
     edges: []
