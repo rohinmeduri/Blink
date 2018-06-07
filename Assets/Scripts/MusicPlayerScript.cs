@@ -9,6 +9,7 @@ public class MusicPlayerScript : MonoBehaviour {
     private bool lobbyScene = true;
     public AudioClip menuMusic;
     public AudioClip battleMusic;
+    public AudioClip victoryMusic;
               
 	// Use this for initialization
 	void Start () {
@@ -50,4 +51,34 @@ public class MusicPlayerScript : MonoBehaviour {
             GetComponent<AudioSource>().PlayDelayed(0.5f);
         }
     }
+
+    public void playVictory()
+    {
+        GetComponent<AudioSource>().Stop();
+        GetComponent<AudioSource>().PlayOneShot(victoryMusic);
+        /**
+         * Uncomment the below code if want to have music return after victory sound
+         */
+
+        //Invoke("stopVictoryMusic", 4f);
+    }
+    /*
+    private void stopVictoryMusic()
+    {
+        GetComponent<AudioSource>().volume = 0;
+        GetComponent<AudioSource>().clip = battleMusic;
+        GetComponent<AudioSource>().Play();
+        afterVictory();
+    }
+
+    private void afterVictory()
+    {
+        if (GetComponent<AudioSource>().volume < 1)
+        {
+            GetComponent<AudioSource>().volume += Time.deltaTime;
+            Debug.Log("victpry");
+            Invoke("afterVictory", Time.deltaTime);
+        }
+    }
+    */
 }

@@ -192,7 +192,7 @@ public class LocalPlayerScript : NetworkBehaviour
 
         if(ID == 1)
         {
-            setPlayerType("Saidon");
+            setPlayerType("Mage");
         }
         else if (ID == 2)
         {
@@ -335,6 +335,8 @@ public class LocalPlayerScript : NetworkBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
+        //// hasSuper = true;
+
         startCounter += Time.deltaTime;
         if (startCounter <= GAME_START_TIME)
         {

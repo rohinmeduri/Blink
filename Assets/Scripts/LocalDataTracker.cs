@@ -64,6 +64,7 @@ public class LocalDataTracker : NetworkBehaviour {
         if(numberAlive == 1)
         {
             displayResults();
+            GameObject.Find("MusicPlayer").GetComponent<MusicPlayerScript>().playVictory();
         }
     }
 
