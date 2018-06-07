@@ -1514,10 +1514,21 @@ public class LocalPlayerScript : NetworkBehaviour
         //check if player has super or not
         if (numGlory == 100)
         {
+            if (!hasSuper)
+            {
+                createSoundEffect(5, 0, 1.0f);
+                superEffect(true);
+            }
             hasSuper = true;
+
         }
         else if (hasSuper && numGlory < SUPER_LOSS_GLORY)
         {
+            if (hasSuper)
+            {
+                createSoundEffect(5, 1, 1.0f);
+                superEffect(false);
+            }
             hasSuper = false;
         }
     }
