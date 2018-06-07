@@ -41,7 +41,7 @@ public class startCounterScript : MonoBehaviour {
         }
         if(timer >= 3 && number == 1)
         {
-            GetComponent<Image>().rectTransform.sizeDelta = new Vector2(350, 300);
+            GetComponent<Image>().rectTransform.sizeDelta = new Vector2(500, 300);
             GetComponent<Image>().sprite = fight;
             number = 0;
         }

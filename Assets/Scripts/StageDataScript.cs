@@ -6,6 +6,7 @@ public class StageDataScript : MonoBehaviour {
 
     public static bool created = false;
     public Sprite stage;
+    public Sprite frame;
     // Use this for initialization
 
     void Start()
