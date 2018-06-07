@@ -236,6 +236,10 @@ public class LocalPlayerScript : NetworkBehaviour
         }
     }
 
+    public int getControllerID() {
+        return controllerID;
+    }
+
     protected virtual void setPlayerPosition(int posNum)
     {
         var yPosition = -3.94f;
