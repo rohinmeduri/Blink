@@ -1185,6 +1185,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   menuMusic: {fileID: 8300000, guid: 958a4befd60e6fa4caf830101a7fb808, type: 3}
   battleMusic: {fileID: 8300000, guid: 459ba5ccb0412354cbe523abba074b8d, type: 3}
+  victoryMusic: {fileID: 8300000, guid: 1dc8e421411135e4a8ada16c0093984d, type: 3}
 --- !u!1 &1868093968
 GameObject:
   m_ObjectHideFlags: 0
