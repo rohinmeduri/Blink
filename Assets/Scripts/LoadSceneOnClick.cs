@@ -8,7 +8,7 @@ public class LoadSceneOnClick : MonoBehaviour
 
     public void LoadByIndex(int sceneIndex)
     {
-        Debug.Log("button click");
         SceneManager.LoadScene(sceneIndex);
+        Time.timeScale = 1;
     }
 }

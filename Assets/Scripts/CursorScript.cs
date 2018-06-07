@@ -7,9 +7,11 @@ using UnityEngine.SceneManagement;
 public class CursorScript : MonoBehaviour {
     private float CURSOR_SPEED = Screen.height / 50;
     public GameObject Canvas;
+
     private bool visible = false;
     private float disableTime = 2f;
     private float inactiveCounter;
+
 
     private void Start()
     {
@@ -78,6 +80,14 @@ public class CursorScript : MonoBehaviour {
                     && (child.GetComponent<Button>() != null) 
                     && child.GetComponent<Button>().interactable == true)
                 {
+                    if (child.GetComponent<Button>().tag.Equals("Back"))
+                    {
+                        GameObject.Find("CursorSound").GetComponent<CursorSound>().playBack();
+                    }
+                    else
+                    {
+                        GameObject.Find("CursorSound").GetComponent<CursorSound>().playRegular();
+                    }
                     child.GetComponent<Button>().onClick.Invoke();
                 }
             }

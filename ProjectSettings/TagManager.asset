@@ -9,6 +9,7 @@ TagManager:
   - DataTracker
   - Music Player
   - LobbyManager
+  - Back
   layers:
   - Default
   - TransparentFX
