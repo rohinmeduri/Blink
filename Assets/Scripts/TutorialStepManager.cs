@@ -14,8 +14,9 @@ public class TutorialStepManager : MonoBehaviour {
 
     private int line = 0;
 
+    private bool moveRight = false;
+    private bool moveLeft = false;
     private bool nextStep = true; //is the tutorial moving on to the next step
-    private bool input = false;
     private string[] tutorialText; //will contain the tutorial instructions
 	
 	void Start () {
@@ -26,38 +27,48 @@ public class TutorialStepManager : MonoBehaviour {
         for (int i = 0; i < tutorialText.Length; i++){
             Debug.Log(tutorialText[i]);
         }
-
-        intro();
 	}
 
-    void Update(){
-
-        if (nextStep)
-        {
+    void Update() { 
             switch (tutorialStep)
             {
-                case 0:
-                    intro();
-                    break;
                 case 1:
                     uAir();
                     break;
                 case 2:
-                    dAir();
+                    uAir();
                     break;
                 case 3:
-                    blink();
+                    uAir();
                     break;
                 case 4:
-                    reversal();
+                    movement();
                     break;
                 case 5:
+                    jump();
+                    break;
+                case 6:
+                    attack();
+                    break;
+                case 7:
+                    uAir();
+                    break;
+                case 8:
+                    dAir();
+                    break;
+                case 9:
+                    blink();
+                    break;
+                case 10:
+                    reversal();
+                    break;
+                case 11:
                     super();
                     break;
                 default:
                     break;
             }
-        }
+        
     }
 
     string[] read() { //reads text file and organizes each line into a string array
@@ -73,35 +84,38 @@ public class TutorialStepManager : MonoBehaviour {
 
         return result; 
     }
-
-    public bool getNextStep() {
-        return nextStep;
+    void checkInput() {
+       localPlayer.GetComponent<LocalPlayerScript>().
+       if(Input.GetAxisRaw()) 
     }
 
-    public void setNextStep(bool next)
+    void jump() {
+
+    }
+
+    void attack() {
+
+    }
+    IEnumerator introCoroutine(System.Action<bool> callback, bool wait, string action)
     {
-        nextStep = next;
+        while (wait)
+        {
+            if (Input.GetAxisRaw(action + 1) != 0)
+            {
+                displayLine(line);
+                wait = false;
+                line += 1;
+                yield return new WaitForSeconds(1.5f);
+                callback(true);
+            }
+            yield return null;
+        }
     }
 
-    public int getTutorialStep()
-    {
-        return tutorialStep;
-    }
-    //Input.GetAxisRaw(("Jump" + localPlayer.GetComponent<LocalPlayerScript>().getControllerID())) == 0
-    void intro() {
-        StartCoroutine(waitInput(true, "Jump"));
-        StopAllCoroutines();
-        StartCoroutine(waitInput(true, "Attack"));
-        StopAllCoroutines();
-        tutorialStep++;
-    }
 
     void uAir()
     {
         StartCoroutine(waitInput(true, "Jump"));
-        StartCoroutine(waitInput(true, "Vertical"));
-        StopAllCoroutines();
-
     }
 
     void dAir()
