@@ -159,7 +159,6 @@ public class LocalPlayerScript : NetworkBehaviour
         animator = GetComponent<Animator>();
         camera = GameObject.Find("Main Camera");
         
-
         Time.timeScale = 1;
     }
 
@@ -193,11 +192,11 @@ public class LocalPlayerScript : NetworkBehaviour
 
         if(ID == 1)
         {
-            setPlayerType("Saidon");
+            setPlayerType("Rebel");
         }
         else if (ID == 2)
         {
-            setPlayerType("Rebel");
+            setPlayerType("Saidon");
             facingRight = false;
         }
         else if (ID == 3)
