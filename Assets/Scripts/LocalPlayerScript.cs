@@ -192,7 +192,7 @@ public class LocalPlayerScript : NetworkBehaviour
 
         if(ID == 1)
         {
-            setPlayerType("Saidon");
+            setPlayerType("Mage");
         }
         else if (ID == 2)
         {
