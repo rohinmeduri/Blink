@@ -18,7 +18,7 @@ public class CursorScript : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-
+        
         //move cursor
         var xChange = Input.GetAxis("Horizontal1");
         var yChange = Input.GetAxis("Vertical1");
@@ -68,6 +68,8 @@ public class CursorScript : MonoBehaviour {
         if (visible && Input.GetButtonUp("Submit1"))
         {
             Vector3 clickPoint = transform.position;
+            //Vector3 clickPoint = GetComponent<RectTransform>().anchoredPosition3D;
+            Debug.Log(clickPoint.x + ", " + clickPoint.y + ", " + clickPoint.z);
 
             Transform[] children = Canvas.GetComponentsInChildren<Transform>();
             foreach (Transform child in children)

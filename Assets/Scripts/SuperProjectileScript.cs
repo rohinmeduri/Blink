@@ -25,7 +25,10 @@ public class SuperProjectileScript : NetworkBehaviour {
             }
             else
             {
-                sender.GetComponent<LocalPlayerScript>().killPlayer(collider.gameObject);
+                if(collider.gameObject != sender)
+                {
+                    sender.GetComponent<LocalPlayerScript>().killPlayer(collider.gameObject);
+                }
             }
         }
     }
