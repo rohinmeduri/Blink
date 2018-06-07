@@ -173,7 +173,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &155390
 GameObject:
   m_ObjectHideFlags: 0
@@ -368,10 +368,10 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 0, b: 0.39607847, a: 1}
-    m_HighlightedColor: {r: 1, g: 0, b: 0.39607847, a: 1}
-    m_PressedColor: {r: 1, g: 0, b: 0.39607847, a: 1}
-    m_DisabledColor: {r: 1, g: 0, b: 0.39607847, a: 0.5019608}
+    m_NormalColor: {r: 0.60784316, g: 0.6627451, b: 0.6627451, a: 1}
+    m_HighlightedColor: {r: 0.60784316, g: 0.6627451, b: 0.6627451, a: 1}
+    m_PressedColor: {r: 0.60784316, g: 0.6627451, b: 0.6627451, a: 1}
+    m_DisabledColor: {r: 0.60784316, g: 0.6627451, b: 0.6627451, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.2
   m_SpriteState:
@@ -583,10 +583,10 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 0, b: 0.39607847, a: 1}
-    m_HighlightedColor: {r: 1, g: 0, b: 0.39607847, a: 1}
-    m_PressedColor: {r: 1, g: 0, b: 0.39607847, a: 1}
-    m_DisabledColor: {r: 0.63235295, g: 0.61375433, b: 0.61375433, a: 1}
+    m_NormalColor: {r: 1, g: 0.45882353, b: 0, a: 1}
+    m_HighlightedColor: {r: 1, g: 0.45882353, b: 0, a: 1}
+    m_PressedColor: {r: 1, g: 0.45882353, b: 0, a: 1}
+    m_DisabledColor: {r: 1, g: 0.45882353, b: 0, a: 0.47058824}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.2
   m_SpriteState:
@@ -721,7 +721,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.09803922, g: 0.8901961, b: 0.69411767, a: 1}
+  m_Color: {r: 0.60784316, g: 0.6627451, b: 0.6627451, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -985,6 +985,7 @@ MonoBehaviour:
   remoteIcone: {fileID: 189178}
   playerName: 
   playerColor: {r: 1, g: 1, b: 1, a: 1}
+  connectionNumber: 0
   OddRowColor: {r: 0.98039216, g: 0.98039216, b: 0.98039216, a: 1}
   EvenRowColor: {r: 0.7058824, g: 0.7058824, b: 0.7058824, a: 1}
 --- !u!114 &11487112
