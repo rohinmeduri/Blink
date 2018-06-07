@@ -25,4 +25,12 @@ public class SuperProjectileNetworked : SuperProjectileScript {
         base.rotate(direction);
         Debug.Log("rotate");
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (hasAuthority)
+        {
+            base.OnTriggerEnter2D(collision);
+        }
+    }
 }
