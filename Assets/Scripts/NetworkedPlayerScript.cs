@@ -22,7 +22,7 @@ public class NetworkedPlayerScript : LocalPlayerScript
     public override void OnStartAuthority()
     {
 
-        if (hasAuthority)
+        if (isLocalPlayer)
         {
             networkAnimator = GetComponent<NetworkAnimator>();
             GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
@@ -152,7 +152,7 @@ public class NetworkedPlayerScript : LocalPlayerScript
         //flips sprite if necessary (on all clients)
         gameObject.GetComponent<SpriteRenderer>().flipX = !facingRight;
 
-        if (!hasAuthority)
+        if (!isLocalPlayer)
         {
             return;
         }
@@ -169,7 +169,7 @@ public class NetworkedPlayerScript : LocalPlayerScript
 
     protected override void FixedUpdate()
     {
-        if (!hasAuthority)
+        if (!isLocalPlayer)
         {
             return;
         }
@@ -178,7 +178,7 @@ public class NetworkedPlayerScript : LocalPlayerScript
 
     protected override void flipSprite()
     {
-        if (!hasAuthority)
+        if (!isLocalPlayer)
         {
             return;
         }
@@ -197,7 +197,7 @@ public class NetworkedPlayerScript : LocalPlayerScript
 
     protected override void wallJumpFlipSprite()
     {
-        if (!hasAuthority || rb2D.velocity.x == 0)
+        if (!isLocalPlayer || rb2D.velocity.x == 0)
         {
             return;
         }
@@ -271,7 +271,7 @@ public class NetworkedPlayerScript : LocalPlayerScript
     [ClientRpc]
     public void RpcBlinkInAnimation()
     {
-        if (!hasAuthority)
+        if (!isLocalPlayer)
         {
             base.blinkInAnimation();
         }
@@ -330,7 +330,7 @@ public class NetworkedPlayerScript : LocalPlayerScript
 
     void baseKnockback(GameObject attacker, Vector2 dir, int hits)
     {
-        if (!hasAuthority)
+        if (!isLocalPlayer)
         {
             return;
         }
@@ -524,7 +524,7 @@ public class NetworkedPlayerScript : LocalPlayerScript
     [ClientRpc]
     void RpcKillPlayer(GameObject player)
     {
-        if (hasAuthority)
+        if (isLocalPlayer)
         {
             kills++;
         }
@@ -533,7 +533,7 @@ public class NetworkedPlayerScript : LocalPlayerScript
 
     void playerDeath()
     {
-        if (hasAuthority)
+        if (isLocalPlayer)
         {
             compileData();
         }
@@ -555,7 +555,7 @@ public class NetworkedPlayerScript : LocalPlayerScript
 
     public override int[] compileData()
     {
-        if (hasAuthority)
+        if (isLocalPlayer)
         {
             CmdUpdateStats(maxCombo, hitNumber, getHitPercentage(), kills);
         }
