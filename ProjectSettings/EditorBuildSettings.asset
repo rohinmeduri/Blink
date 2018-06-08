@@ -15,8 +15,8 @@ EditorBuildSettings:
     path: Assets/_Scenes/Multiplayer Battle Scene.unity
     guid: 657477b8a52cd554ea54d490fbc73ea8
   - enabled: 0
-    path: Assets/_Scenes/Local Lobby Menu.unity
-    guid: e2bf350534df7d14181835793ecab646
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/_Scenes/Multiplayer Lobby.unity
     guid: 83b773045ae50804a878c8952a684144
@@ -24,8 +24,8 @@ EditorBuildSettings:
     path: Assets/_Scenes/Tutorial.unity
     guid: e2c9d5eeab3a3eb469f2f3df207f553b
   - enabled: 0
-    path: Assets/_Scenes/Local Character Select Menu.unity
-    guid: 39ea3f29b50527a4fb54dcd838d8bd8a
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/_Scenes/Local Scene and Music Select Menu.unity
     guid: 865335be8c3af744ca5e87d92922a71c
