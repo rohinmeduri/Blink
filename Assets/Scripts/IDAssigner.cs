@@ -7,7 +7,7 @@ public class IDAssigner : MonoBehaviour {
     /**
      * Keeps track of ids for networked players
      */
-    private int IDCounter = 1;
+    private static int IDCounter = 1;
 
     public int getID()
     {
