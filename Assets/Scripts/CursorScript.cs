@@ -18,6 +18,7 @@ public class CursorScript : MonoBehaviour {
     private void Start()
     {
         inactiveCounter = 0f;
+        gameObject.transform.SetSiblingIndex(10000);
     }
 
     public void setVisible(bool visible)
