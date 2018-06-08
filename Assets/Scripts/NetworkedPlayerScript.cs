@@ -30,7 +30,20 @@ public class NetworkedPlayerScript : LocalPlayerScript {
                 else
                 {
                     i.GetComponent<NetworkedPlayerScript>().setPlayerID(IDAssigner.GetComponent<IDAssigner>().getID());
-                    i.GetComponent<NetworkedPlayerScript>().setPlayerType("Saidon");
+                    Random rnd = new Random();
+                    int playerType = (Random.Range(0,3));
+                    if (playerType == 0)
+                    {
+                        i.GetComponent<NetworkedPlayerScript>().setPlayerType("Saidon");
+                    }
+                    else if(playerType == 1)
+                    {
+                        i.GetComponent<NetworkedPlayerScript>().setPlayerType("Rebel");
+                    }
+                    else
+                    {
+                        i.GetComponent<NetworkedPlayerScript>().setPlayerType("Saidon");
+                    }
                 }
             }
             CmdNewPlayer();
@@ -77,6 +90,20 @@ public class NetworkedPlayerScript : LocalPlayerScript {
         {
             IDAssigner = GameObject.Find("ID Assigner");
             setPlayerID(IDAssigner.GetComponent<IDAssigner>().getID());
+            Random rnd = new Random();
+            int playerType = (Random.Range(0, 3));
+            if (playerType == 0)
+            {
+                GetComponent<NetworkedPlayerScript>().setPlayerType("Saidon");
+            }
+            else if (playerType == 1)
+            {
+                GetComponent<NetworkedPlayerScript>().setPlayerType("Rebel");
+            }
+            else
+            {
+                GetComponent<NetworkedPlayerScript>().setPlayerType("Saidon");
+            }
         }
     }
 
