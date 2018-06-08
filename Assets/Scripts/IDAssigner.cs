@@ -5,7 +5,7 @@ using UnityEngine;
 public class IDAssigner : MonoBehaviour {
 
     /**
-     * Assigns ID
+     * Keeps track of ids for networked players
      */
     private int IDCounter = 1;
 

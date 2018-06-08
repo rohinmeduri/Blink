@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 
+//script that compiles and displays stats of players in the battle scene
 public class LocalDataTracker : NetworkBehaviour {
 
     public Text place1;
@@ -19,7 +20,6 @@ public class LocalDataTracker : NetworkBehaviour {
 
     CanvasGroup endScreen;
 
-    //private ChangePlayerNumber cpn;
     private static int numberOfPlayers;
     private static int[][] placing;
     private static int numberAlive;
@@ -27,13 +27,12 @@ public class LocalDataTracker : NetworkBehaviour {
 
     protected virtual void Start()
     {
-        //cpn = new ChangePlayerNumber();
-        //numberOfPlayers = cpn.getNumberOfAI() + cpn.getNumberOfPlayers();
         endScreen = GameObject.Find("End Screen").GetComponent<CanvasGroup>();
         setInteractable(endScreen, false);
         Invoke("findPlayers", 2);
     }
 
+    //function that makes the end screen clickable
     private void setInteractable(CanvasGroup go, bool interactable)
     {
         go.interactable = interactable;
@@ -43,6 +42,7 @@ public class LocalDataTracker : NetworkBehaviour {
         }
     }
 
+    //function that finds all the players that are in the game so they can be kept track of
     private void findPlayers()
     {
         numberOfPlayers = GameObject.FindGameObjectsWithTag("Player").Length + GameObject.FindGameObjectsWithTag("PlayerAI").Length;
@@ -54,7 +54,7 @@ public class LocalDataTracker : NetworkBehaviour {
         numberAlive = placing.Length;
     }
 
-
+    //function that updates stats once a player dies
     public virtual void playerDeath(GameObject lostPlayer, GameObject wonPlayer)
     {
         winner = wonPlayer.GetComponent<LocalPlayerScript>().getPlayerType();
@@ -77,6 +77,7 @@ public class LocalDataTracker : NetworkBehaviour {
         }
     }
 
+    //function used for networking that compiles stats and destroys dead player objects
     public int reducePlayers(GameObject player)
     {
         numberAlive--;
@@ -115,6 +116,7 @@ public class LocalDataTracker : NetworkBehaviour {
        return output;
     }
 
+    //function that finds who the winner is and shows the stats in the end screen UI object
     private void displayResults()
     {
         endScreen.alpha = 1;
@@ -151,6 +153,7 @@ public class LocalDataTracker : NetworkBehaviour {
 
     }
 
+    //function that takes the arrays used to store stats and converts them into stirngs
     private string formatStats(int[] arr)
     {
         string output = "";
@@ -161,6 +164,7 @@ public class LocalDataTracker : NetworkBehaviour {
         return output;
     }
 
+    //function for networking that syncs a players stats across the network
     public void  replaceStats(int mc, int hn, int hp, int k, GameObject player)
     {
         Debug.Log("replacing stats pt 2");

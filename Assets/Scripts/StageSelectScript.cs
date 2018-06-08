@@ -8,7 +8,7 @@ public class StageSelectScript : MonoBehaviour {
     public Image preview;
     public Sprite frame;
 
-	// Use this for initialization
+    // Use this for initialization
     public void stageClick()
     {
         preview.GetComponent<Image>().sprite = stage; // establishes stage sprite

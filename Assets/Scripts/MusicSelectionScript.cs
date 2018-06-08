@@ -4,16 +4,7 @@ using UnityEngine;
 
 public class MusicSelectionScript : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
+    //function that handles button input from stage select screen to call the appropriate function to change music
     public void chooseMusic(int index)
     {
         GameObject.Find("MusicPlayer").GetComponent<MusicPlayerScript>().chooseMusic(index);

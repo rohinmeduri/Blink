@@ -183,16 +183,19 @@ public class LocalPlayerScript : NetworkBehaviour
         glorySlider.value = numGlory;
     }
 
+    // to remove the meter when a player dies
     public virtual void removeMeter()
     {
         glory.GetComponent<CanvasGroup>().alpha = 0;
     }
 
+    // returns which character the player is
     public string getPlayerType()
     {
         return playerType;
     }
 
+    // sets player ID
     public virtual void setPlayerID(int ID)
     {
         Debug.Log(ID);
@@ -215,7 +218,6 @@ public class LocalPlayerScript : NetworkBehaviour
 
         setPlayerPosition(ID);
 
-        //Debug.Log(playerID);
         GetComponent<SpriteRenderer>().material.SetColor("_Color", getColor());
         createMeter();
 
@@ -241,10 +243,12 @@ public class LocalPlayerScript : NetworkBehaviour
         }
     }
 
+    // return controller ID
     public int getControllerID() {
         return controllerID;
     }
 
+    // sets positions of the players based on which player it is
     protected virtual void setPlayerPosition(int posNum)
     {
         var yPosition = -3.94f;
@@ -270,8 +274,10 @@ public class LocalPlayerScript : NetworkBehaviour
     }
 
 
+    // sets what character the player is
     public virtual void setPlayerType(string pt)
     {
+        // first, set the player blink animator
         playerType = pt;
         if (playerType.Equals("Mage"))
         {
@@ -289,14 +295,16 @@ public class LocalPlayerScript : NetworkBehaviour
             blinkAnimation = saidonBlinkIn;
         }
 
+        // create the effects player
         effectsPlayer = new GameObject("Effects Player");
-
+        
+        // create the sound effects player
         soundEffectPlayer = new GameObject("Sound Effect Player");
         soundEffectPlayer.transform.parent = effectsPlayer.transform;
         soundEffectPlayer.AddComponent<SoundEffectPlayer>();
         soundEffectPlayer.GetComponent<SoundEffectPlayer>().setSoundEffects(playerType);
 
-
+        // create the visual effects player
         visualEffectCreator = new GameObject[6];
         for(int i = 0; i < 6; i++)
         {
@@ -308,6 +316,8 @@ public class LocalPlayerScript : NetworkBehaviour
             //visualEffectCreator[i].GetComponent<SpriteRenderer>().material.SetColor("_Color", getColor());
             visualEffectCreator[i].transform.parent = effectsPlayer.transform;
         }
+
+        // create the super effects creator
         superEffectCreator = new GameObject("Super Effect");
         superEffectCreator.AddComponent<SpriteRenderer>();
         superEffectCreator.transform.parent = gameObject.transform;
@@ -316,6 +326,7 @@ public class LocalPlayerScript : NetworkBehaviour
         superEffectAnimator.runtimeAnimatorController = Resources.Load("VisualEffects/SuperEffect") as RuntimeAnimatorController;
     }
 
+    // set color of players if multiple players are using same character
     public void setColor(int num)
     {
         if (num == 0)
@@ -336,21 +347,25 @@ public class LocalPlayerScript : NetworkBehaviour
         }
     }
 
+    // trigger super effect
     protected virtual void superEffect(bool active)
     {
         superEffectAnimator.SetBool("Super", active);
     }
 
+    // trigger a sound effect
     protected virtual void createSoundEffect(int index, int version, float volume)
     {
         soundEffectPlayer.GetComponent<SoundEffectPlayer>().playSoundEffect(index, version, volume);
     }
 
+    // stop a sound effect
     protected virtual void stopSoundEffect(int index)
     {
         soundEffectPlayer.GetComponent<SoundEffectPlayer>().stopSoundEffect(index);
     }
 
+    // trigger a visual effect
     protected virtual void createVisualEffect(int index)
     {
         visualEffectCreator[index].GetComponent<VisualEffectCreator>().triggerEffect(gameObject);
@@ -359,8 +374,10 @@ public class LocalPlayerScript : NetworkBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
-        ///// hasSuper = true; /////
+        ///// hasSuper = true; ///// useful for debugging, etc.
         startCounter += Time.deltaTime;
+
+        // allow players to move only after the game has started
         if (startCounter <= GAME_START_TIME)
         {
             deadInputs();
@@ -370,6 +387,7 @@ public class LocalPlayerScript : NetworkBehaviour
             assignInputs();
         }
 
+        // allows players to pause the game
         pauseGame();
 
         //flips sprite if necessary (on all clients)
@@ -386,8 +404,6 @@ public class LocalPlayerScript : NetworkBehaviour
         animator.SetBool("isAirborn", isAirborn());
         animator.SetBool("onWall", isWall());
         animator.SetInteger("StunTimer", (int)stunTimer);
-        
-
         animator.SetInteger("attackNum", attackType());
 
         // Decreases stun timer
@@ -435,6 +451,7 @@ public class LocalPlayerScript : NetworkBehaviour
         }
     }
 
+    // returns what type of attack it is: Up, Diagonal Up, etc.
     private int attackType()
     {
         float angle = Mathf.Atan2(Mathf.Abs(getDirection().x), getDirection().y);
@@ -472,6 +489,7 @@ public class LocalPlayerScript : NetworkBehaviour
         superInput = Input.GetAxisRaw(("Super" + controllerID)) != 0;
     }
 
+    // set input values to nothing
     public void deadInputs()
     {
         inputX = 0;
@@ -483,18 +501,25 @@ public class LocalPlayerScript : NetworkBehaviour
         superInput = false;
     }
 
+    /**
+     * Main Game Loop
+     * runs all the mechanics of this code
+     */
     protected virtual void FixedUpdate()
     {
         if (stunTimer <= 0)
         {
+            // reset player modifications
             rb2D.freezeRotation = true;
             rb2D.sharedMaterial = regularMaterial;
             rotate(Vector3.zero);
 
+            // if not blinking
             if (blinkTimer <= 0)
             { //blinkTimer is the amount of time the blink takes to complete, not the amount of frames until next blink
                 gravity();
-             
+                
+                // if not locked in an action
                 if (!actionLock)
                 {
                     startBlink();
@@ -508,7 +533,9 @@ public class LocalPlayerScript : NetworkBehaviour
                 }
                 else
                 {
+                    // horizontal dampening still on but always dampens to 0
                     run(true);
+                    // set the velocity to 0 if any of the below conditions are satisfied
                     if (startedSuper || teleported || reversalEffective || reversalLanded || blinking || attackLanded) rb2D.velocity = new Vector2(0, 0);
                 }
             }
@@ -519,6 +546,7 @@ public class LocalPlayerScript : NetworkBehaviour
         }
         else
         {
+            // actions when stunned
             rb2D.freezeRotation = false;
             rb2D.sharedMaterial = stunMaterial;
             DI();
@@ -526,6 +554,7 @@ public class LocalPlayerScript : NetworkBehaviour
         rotateSuperProjectile();
     }
 
+    // allows game to be paused
     protected virtual void pauseGame()
     {
 
@@ -535,6 +564,7 @@ public class LocalPlayerScript : NetworkBehaviour
 
             if (!gamePaused)
             {
+                // paused game state
                 Time.timeScale = 0;
                 gamePaused = true;
                 pauseMenu.alpha = 1;
@@ -543,6 +573,7 @@ public class LocalPlayerScript : NetworkBehaviour
             }
             else
             {
+                // regular game state
                 Time.timeScale = 1;
                 gamePaused = false;
                 pauseMenu.alpha = 0;
@@ -555,6 +586,7 @@ public class LocalPlayerScript : NetworkBehaviour
         }
     }
 
+    // toggles all children of a canvas group if that canvas group interactability is toggled
     private void setInteractable(CanvasGroup go, bool interactable)
     {
         go.interactable = interactable;
@@ -564,15 +596,16 @@ public class LocalPlayerScript : NetworkBehaviour
         }
     }
 
+    //flip sprite based on player input if they are not wall hugging
     protected virtual void flipSprite()
     {
-        //flip sprite based on player input if they are not wall hugging
         if (stickyWallTimer <= 0)
         {
             facingRight = inputX > 0 || (inputX == 0 && facingRight);
         }
     }
 
+    // flips sprite when walljumping
     protected virtual void wallJumpFlipSprite()
     {
         if (rb2D.velocity.x == 0)
@@ -646,6 +679,7 @@ public class LocalPlayerScript : NetworkBehaviour
         return goalSpeed;
     }
 
+    // flip sprite when sticking to wall
     protected virtual void wallStickFlipSprite()
     {
         facingRight = currentNormal.x < 0;
@@ -664,6 +698,7 @@ public class LocalPlayerScript : NetworkBehaviour
         xVelTracker[0] = rb2D.velocity.x;
         xInputTracker[0] = inputX;
 
+        // checking if change in horizontal motion abrupt enough to boost
         if (Mathf.Abs(xInputTracker[0]) >= 0.8f && Mathf.Abs(xInputTracker[0] - xInputTracker[xInputTracker.Length - 1]) > BOOST_THRESHOLD)
         {
             boosting = true;
@@ -672,10 +707,12 @@ public class LocalPlayerScript : NetworkBehaviour
         {
             boosting = false;
         }
+        // only boost when on ground
         if (!isGround())
         {
             boosting = false;
         }
+        // actually boost if the player changes direction
         if (xVelTracker[xVelTracker.Length - 1] * xVelTracker[xVelTracker.Length - 2] <= 0 && boosting)
         {
             rb2D.velocity = new Vector2(xInputTracker[0] * BOOST_SPEED, rb2D.velocity.y);
@@ -805,10 +842,13 @@ public class LocalPlayerScript : NetworkBehaviour
             {
                 rb2D.velocity = Vector2.zero;
                 attackLanded = true;
+
+                // create effects
                 createVisualEffect(5);
                 createSoundEffect(2, 0, soundEffectsVolume * Mathf.Max(1f-1f*comboHits/5, 0));
                 createSoundEffect(3, 0, soundEffectsVolume * Mathf.Min(1f*comboHits/5, 1));
 
+                // update combos and glory
                 comboHits++;
                 var trueHit = (comboHitInterval <= STUN_DURATION) && (comboHits > 1);
                 attackGloryUpdate(hit.rigidbody.gameObject, comboHits, trueHit);
@@ -867,7 +907,7 @@ public class LocalPlayerScript : NetworkBehaviour
     void blink() {
 
         blinkTimer -= Time.deltaTime;
-
+        // choose which blink to use. Currently, only the teleport blink is used.
         switch (characterSelection)
         {
             case 1:
@@ -928,11 +968,13 @@ public class LocalPlayerScript : NetworkBehaviour
         }
     }
 
+    // trigger blinking out animation
     protected virtual void blinkOutAnimation()
     {
         animator.SetTrigger("blinking");
     }
 
+    // trigger blinking in animation
     protected virtual void blinkInAnimation()
     {
         GameObject blinkSprite = Instantiate(blinkAnimation);
@@ -940,6 +982,7 @@ public class LocalPlayerScript : NetworkBehaviour
         blinkSprite.GetComponent<SpriteRenderer>().material.SetColor("_Color", getColor());
     }
 
+    // return player color
     Color getColor()
     {
         return color;
@@ -968,14 +1011,14 @@ public class LocalPlayerScript : NetworkBehaviour
         return reversalLanded;
     }
 
+    // trigger reversal animation
     protected virtual void reversalAnimation()
     {
-        //trigger animation
         animator.SetTrigger("reversaling");
     }
 
     /**
-     * Script for StartinSuper
+     * Script for Starting Super
      */
     void StartSuper()
     {
@@ -997,6 +1040,7 @@ public class LocalPlayerScript : NetworkBehaviour
         return hasSuper;
     }
 
+    // spawns super projectile
     protected virtual void spawnSuper()
     {
         projectile = Instantiate(superPrefab);
@@ -1004,6 +1048,7 @@ public class LocalPlayerScript : NetworkBehaviour
         projectile.GetComponent<SuperProjectileScript>().setType(playerType);
     }
     
+    // rotates super projectile
     void rotateSuperProjectile()
     {
         if (projectile == null) return;
@@ -1015,6 +1060,7 @@ public class LocalPlayerScript : NetworkBehaviour
         }
     }
 
+    // triggers super animation
     protected virtual void superAnimation()
     {
         animator.SetTrigger("super");
@@ -1035,6 +1081,7 @@ public class LocalPlayerScript : NetworkBehaviour
         }
     }
 
+    // activates the super projectile for shooting
     protected virtual void activateProjectile(Vector2 direction)
     {
         if (projectile == null) return;
@@ -1061,9 +1108,12 @@ public class LocalPlayerScript : NetworkBehaviour
         ldt.playerDeath(go, gameObject);
     }
 
+
     public int getKills() {
         return kills;
     }
+
+    // death animation when player is killed
     public virtual void deathAnimation()
     {
         Color currentColor = gameObject.GetComponent<SpriteRenderer>().material.color;
@@ -1078,6 +1128,7 @@ public class LocalPlayerScript : NetworkBehaviour
         }
     }
 
+    // for cancelling super animation in the case of someone else hitting player when doing super
     public void cancelSuperAnimation()
     {
         if (projectile)
@@ -1227,6 +1278,7 @@ public class LocalPlayerScript : NetworkBehaviour
 
     }
 
+    // begin knockback procedure
     public virtual void startKnockback(GameObject defender, Vector2 dir, int hits)
     {
         defender.GetComponent<LocalPlayerScript>().knockback(gameObject, dir, hits);
@@ -1297,11 +1349,13 @@ public class LocalPlayerScript : NetworkBehaviour
         }
     }
 
+    // trigger successful reversal animation
     protected virtual void reversalLandedAnimation()
     {
         animator.SetTrigger("reversalLanded");
     }
 
+    // trigger hitstun animation
     protected virtual void hitstunAnimation()
     {
         animator.SetTrigger("Hitstun");
@@ -1580,6 +1634,7 @@ public class LocalPlayerScript : NetworkBehaviour
         }
     }
 
+    // compile a player's data for display on the end screen
     public virtual int[] compileData()
     {
         int hitPercentage = getHitPercentage();

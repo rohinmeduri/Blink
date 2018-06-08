@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//this script controls the camera's movement in the battle scenes
 public class CameraShake : MonoBehaviour {
     Vector3 originalPosition;
     Quaternion originalRotation;
@@ -20,7 +21,7 @@ public class CameraShake : MonoBehaviour {
     public const float CAMERA_MAX_DISPLACEMENT_X = 2.1f;
     public const float CAMERA_MAX_DISPLACEMENT_Y = 1.5f;
     
-
+    //set variables for originalPosition and rotation so that the camera can be reset to these values later
     private void Start()
     {
         originalPosition = gameObject.GetComponent<Transform>().position;
@@ -31,9 +32,10 @@ public class CameraShake : MonoBehaviour {
     void Update () {
 		if(followDuration <= ZOOM_DURATION && playerToFollow != null)
         {
+            //camera pan (follow players who are hit)
             float cameraCurrentX = gameObject.GetComponent<Transform>().position.x;
             float cameraCurrentY = gameObject.GetComponent<Transform>().position.y;
-            //camera pan
+
             xChange = playerToFollow.GetComponent<Transform>().position.x - cameraCurrentX;
             yChange = playerToFollow.GetComponent<Transform>().position.y - cameraCurrentY;
 
@@ -57,13 +59,6 @@ public class CameraShake : MonoBehaviour {
 
             difference = new Vector3(xChange, yChange, 0);
 
-
-            //zoom in - max zoom is 7
-            /*if (GetComponent<Camera>().orthographicSize > 4.25)
-            {
-                GetComponent<Camera>().orthographicSize -= 0.01f;
-            }*/
-
             //shake the camera by moving it randomly in the vicinity of its position
             Vector2 shakeFactor = Random.insideUnitCircle * shakeIntensity;
             Vector3 shakeVector = new Vector3(shakeFactor.x, shakeFactor.y, 0);
@@ -72,7 +67,7 @@ public class CameraShake : MonoBehaviour {
             gameObject.GetComponent<Transform>().position += difference / 50 + shakeVector;
             followDuration++;
 
-            //reduce intensity of shake (decrease radius of randomnesss)
+            //reduce intensity of shake over time (decrease radius of randomnesss)
             if (shakeIntensity > 0)
             {
                 shakeIntensity -= shakeDecay;
@@ -87,10 +82,12 @@ public class CameraShake : MonoBehaviour {
         }
         else
         {
+            //if camera has not been told to shake for long enough, it slowly resets to origin position
             reset();
         }
 	}
 
+    //this method is used to initiate the camera's shaking by other objects
     public void shake (float intensity, GameObject victim)
     {
         xChange = 0;
@@ -105,6 +102,7 @@ public class CameraShake : MonoBehaviour {
         followDuration = 0;
     }
 
+    //reset camera's position/rotation to original values
     private void reset()
     {
         gameObject.GetComponent<Transform>().position += (originalPosition - gameObject.GetComponent<Transform>().position) / 50;

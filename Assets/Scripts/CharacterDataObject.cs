@@ -2,22 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//this script stores the player selections from the character selection screen
 public class CharacterDataObject : MonoBehaviour {
 
-    //variables needed for spawning
+    //variables needed for spawning players and AIs
     private static int[] types;
     private static int[] characters;
     private static int[] AIDifficulties;
 
     // Use this for initialization
     void Start () {
-        Debug.Log("CharacterDataObject created");
         types = new int[4];
         characters = new int[4];
         AIDifficulties = new int[4];
 	}
 
-    //set field methods
+    //scripts that respond to player input to change their choices
     public void changeType(int characterIndex, int delta) {
         types[characterIndex] += delta;
         if (types[characterIndex] > 2)

@@ -2,20 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//script that creates visual effects
 public class VisualEffectCreator : MonoBehaviour {
 
     private Animator effectsAnimator;
     private int index;
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
     public void setVisualEffects(string playerType, int index)
     {
@@ -33,6 +24,7 @@ public class VisualEffectCreator : MonoBehaviour {
      * 4: Dash Burst
      * 5: Attack
      */
+     //script that creates the effect and assigns relevant values based on the effect type
     public void triggerEffect(GameObject player)
     {
         rotate(new Vector2(1, 0));
@@ -73,7 +65,7 @@ public class VisualEffectCreator : MonoBehaviour {
         effectsAnimator.SetTrigger("Trigger");
     }
 
-
+    //rotates effect to match the players that created them
     public virtual void rotate(Vector2 direction)
     {
         GetComponent<Transform>().eulerAngles = new Vector3(0, 0, Mathf.Rad2Deg * Mathf.Atan2(direction.y, direction.x));

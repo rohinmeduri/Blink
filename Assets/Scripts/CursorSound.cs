@@ -5,7 +5,7 @@ using UnityEngine;
 public class CursorSound : MonoBehaviour {
 
     /**
-     * Used to create the clicking sound when the on-screen mouse is clicked
+     * Script Used to create the clicking sound when the on-screen cursor is clicked
      */
 
     private bool created = false;
@@ -22,12 +22,6 @@ public class CursorSound : MonoBehaviour {
         created = true;
         DontDestroyOnLoad(gameObject);
     }
-
-
-    // Update is called once per frame
-    void Update () {
-		
-	}
 
     // regular click sound
     public void playRegular()
