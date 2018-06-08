@@ -8,7 +8,6 @@ public class SuperProjectileNetworked : SuperProjectileScript {
     
    public override void rotate(Vector2 direction)
    {
-        Debug.Log("rotate function called");
         CmdRotate(direction);
    }
 
@@ -23,7 +22,6 @@ public class SuperProjectileNetworked : SuperProjectileScript {
     void RpcRotate(Vector2 direction)
     {
         base.rotate(direction);
-        Debug.Log("rotate");
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

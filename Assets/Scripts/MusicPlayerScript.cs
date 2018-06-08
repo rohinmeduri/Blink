@@ -7,8 +7,11 @@ using UnityEngine.SceneManagement;
 public class MusicPlayerScript : MonoBehaviour {
     public static bool created = false;
     private bool lobbyScene = true;
+    public AudioSource audioSource;
+
     public AudioClip menuMusic;
     public AudioClip battleMusic;
+    public AudioClip operaticMusic;
     public AudioClip victoryMusic;
               
 	// Use this for initialization
@@ -19,6 +22,7 @@ public class MusicPlayerScript : MonoBehaviour {
         }
         created = true;
         DontDestroyOnLoad(gameObject);
+        audioSource = GameObject.Find("MusicPlayer").GetComponent<AudioSource>();
 	}
 
     void OnEnable()
@@ -39,21 +43,46 @@ public class MusicPlayerScript : MonoBehaviour {
             lobbyScene = lobbySceneNow;
             if (lobbyScene)
             {
-                GetComponent<AudioSource>().clip = menuMusic;
-            }
+                audioSource.clip = menuMusic;
+            }/*
             else
             {
-                GetComponent<AudioSource>().clip = battleMusic;
-            }
+                audioSource.clip = battleMusic;
+            }*/
 
-            GetComponent<AudioSource>().PlayDelayed(0.5f);
+            audioSource.PlayDelayed(0.5f);
         }
     }
 
-    public void playVictory()
+    public void chooseMusic(int index)
     {
-        GetComponent<AudioSource>().Stop();
-        GetComponent<AudioSource>().PlayOneShot(victoryMusic);
+        switch (index)
+        {
+            case 0:
+                audioSource.clip = menuMusic;
+                break;
+            case 1:
+                audioSource.clip = battleMusic;
+                break;
+            case 2:
+                audioSource.clip = operaticMusic;
+                break;
+            default:
+                break;
+        }
+
+        audioSource.PlayDelayed(0.5f);
+    }
+
+    public void queueVictory()
+    {
+        audioSource.Stop();
+        Invoke("playVictory", 2);
+    }
+
+    private void playVictory()
+    {
+        audioSource.PlayOneShot(victoryMusic);
         /**
          * Uncomment the below code if want to have music return after victory sound
          */
@@ -63,17 +92,17 @@ public class MusicPlayerScript : MonoBehaviour {
     /*
     private void stopVictoryMusic()
     {
-        GetComponent<AudioSource>().volume = 0;
-        GetComponent<AudioSource>().clip = battleMusic;
-        GetComponent<AudioSource>().Play();
+        audioSource.volume = 0;
+        audioSource.clip = battleMusic;
+        audioSource.Play();
         afterVictory();
     }
 
     private void afterVictory()
     {
-        if (GetComponent<AudioSource>().volume < 1)
+        if (audioSource.volume < 1)
         {
-            GetComponent<AudioSource>().volume += Time.deltaTime;
+            audioSource.volume += Time.deltaTime;
             Debug.Log("victpry");
             Invoke("afterVictory", Time.deltaTime);
         }

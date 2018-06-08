@@ -36,6 +36,7 @@ public class LocalPlayerScript : NetworkBehaviour
     public GameObject mageBlinkIn;
     public GameObject rebelBlinkIn;
     public GameObject saidonBlinkIn;
+    public float soundEffectsVolume = 1f;
 
     // private variables
     private float startCounter = 0;
@@ -95,6 +96,7 @@ public class LocalPlayerScript : NetworkBehaviour
     private string playerType;
     protected bool launchedSuper;
     private CanvasGroup pauseMenu;
+    private Color color;
 
     // constants
     public const float GAME_START_TIME = 4f;
@@ -186,26 +188,28 @@ public class LocalPlayerScript : NetworkBehaviour
         glory.GetComponent<CanvasGroup>().alpha = 0;
     }
 
-    public void setPlayerID(int ID)
+    public string getPlayerType()
     {
+        return playerType;
+    }
+
+    public virtual void setPlayerID(int ID)
+    {
+        Debug.Log(ID);
         playerID = ID;
 
         if(ID == 1)
         {
-            setPlayerType("Mage");
         }
         else if (ID == 2)
         {
-            setPlayerType("Rebel");
             facingRight = false;
         }
         else if (ID == 3)
         {
-            setPlayerType("Mage");
         }
         else if (ID == 4)
         {
-            setPlayerType("Rebel");
             facingRight = false;
         }
 
@@ -266,7 +270,7 @@ public class LocalPlayerScript : NetworkBehaviour
     }
 
 
-    protected virtual void setPlayerType(string pt)
+    public virtual void setPlayerType(string pt)
     {
         playerType = pt;
         if (playerType.Equals("Mage"))
@@ -312,6 +316,26 @@ public class LocalPlayerScript : NetworkBehaviour
         superEffectAnimator.runtimeAnimatorController = Resources.Load("VisualEffects/SuperEffect") as RuntimeAnimatorController;
     }
 
+    public void setColor(int num)
+    {
+        if (num == 0)
+        {
+            color = new Color(1, 1, 1, 1);
+        }
+        else if (num == 1)
+        {
+            color = new Color(1, 0, 0, 1);
+        }
+        else if (num == 2)
+        {
+            color = new Color(0, 1, 0, 1);
+        }
+        else
+        {
+            color =  new Color(0, 0, 1, 1);
+        }
+    }
+
     protected virtual void superEffect(bool active)
     {
         superEffectAnimator.SetBool("Super", active);
@@ -335,8 +359,7 @@ public class LocalPlayerScript : NetworkBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
-        //// hasSuper = true;
-
+        ///// hasSuper = true; /////
         startCounter += Time.deltaTime;
         if (startCounter <= GAME_START_TIME)
         {
@@ -762,7 +785,7 @@ public class LocalPlayerScript : NetworkBehaviour
         if (attackInput)
         {
             // 2-attackType() maps {2, 1, 0, -1, -2} to {0, 1, 2, 3, 4}
-            createSoundEffect(0, 2-attackType(), 1f);
+            createSoundEffect(0, 2-attackType(), soundEffectsVolume);
 
             float angle = Mathf.Atan2(getDirection().x, getDirection().y);
 
@@ -783,8 +806,8 @@ public class LocalPlayerScript : NetworkBehaviour
                 rb2D.velocity = Vector2.zero;
                 attackLanded = true;
                 createVisualEffect(5);
-                createSoundEffect(2, 0, Mathf.Max(1f-1f*comboHits/5, 0));
-                createSoundEffect(3, 0, Mathf.Min(1f*comboHits/5, 1));
+                createSoundEffect(2, 0, soundEffectsVolume * Mathf.Max(1f-1f*comboHits/5, 0));
+                createSoundEffect(3, 0, soundEffectsVolume * Mathf.Min(1f*comboHits/5, 1));
 
                 comboHits++;
                 var trueHit = (comboHitInterval <= STUN_DURATION) && (comboHits > 1);
@@ -816,7 +839,7 @@ public class LocalPlayerScript : NetworkBehaviour
     {
         if (blinkInput && blinkFrames <= 0)
         {
-            createSoundEffect(1, 0, 1.0f);
+            createSoundEffect(1, 0, soundEffectsVolume);
             switch (characterSelection) {
                 case 1:
                     blinkTimer = BLINK_TIME;
@@ -919,22 +942,7 @@ public class LocalPlayerScript : NetworkBehaviour
 
     Color getColor()
     {
-        if(playerID == 1)
-        {
-            return new Color(1, 1, 1, 1);
-        }
-        else if(playerID == 2)
-        {
-            return new Color(1, 0, 0, 1);
-        }
-        else if(playerID == 3)
-        {
-            return new Color(0, 1, 0, 1);
-        }
-        else
-        {
-            return new Color(0, 0, 1, 1);
-        }
+        return color;
     }
 
     /**
@@ -975,7 +983,7 @@ public class LocalPlayerScript : NetworkBehaviour
         if (hasSuper && superInput)
         {
             //cancel momentum
-            createSoundEffect(4, 0, 1f);
+            createSoundEffect(4, 0, soundEffectsVolume);
             spawnSuper();
             rb2D.velocity = Vector2.zero;
             actionLock = true;
@@ -998,6 +1006,7 @@ public class LocalPlayerScript : NetworkBehaviour
     
     void rotateSuperProjectile()
     {
+        if (projectile == null) return;
         if (startedSuper)
         {
             Vector2 direction = getDirection();
@@ -1028,6 +1037,7 @@ public class LocalPlayerScript : NetworkBehaviour
 
     protected virtual void activateProjectile(Vector2 direction)
     {
+        if (projectile == null) return;
         projectile.GetComponent<SuperProjectileScript>().setSender(gameObject);
         projectile.GetComponent<SuperProjectileScript>().activate(direction);
     }
@@ -1041,7 +1051,10 @@ public class LocalPlayerScript : NetworkBehaviour
         go.GetComponent<LocalPlayerScript>().cancelSuperAnimation();
         go.GetComponent<LocalPlayerScript>().stopSoundEffect(4);
         Destroy(go.GetComponent<LocalPlayerScript>().projectile);
-        Destroy(go);
+        go.GetComponent<LocalPlayerScript>().deathAnimation();
+        go.GetComponent<LocalPlayerScript>().stunTimer = 9999;
+        go.GetComponent<LocalPlayerScript>().hitstunAnimation();
+        createSoundEffect(9, 0, 1.0f);
         kills++;
 
         LocalDataTracker ldt = GameObject.Find("Data Tracker").GetComponent<LocalDataTracker>();
@@ -1050,6 +1063,19 @@ public class LocalPlayerScript : NetworkBehaviour
 
     public int getKills() {
         return kills;
+    }
+    public virtual void deathAnimation()
+    {
+        Color currentColor = gameObject.GetComponent<SpriteRenderer>().material.color;
+        if (currentColor.a > 0)
+        {
+            gameObject.GetComponent<SpriteRenderer>().material.color = new Color(currentColor.r, currentColor.g, currentColor.b, currentColor.a - Time.deltaTime);
+            Invoke("deathAnimation", Time.deltaTime);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     public void cancelSuperAnimation()
@@ -1139,7 +1165,7 @@ public class LocalPlayerScript : NetworkBehaviour
         {
             if (!hasSuper)
             {
-                createSoundEffect(5, 0, 1.0f);
+                createSoundEffect(5, 0, soundEffectsVolume);
                 superEffect(true);
             }
             hasSuper = true;
@@ -1149,7 +1175,7 @@ public class LocalPlayerScript : NetworkBehaviour
         {
             if (hasSuper)
             {
-                createSoundEffect(5, 1, 1.0f);
+                createSoundEffect(5, 1, soundEffectsVolume);
                 superEffect(false);
             }
             hasSuper = false;
@@ -1395,7 +1421,7 @@ public class LocalPlayerScript : NetworkBehaviour
             }
             else
             {
-                createSoundEffect(9, 0, 1.0f);
+                //createSoundEffect(9, 0, soundEffectsVolume);
             }
         }
 

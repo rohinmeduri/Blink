@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class NetworkedPlayerScript : LocalPlayerScript {
+public class NetworkedPlayerScript : LocalPlayerScript
+{
 
     private NetworkAnimator networkAnimator;
     private GameObject IDAssigner;
     private GameObject dataTracker;
     [SyncVar(hook = "OnPlayerNumber")]
     private int playerNumber;
+    private string[] characterStrings = { "Mage", "Rebel", "Saidon" };
 
     public override void OnStartAuthority()
     {
@@ -18,20 +20,56 @@ public class NetworkedPlayerScript : LocalPlayerScript {
             networkAnimator = GetComponent<NetworkAnimator>();
             GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
             IDAssigner = GameObject.Find("ID Assigner");
-            foreach(var i in players)
+            foreach (var i in players)
             {
-                if(i == gameObject)
+                if (i == gameObject)
                 {
-                    setPlayerID(1);
+                    setPlayerType(characterStrings[GetComponent<CharacterDataObject>().getCharacter(0)]);
                     gameObject.layer = 2;
+                    setPlayerID(1);
                 }
                 else
                 {
                     i.GetComponent<NetworkedPlayerScript>().setPlayerID(IDAssigner.GetComponent<IDAssigner>().getID());
+                    Random rnd = new Random();
+                    int playerType = (Random.Range(0, 3));
+                    if (playerType == 0)
+                    {
+                        i.GetComponent<NetworkedPlayerScript>().setPlayerType("Mage");
+                    }
+                    else if (playerType == 1)
+                    {
+                        i.GetComponent<NetworkedPlayerScript>().setPlayerType("Rebel");
+                    }
+                    else
+                    {
+                        i.GetComponent<NetworkedPlayerScript>().setPlayerType("Saidon");
+                    }
                 }
             }
             CmdNewPlayer();
         }
+    }
+
+    public override void setPlayerID(int ID)
+    {
+        if (ID == 1)
+        {
+            setColor(0);
+        }
+        else if (ID == 2)
+        {
+            setColor(1);
+        }
+        else if (ID == 3)
+        {
+            setColor(2);
+        }
+        else
+        {
+            setColor(3);
+        }
+        base.setPlayerID(ID);
     }
 
     public void setPlayerNumber(int number)
@@ -42,11 +80,11 @@ public class NetworkedPlayerScript : LocalPlayerScript {
     public void OnPlayerNumber(int num)
     {
         playerNumber = num;
-        callSetPlayerPosition(num); 
-        Debug.Log("playerNumber" + playerNumber);
+        callSetPlayerPosition(num);
     }
 
-    protected override void setPlayerPosition(int posNum){
+    protected override void setPlayerPosition(int posNum)
+    {
         return;
     }
 
@@ -75,6 +113,20 @@ public class NetworkedPlayerScript : LocalPlayerScript {
         {
             IDAssigner = GameObject.Find("ID Assigner");
             setPlayerID(IDAssigner.GetComponent<IDAssigner>().getID());
+            Random rnd = new Random();
+            int playerType = (Random.Range(0, 3));
+            if (playerType == 0)
+            {
+                GetComponent<NetworkedPlayerScript>().setPlayerType("Mage");
+            }
+            else if (playerType == 1)
+            {
+                GetComponent<NetworkedPlayerScript>().setPlayerType("Rebel");
+            }
+            else
+            {
+                GetComponent<NetworkedPlayerScript>().setPlayerType("Saidon");
+            }
         }
     }
 
@@ -255,7 +307,7 @@ public class NetworkedPlayerScript : LocalPlayerScript {
             defender.GetComponent<NetworkedPlayerScript>().baseKnockback(attacker, dir, hits);
         }
     }
-    
+
     void baseKnockback(GameObject attacker, Vector2 dir, int hits)
     {
         if (!hasAuthority)
@@ -267,7 +319,7 @@ public class NetworkedPlayerScript : LocalPlayerScript {
 
     protected override void hitstunAnimation()
     {
-       networkAnimator.SetTrigger("Hitstun");
+        networkAnimator.SetTrigger("Hitstun");
     }
 
 
@@ -321,7 +373,7 @@ public class NetworkedPlayerScript : LocalPlayerScript {
     {
         CmdSpawnSuperProjectile();
     }
-    
+
 
     [Command]
     void CmdSpawnSuperProjectile()
@@ -463,7 +515,8 @@ public class NetworkedPlayerScript : LocalPlayerScript {
     }
 
     [Command]
-    void CmdUpdateStats(int mc, int hn, int hp, int k) { 
+    void CmdUpdateStats(int mc, int hn, int hp, int k)
+    {
         RpcReplaceStats(mc, hn, hp, k);
     }
 

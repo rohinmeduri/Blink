@@ -5,6 +5,8 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class CursorScript : MonoBehaviour {
+
+    // set cursor speed
     private float CURSOR_SPEED = Screen.height / 50;
     public GameObject Canvas;
 
@@ -12,10 +14,15 @@ public class CursorScript : MonoBehaviour {
     private float disableTime = 2f;
     private float inactiveCounter;
 
-
+    // set inactive counter
     private void Start()
     {
         inactiveCounter = 0f;
+    }
+
+    public void setVisible(bool visible)
+    {
+        this.visible = visible;
     }
 
     // Update is called once per frame
@@ -25,7 +32,8 @@ public class CursorScript : MonoBehaviour {
         var xChange = Input.GetAxis("Horizontal1");
         var yChange = Input.GetAxis("Vertical1");
 
-        if(xChange == 0 && yChange == 0)
+        // check if cursor is inactive
+        if(xChange == 0 && yChange == 0 && !Input.GetButtonUp("Submit1"))
         {
             inactiveCounter += Time.deltaTime;
             if (inactiveCounter >= disableTime)
@@ -39,6 +47,7 @@ public class CursorScript : MonoBehaviour {
             visible = true;
         }
 
+        // set cursor visibility off because cursor remains from multiplayer lobby scene
         if(SceneManager.GetActiveScene().name == "Multiplayer Battle Scene")
         {
             visible = false;
@@ -48,6 +57,7 @@ public class CursorScript : MonoBehaviour {
 
         var change = new Vector3(xChange, yChange, 0);
 
+        // code to make sure the mouse stays in bounds
         GetComponent<Transform>().position = GetComponent<Transform>().position + change * CURSOR_SPEED;
         if(GetComponent<Transform>().position.x > Screen.width)
         {
