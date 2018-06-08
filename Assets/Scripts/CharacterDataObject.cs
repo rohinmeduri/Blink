@@ -70,6 +70,26 @@ public class CharacterDataObject : MonoBehaviour {
     {
         return AIDifficulties[characterIndex];
     }
+
+    //ensure at least 1 player, 1 other
+    public bool canProceed()
+    {
+        bool playerExists = false;
+        int numberOfCharacters = 0;
+
+        for (int i = 0; i < types.Length; i++)
+        {
+            if(types[i] != 2)
+            {
+                numberOfCharacters++;
+                if(types[i] == 0)
+                {
+                    playerExists = true;
+                }
+            }
+        }
+        return playerExists && (numberOfCharacters > 1);
+    }
     
     public int[] getTypesArray()
     {
