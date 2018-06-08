@@ -2647,9 +2647,9 @@ MonoBehaviour:
   place2: {fileID: 1001575471}
   place3: {fileID: 1001575470}
   place4: {fileID: 1001575469}
-  Mage: {fileID: 0}
-  Rebel: {fileID: 0}
-  Saidon: {fileID: 0}
+  Mage: {fileID: 21300000, guid: 755a0871a998ad04190bd85ab706f542, type: 3}
+  Rebel: {fileID: 21300000, guid: 615e12c6a5806694bb34b5b705c52d53, type: 3}
+  Saidon: {fileID: 21300000, guid: 6309205a35096914c8a40d79c6cd6441, type: 3}
 --- !u!4 &1206681297
 Transform:
   m_ObjectHideFlags: 0
