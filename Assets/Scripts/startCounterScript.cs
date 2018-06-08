@@ -3,19 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+//script that creates the visual countdown effect
 public class startCounterScript : MonoBehaviour {
     public Sprite fight;
     public Sprite two;
     public Sprite one;
     private float timer = 0f;
     private int number = 3;
-
-	// Use this for initialization
-	void Start () {
-
-	}
 	
-	// Update is called once per frame
+	//switch the number every second as well as resize as time progresses
 	void Update () {
         timer += Time.deltaTime;
 

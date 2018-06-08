@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+//script that handles input from the volume sliders to change the volume of the application
 public class VolumeChanger : MonoBehaviour {
     
     private void Start()
@@ -11,8 +12,6 @@ public class VolumeChanger : MonoBehaviour {
     }
     public void changeVolume(float value)
     {
-        // GameObject musicPlayer = GameObject.Find("MusicPlayer");
-        // musicPlayer.GetComponent<AudioSource>().volume = value;
         AudioListener.volume = value;
     }
 }
