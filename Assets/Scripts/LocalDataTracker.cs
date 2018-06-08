@@ -90,10 +90,13 @@ public class LocalDataTracker : NetworkBehaviour {
             {
 
                 NetworkedPlayerScript winningPlayer = GameObject.FindGameObjectWithTag("Player").GetComponent<NetworkedPlayerScript>();
+
+                winner = winningPlayer.getPlayerType();
+                Debug.Log(winner);
+
                 if (winningPlayer.getHasAuthority())
                 {
                     winningPlayer.compileData();
-                    winner = winningPlayer.getPlayerType();
                 }
             }
         }
@@ -118,7 +121,7 @@ public class LocalDataTracker : NetworkBehaviour {
         setInteractable(endScreen, true);
         endScreen.GetComponent<RectTransform>().SetAsLastSibling();
 
-        
+        GameObject.Find("Canvas").transform.Find("Cursor").GetComponent<CursorScript>().setVisible(true);
 
         if (winner.Equals("Mage"))
         {
