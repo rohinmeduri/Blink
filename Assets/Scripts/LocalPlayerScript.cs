@@ -96,6 +96,7 @@ public class LocalPlayerScript : NetworkBehaviour
     private string playerType;
     protected bool launchedSuper;
     private CanvasGroup pauseMenu;
+    private Color color;
 
     // constants
     public const float GAME_START_TIME = 4f;
@@ -312,6 +313,26 @@ public class LocalPlayerScript : NetworkBehaviour
         superEffectCreator.transform.position = gameObject.transform.position + new Vector3(0, 0, 1);
         superEffectAnimator = superEffectCreator.AddComponent<Animator>() as Animator;
         superEffectAnimator.runtimeAnimatorController = Resources.Load("VisualEffects/SuperEffect") as RuntimeAnimatorController;
+    }
+
+    public void setColor(int num)
+    {
+        if (num == 0)
+        {
+            color = new Color(1, 1, 1, 1);
+        }
+        else if (num == 1)
+        {
+            color = new Color(1, 0, 0, 1);
+        }
+        else if (num == 2)
+        {
+            color = new Color(0, 1, 0, 1);
+        }
+        else
+        {
+            color =  new Color(0, 0, 1, 1);
+        }
     }
 
     protected virtual void superEffect(bool active)
@@ -912,7 +933,7 @@ public class LocalPlayerScript : NetworkBehaviour
 
     Color getColor()
     {
-        if(playerID == 1)
+        /*if(playerID == 1)
         {
             return new Color(1, 1, 1, 1);
         }
@@ -927,7 +948,8 @@ public class LocalPlayerScript : NetworkBehaviour
         else
         {
             return new Color(0, 0, 1, 1);
-        }
+        }*/
+        return color;
     }
 
     /**

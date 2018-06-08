@@ -12,17 +12,17 @@ public class LocalPlayerSpawner : MonoBehaviour{
     private int[] AIDifficulties;
     public GameObject playerPrefab;
     public GameObject AIPrefab;
+    private bool mageChosen = false;
+    private bool rebelChosen = false;
+    private bool saidonChosen = false;
+    private int numColored = 0;
 
 	// Use this for initialization
 	void Start () {
 
         //0 is player, 1 is AI, 2 is none;
         types = GetComponent<CharacterDataObject>().getTypesArray();
-        Debug.Log("types");
-        Debug.Log(types[0]);
-        Debug.Log(types[1]);
-        Debug.Log(types[2]);
-        Debug.Log(types[3]);
+
         //0 is easy, 1 is medium, 2 is hard
         AIDifficulties = GetComponent<CharacterDataObject>().getAIDifficultiesArray();
 
@@ -43,23 +43,46 @@ public class LocalPlayerSpawner : MonoBehaviour{
                     player = Instantiate(AIPrefab);
                     player.GetComponent<PlayerAIScript>().setPlayerDifficulty(AIDifficulties[i]);
                 }
-                player.GetComponent<LocalPlayerScript>().setPlayerID(i + 1);
+
+                bool repeat = false;
+                if(characters[i] == 0)
+                {
+                    if (mageChosen)
+                    {
+                        repeat = true;
+                    }
+                    mageChosen = true;
+                }
+                else if(characters[i] == 1)
+                {
+                    if (rebelChosen)
+                    {
+                        repeat = true;
+                    }
+                    rebelChosen = true;
+                }
+                else
+                {
+                    if (saidonChosen)
+                    {
+                        repeat = true;
+                    }
+                    saidonChosen = true;
+                }
+
+                if (repeat)
+                {
+                    numColored++;
+                    player.GetComponent<LocalPlayerScript>().setColor(numColored);
+                }
+                else
+                {
+                    player.GetComponent<LocalPlayerScript>().setColor(0);
+                }
+
                 player.GetComponent<LocalPlayerScript>().setPlayerType(characterStrings[characters[i]]);
+                player.GetComponent<LocalPlayerScript>().setPlayerID(i + 1);
             }
         }
-        /*for (int i = 1; i <= numPlayers + numAIs; i++)
-        {
-            GameObject player;
-            if (i <= numPlayers)
-            {
-                player = Instantiate(playerPrefab);
-            }
-            else
-            {
-                player = Instantiate(AIPrefab);
-                player.GetComponent<PlayerAIScript>().setPlayerDifficulty(AIDifficulties[i - 1 - numPlayers]);
-            }
-            player.GetComponent<LocalPlayerScript>().setPlayerID(i);
-        }*/
 	}
 }
