@@ -670,7 +670,7 @@ public class LocalPlayerScript : NetworkBehaviour
     /**
      * Script for Jumping
      */
-    void jump()
+    protected void jump()
     {
         // checks if touching walls
         if (jumpInput && canJump)
@@ -714,10 +714,18 @@ public class LocalPlayerScript : NetworkBehaviour
         }
     }
 
+    public void disableJump()
+    {
+        jumpInput = false;
+    }
+
+    public void enableJump() {
+        jumpInput = Input.GetAxisRaw(("Jump" + controllerID)) != 0;
+    }
     /**
      * Script for applying gravity
      */
-    void gravity()
+    protected void gravity()
     {
 
         // set falling terminal velocity
@@ -749,7 +757,7 @@ public class LocalPlayerScript : NetworkBehaviour
     /**
      * Script for attacking
      */
-    void attack()
+    protected void attack()
     {
         if (attackInput)
         {
@@ -947,6 +955,11 @@ public class LocalPlayerScript : NetworkBehaviour
         }
     }
 
+    public bool reversaled() {
+        Debug.Log(reversalLanded);
+        return reversalLanded;
+    }
+
     protected virtual void reversalAnimation()
     {
         //trigger animation
@@ -970,6 +983,10 @@ public class LocalPlayerScript : NetworkBehaviour
             startedSuper = true;
             superAnimation();
         }
+    }
+
+    public bool canSuper() {
+        return hasSuper;
     }
 
     protected virtual void spawnSuper()
@@ -1029,6 +1046,10 @@ public class LocalPlayerScript : NetworkBehaviour
 
         LocalDataTracker ldt = GameObject.Find("Data Tracker").GetComponent<LocalDataTracker>();
         ldt.playerDeath(go, gameObject);
+    }
+
+    public int getKills() {
+        return kills;
     }
 
     public void cancelSuperAnimation()
@@ -1540,5 +1561,9 @@ public class LocalPlayerScript : NetworkBehaviour
         int[] output = {playerID, maxCombo, hitNumber, hitPercentage, kills };
 
         return output;
+    }
+
+    public Rigidbody2D getRB() {
+        return rb2D;
     }
 }

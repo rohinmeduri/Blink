@@ -1,15 +1,12 @@
-Perform combos to gain Glory. With enough Glory, you will be granted permission to finish your opponent!
+Perform combos to gain Glory. With enough Glory, you will be granted permission to finish your opponent! Keep this goal in mind. Let us begin!
 Keep this goal in mind. Let us begin!
-Use joystick to move. 
+Use the joystick to move. 
 Press 'A' to jump. 
-Press 'X' to attack.
-Move the joystick up and press 'X' to launch an upwards attack.
-Move the joystick down and press 'X' to launch a downwards attack.
+Press 'X' to attack. Input any direction with the joystick and press attack to launch an attack in that direction.
 Press 'B' to blink. Aim with joystick.
-Look! A challenger! Looks like they're about to attack. Press 'Y' to block it!
-This is your Glory meter. Fill it up to unlock your Super attack. The meter fills when you successfully land attacks or reversals.
+Look! A challenger is approaching! Press 'Y' to reverse their attack.
+This is your Glory meter. Fill it up to unlock your Super attack. The meter fills when you successfully land attacks or reversals. (press A to proceed)
 Attack the challenger.
-Notice that the challenger entered "hit stun" when you attacked them. When you are in hit stun, you cannot perform any actions, but you can still affect you trajectory with the joystick.
-String together multiple attacks to get a combo! Combos will fill your meter faster.
+Notice that the challenger entered "hit stun" when you attacked them. When you are in hit stun, you cannot perform any actions, but you can still affect your trajectory with the joystick. (press A to proceed)
+String together multiple attacks to get a combo! Combos will fill your meter faster. Fill your meter right now by attacking the Dummy.
 Looks like you unlocked your Super! Press the right bumper to launch it! Aim with your joystick.
-Amazing! You're ready to fight.

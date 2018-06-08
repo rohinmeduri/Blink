@@ -5,73 +5,94 @@ using UnityEngine.UI;
 using System.IO;
 using System.Text.RegularExpressions;
 
-public class TutorialStepManager : MonoBehaviour {
+public class TutorialStepManager : MonoBehaviour
+{
 
     public GameObject localPlayer;
+    public GameObject tutorialDummy;
 
-    public int tutorialStep = 0; //current step tutorial is on
+    private int tutorialStep; //current step tutorial is on
     public Text instructions;
+
+    CanvasGroup endScreen;
+
 
     private int line = 0;
 
     private bool moveRight = false;
     private bool moveLeft = false;
-    private bool nextStep = true; //is the tutorial moving on to the next step
+    private bool canJump = true;
     private string[] tutorialText; //will contain the tutorial instructions
-	
-	void Start () {
+
+    void Start()
+    {
+        tutorialStep = 0;
         localPlayer = GameObject.Find("Local Player");
+        tutorialDummy = GameObject.Find("TutorialDummy");
 
         tutorialText = read();
 
-        for (int i = 0; i < tutorialText.Length; i++){
+        for (int i = 0; i < tutorialText.Length; i++)
+        {
             Debug.Log(tutorialText[i]);
         }
-	}
 
-    void Update() { 
-            switch (tutorialStep)
-            {
-                case 1:
-                    uAir();
-                    break;
-                case 2:
-                    uAir();
-                    break;
-                case 3:
-                    uAir();
-                    break;
-                case 4:
-                    movement();
-                    break;
-                case 5:
-                    jump();
-                    break;
-                case 6:
-                    attack();
-                    break;
-                case 7:
-                    uAir();
-                    break;
-                case 8:
-                    dAir();
-                    break;
-                case 9:
-                    blink();
-                    break;
-                case 10:
-                    reversal();
-                    break;
-                case 11:
-                    super();
-                    break;
-                default:
-                    break;
-            }
-        
+        tutorialDummy.SetActive(false);
+
+        endScreen = GameObject.Find("End Screen").GetComponent<CanvasGroup>();
     }
 
-    string[] read() { //reads text file and organizes each line into a string array
+    void Update()
+    {
+        switch (tutorialStep) //runs different 
+        {
+            case 0:
+                checkInputA();
+                break;
+            case 1:
+                checkInputA();
+                break;
+            case 2:
+                movement();
+                break;
+            case 3:
+                jump();
+                break;
+            case 4:
+                attack();
+                break;
+            case 5:
+                blink();
+                break;
+            case 6:
+                reversal();
+                break;
+            case 7:
+                glory();
+                break;
+            case 8:
+                attackDummy();
+                break;
+            case 9:
+                notice();
+                break;
+            case 10:
+                combo();
+                break;
+            case 11:
+                super();
+                break;
+            case 12:
+                endScreenDisplay();
+                break;
+            default:
+                break;
+        }
+
+    }
+
+    string[] read()
+    { //reads text file and organizes each line into a string array
 
         FileStream fStream = new FileStream("Assets/Resources/TutorialText.txt", FileMode.Open);
         string instructions = "";
@@ -80,77 +101,132 @@ public class TutorialStepManager : MonoBehaviour {
             instructions = fReader.ReadToEnd();
         }
 
-        string [] result = Regex.Split(instructions, "\r\n?|\n", RegexOptions.Singleline); //checks for "enter" in the text file, and splits string accordingly
+        string[] result = Regex.Split(instructions, "\r\n?|\n", RegexOptions.Singleline); //checks for "enter" in the text file, and splits string accordingly
 
-        return result; 
+        return result;
     }
-    void checkInput() {
-       localPlayer.GetComponent<LocalPlayerScript>().
-       if(Input.GetAxisRaw()) 
-    }
-
-    void jump() {
-
-    }
-
-    void attack() {
-
-    }
-    IEnumerator introCoroutine(System.Action<bool> callback, bool wait, string action)
+    void checkInputA()
     {
-        while (wait)
+        localPlayer.GetComponent<LocalPlayerScript>().disableJump();
+        if (Input.GetAxisRaw("Jump1") != 0 && canJump)
         {
-            if (Input.GetAxisRaw(action + 1) != 0)
-            {
-                displayLine(line);
-                wait = false;
-                line += 1;
-                yield return new WaitForSeconds(1.5f);
-                callback(true);
-            }
-            yield return null;
+            canJump = false;
+            instructions.text = tutorialText[line];
+            line++;
+            tutorialStep++;
+        }
+        if (Input.GetAxisRaw("Jump1") == 0) canJump = true;
+    }
+
+    void movement()
+    {
+        instructions.text = tutorialText[line];
+        if (Input.GetAxisRaw("Horizontal1") > 0)
+        {
+            moveRight = true;
+        }
+        if (Input.GetAxisRaw("Horizontal1") < 0)
+        {
+            moveLeft = true;
+        }
+        if (moveLeft && moveRight)
+        {
+            tutorialStep++;
+            line++;
         }
     }
-
-
-    void uAir()
+    void jump()
     {
-        StartCoroutine(waitInput(true, "Jump"));
+        instructions.text = tutorialText[line];
+        if (Input.GetAxisRaw("Jump1") != 0)
+        {
+            line++;
+            tutorialStep++;
+        }
+        Debug.Log("jump" + tutorialStep + ", " + line);
     }
 
-    void dAir()
+    void attack()
     {
-
+        instructions.text = tutorialText[line];
+        if (Input.GetAxisRaw("Attack1") != 0)
+        {
+            tutorialStep++;
+            line++;
+        }
     }
 
     void blink()
     {
-
+        Debug.Log(tutorialStep);
+        instructions.text = tutorialText[line];
+        if (Input.GetAxisRaw("Blink1") != 0)
+        {
+            tutorialStep++;
+            line++;
+        }
     }
 
     void reversal()
     {
+        tutorialDummy.SetActive(true);
+        instructions.text = tutorialText[line];
+        if (localPlayer.GetComponent<LocalPlayerScript>().reversaled())
+        {
 
+            tutorialStep++;
+            line++;
+            instructions.text = tutorialText[line];
+        }
+        Debug.Log(tutorialStep);
     }
 
     void super()
     {
-
-    }
-
-    void displayLine(int i) {
-        instructions.text = tutorialText[i];
-    }
-
-    IEnumerator waitInput(bool wait, string action) {
-        while (wait) {
-            if (Input.GetAxisRaw(action + 1) != 0) {
-                displayLine(line);
-                wait = false;
-                line += 1;
-                yield return new WaitForSeconds(1.5f);
+            instructions.text = tutorialText[line];
+            if (localPlayer.GetComponent<LocalPlayerScript>().getKills() > 0) {
+                tutorialStep++;
             }
-            yield return null;
+          
+    }
+
+    void glory()
+    {
+        checkInputA();
+    }
+
+    void notice()
+    {
+        checkInputA();
+        instructions.text = tutorialText[line];
+    }
+
+    void attackDummy()
+    {
+        attack();
+        instructions.text = tutorialText[line];
+    }
+
+    void combo()
+    {
+        if (localPlayer.GetComponent<LocalPlayerScript>().canSuper()) {
+            tutorialStep++;
+            line++;
+        }
+    }
+
+    void endScreenDisplay() {
+        endScreen.alpha = 1;
+        setInteractable(endScreen, true);
+        endScreen.GetComponent<RectTransform>().SetAsLastSibling();
+    }
+
+    private void setInteractable(CanvasGroup go, bool interactable)
+    {
+        go.interactable = interactable;
+        foreach (Button child in go.GetComponentsInChildren<Button>())
+        {
+            child.interactable = interactable;
         }
     }
 }
