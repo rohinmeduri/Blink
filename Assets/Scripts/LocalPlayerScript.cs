@@ -36,6 +36,7 @@ public class LocalPlayerScript : NetworkBehaviour
     public GameObject mageBlinkIn;
     public GameObject rebelBlinkIn;
     public GameObject saidonBlinkIn;
+    public float soundEffectsVolume = 1f;
 
     // private variables
     private float startCounter = 0;
@@ -754,7 +755,7 @@ public class LocalPlayerScript : NetworkBehaviour
         if (attackInput)
         {
             // 2-attackType() maps {2, 1, 0, -1, -2} to {0, 1, 2, 3, 4}
-            createSoundEffect(0, 2-attackType(), 1f);
+            createSoundEffect(0, 2-attackType(), soundEffectsVolume);
 
             float angle = Mathf.Atan2(getDirection().x, getDirection().y);
 
@@ -775,8 +776,8 @@ public class LocalPlayerScript : NetworkBehaviour
                 rb2D.velocity = Vector2.zero;
                 attackLanded = true;
                 createVisualEffect(5);
-                createSoundEffect(2, 0, Mathf.Max(1f-1f*comboHits/5, 0));
-                createSoundEffect(3, 0, Mathf.Min(1f*comboHits/5, 1));
+                createSoundEffect(2, 0, soundEffectsVolume * Mathf.Max(1f-1f*comboHits/5, 0));
+                createSoundEffect(3, 0, soundEffectsVolume * Mathf.Min(1f*comboHits/5, 1));
 
                 comboHits++;
                 var trueHit = (comboHitInterval <= STUN_DURATION) && (comboHits > 1);
@@ -808,7 +809,7 @@ public class LocalPlayerScript : NetworkBehaviour
     {
         if (blinkInput && blinkFrames <= 0)
         {
-            createSoundEffect(1, 0, 1.0f);
+            createSoundEffect(1, 0, soundEffectsVolume);
             switch (characterSelection) {
                 case 1:
                     blinkTimer = BLINK_TIME;
@@ -962,7 +963,7 @@ public class LocalPlayerScript : NetworkBehaviour
         if (hasSuper && superInput)
         {
             //cancel momentum
-            createSoundEffect(4, 0, 1f);
+            createSoundEffect(4, 0, soundEffectsVolume);
             spawnSuper();
             rb2D.velocity = Vector2.zero;
             actionLock = true;
@@ -1118,7 +1119,7 @@ public class LocalPlayerScript : NetworkBehaviour
         {
             if (!hasSuper)
             {
-                createSoundEffect(5, 0, 1.0f);
+                createSoundEffect(5, 0, soundEffectsVolume);
                 superEffect(true);
             }
             hasSuper = true;
@@ -1128,7 +1129,7 @@ public class LocalPlayerScript : NetworkBehaviour
         {
             if (hasSuper)
             {
-                createSoundEffect(5, 1, 1.0f);
+                createSoundEffect(5, 1, soundEffectsVolume);
                 superEffect(false);
             }
             hasSuper = false;
@@ -1374,7 +1375,7 @@ public class LocalPlayerScript : NetworkBehaviour
             }
             else
             {
-                createSoundEffect(9, 0, 1.0f);
+                createSoundEffect(9, 0, soundEffectsVolume);
             }
         }
 

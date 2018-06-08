@@ -8,7 +8,7 @@ public class CameraShake : MonoBehaviour {
 
     float shakeIntensity;
     float shakeDecay;
-    float intensityMultipler = 1f;
+    static float intensityMultiplier = 1f;
     float xChange = 0;
     float yChange = 0;
     Vector3 difference;
@@ -95,7 +95,7 @@ public class CameraShake : MonoBehaviour {
     {
         xChange = 0;
         yChange = 0;
-        shakeIntensity = intensity * intensityMultipler;
+        shakeIntensity = intensity * intensityMultiplier;
         if(shakeIntensity > 1.5f)
         {
             shakeIntensity = 1.5f;
@@ -117,6 +117,11 @@ public class CameraShake : MonoBehaviour {
 
     public void changeShakeIntensity(float multiplier)
     {
-        intensityMultipler = multiplier;
+        intensityMultiplier = multiplier;
+    }
+
+    public float getIntensityMultiplier()
+    {
+        return intensityMultiplier;
     }
 }
