@@ -7,8 +7,11 @@ public class BlinkAnimationScript : MonoBehaviour {
 
     private float timeCounter = 0;
 	
-	// Update is called once per frame
+	/*
+     *This script controls the blink gameObject that is left behind when a player blinks
+     */
 	void Update () {
+        //destroy the gameObject once the blink animation is complete
         timeCounter += Time.deltaTime;
         if(timeCounter >= ANIMATION_TIME)
         {
