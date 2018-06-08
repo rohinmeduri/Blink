@@ -121,7 +121,7 @@ public class LocalDataTracker : NetworkBehaviour {
         setInteractable(endScreen, true);
         endScreen.GetComponent<RectTransform>().SetAsLastSibling();
 
-        GameObject.Find("Canvas").transform.Find("Cursor").GetComponent<CursorScript>().setVisible(true);
+        GameObject.Find("Canvas").transform.Find("End Screen").transform.Find("Cursor").GetComponent<CursorScript>().setVisible(true);
 
         if (winner.Equals("Mage"))
         {
