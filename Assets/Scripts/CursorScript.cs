@@ -25,7 +25,7 @@ public class CursorScript : MonoBehaviour {
         var xChange = Input.GetAxis("Horizontal1");
         var yChange = Input.GetAxis("Vertical1");
 
-        if(xChange == 0 && yChange == 0)
+        if(xChange == 0 && yChange == 0 && !Input.GetButtonUp("Submit1"))
         {
             inactiveCounter += Time.deltaTime;
             if (inactiveCounter >= disableTime)

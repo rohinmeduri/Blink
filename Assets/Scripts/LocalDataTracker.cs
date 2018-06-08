@@ -11,6 +11,12 @@ public class LocalDataTracker : NetworkBehaviour {
     public Text place3;
     public Text place4;
 
+    public Sprite Mage;
+    public Sprite Rebel;
+    public Sprite Saidon;
+
+    private string winner;
+
     CanvasGroup endScreen;
 
     //private ChangePlayerNumber cpn;
@@ -51,6 +57,8 @@ public class LocalDataTracker : NetworkBehaviour {
 
     public virtual void playerDeath(GameObject lostPlayer, GameObject wonPlayer)
     {
+        winner = wonPlayer.GetComponent<LocalPlayerScript>().getPlayerType();
+
         LocalPlayerScript lostPlayerScript = lostPlayer.GetComponent<LocalPlayerScript>();
         LocalPlayerScript wonPlayerScript = wonPlayer.GetComponent<LocalPlayerScript>();
 
@@ -63,6 +71,7 @@ public class LocalDataTracker : NetworkBehaviour {
         numberAlive--;
         if(numberAlive == 1)
         {
+
             displayResults();
             GameObject.Find("MusicPlayer").GetComponent<MusicPlayerScript>().playVictory();
         }
@@ -84,6 +93,7 @@ public class LocalDataTracker : NetworkBehaviour {
                 if (winningPlayer.getHasAuthority())
                 {
                     winningPlayer.compileData();
+                    winner = winningPlayer.getPlayerType();
                 }
             }
         }
@@ -107,6 +117,23 @@ public class LocalDataTracker : NetworkBehaviour {
         endScreen.alpha = 1;
         setInteractable(endScreen, true);
         endScreen.GetComponent<RectTransform>().SetAsLastSibling();
+
+        ;
+
+        if (winner.Equals("Mage"))
+        {
+            endScreen.transform.Find("WinnerName").GetComponent<Image>().sprite = Mage;
+        }
+        else if (winner.Equals("Rebel"))
+        {
+            endScreen.transform.Find("WinnerName").GetComponent<Image>().sprite = Rebel;
+
+        }
+        else if (winner.Equals("Saidon"))
+        {
+            endScreen.transform.Find("WinnerName").GetComponent<Image>().sprite = Rebel;
+
+        }
 
         place1.text = "1st\n" + formatStats(placing[0]);
         place2.text = "2nd\n" + formatStats(placing[1]);
