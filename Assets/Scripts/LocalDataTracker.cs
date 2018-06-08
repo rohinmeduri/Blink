@@ -73,7 +73,7 @@ public class LocalDataTracker : NetworkBehaviour {
         {
 
             displayResults();
-            GameObject.Find("MusicPlayer").GetComponent<MusicPlayerScript>().playVictory();
+            GameObject.Find("MusicPlayer").GetComponent<MusicPlayerScript>().queueVictory();
         }
     }
 
@@ -118,7 +118,7 @@ public class LocalDataTracker : NetworkBehaviour {
         setInteractable(endScreen, true);
         endScreen.GetComponent<RectTransform>().SetAsLastSibling();
 
-        ;
+        
 
         if (winner.Equals("Mage"))
         {
