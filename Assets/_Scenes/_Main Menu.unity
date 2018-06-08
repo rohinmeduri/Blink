@@ -2652,8 +2652,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eacfb6cb2391cbe4cb8e8542eadb6f5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioSource: {fileID: 0}
   menuMusic: {fileID: 8300000, guid: 958a4befd60e6fa4caf830101a7fb808, type: 3}
   battleMusic: {fileID: 8300000, guid: 459ba5ccb0412354cbe523abba074b8d, type: 3}
+  operaticMusic: {fileID: 8300000, guid: 1386f6fe776fd6042b58450822e13360, type: 3}
   victoryMusic: {fileID: 8300000, guid: 1dc8e421411135e4a8ada16c0093984d, type: 3}
 --- !u!1 &1840086953
 GameObject:

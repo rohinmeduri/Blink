@@ -44,11 +44,11 @@ public class MusicPlayerScript : MonoBehaviour {
             if (lobbyScene)
             {
                 audioSource.clip = menuMusic;
-            }
+            }/*
             else
             {
                 audioSource.clip = battleMusic;
-            }
+            }*/
 
             audioSource.PlayDelayed(0.5f);
         }
