@@ -515,7 +515,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -115.5, y: 206.67}
+  m_AnchoredPosition: {x: 17, y: 176.67}
   m_SizeDelta: {x: 1087.3, y: 195.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &287926090
@@ -1343,6 +1343,74 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 500794390}
+--- !u!1 &545895502
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 545895503}
+  - component: {fileID: 545895505}
+  - component: {fileID: 545895504}
+  m_Layer: 5
+  m_Name: TextBorder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &545895503
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 545895502}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.2262142, y: 1.0899689, z: 1.0899689}
+  m_Children: []
+  m_Father: {fileID: 1669838878}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -0.5, y: 240.67}
+  m_SizeDelta: {x: 1400.3, y: 240}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &545895504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 545895502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300000, guid: 91b61d93940146b44a47dc975f80817b, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+--- !u!222 &545895505
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 545895502}
 --- !u!1 &573231214
 GameObject:
   m_ObjectHideFlags: 0
@@ -1722,8 +1790,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eacfb6cb2391cbe4cb8e8542eadb6f5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioSource: {fileID: 0}
   menuMusic: {fileID: 8300000, guid: 958a4befd60e6fa4caf830101a7fb808, type: 3}
   battleMusic: {fileID: 8300000, guid: 459ba5ccb0412354cbe523abba074b8d, type: 3}
+  operaticMusic: {fileID: 0}
   victoryMusic: {fileID: 8300000, guid: 1dc8e421411135e4a8ada16c0093984d, type: 3}
 --- !u!82 &736444235
 AudioSource:
@@ -4478,6 +4548,7 @@ RectTransform:
   - {fileID: 1060359619}
   - {fileID: 287926089}
   - {fileID: 2118795900}
+  - {fileID: 545895503}
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5364,6 +5435,9 @@ MonoBehaviour:
   place2: {fileID: 0}
   place3: {fileID: 0}
   place4: {fileID: 0}
+  Mage: {fileID: 0}
+  Rebel: {fileID: 0}
+  Saidon: {fileID: 0}
 --- !u!4 &2034839394
 Transform:
   m_ObjectHideFlags: 0

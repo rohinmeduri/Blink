@@ -9,13 +9,16 @@ public class TutorialDummyScript : LocalPlayerScript {
 
 	// Use this for initialization
 	override protected void Start () {
-        setPlayerID(2);
-        base.Start();
+        setColor(0);    //sets standard color fill of character
+        setPlayerID(2); //sets player ID and controller
+        setPlayerType("Rebel"); //sets character type
+ 
+        base.Start(); //inherits Start() from LocalPlayerScript
 	}
-    protected override void Update()
+    protected override void Update() //basic attack and phyiscs functions of the dummy
     {
         time += Time.deltaTime;
-        if(time > 3 && canAttack)
+        if(time > 3 && canAttack) //attacks periodically
         {
             time = 0;
             attackInput = true;
@@ -26,15 +29,15 @@ public class TutorialDummyScript : LocalPlayerScript {
             canAttack = true;
             attackInput = false;
         }
-        gravity();
-        jump();
-        attack();
+        gravity();   //gravity logic and physics
+        jump(); // jump input logic and physics
+        attack(); //attacking logic and physics  
     }
 
 
     protected override void assignInputs()
     {
-        deadInputs();
+        deadInputs(); //overrides assignInputs to set all of the inputs to false and effectively freeze the dummy
     }
     
 }

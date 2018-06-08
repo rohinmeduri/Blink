@@ -8,43 +8,38 @@ using System.Text.RegularExpressions;
 public class TutorialStepManager : MonoBehaviour
 {
 
-    public GameObject localPlayer;
-    public GameObject tutorialDummy;
+    public GameObject localPlayer; //Local Player Object
+    public GameObject tutorialDummy; //Tutorial Dummy Question
 
     private int tutorialStep; //current step tutorial is on
-    public Text instructions;
+    public Text instructions; //Text box being displayed 
 
     CanvasGroup endScreen;
 
 
-    private int line = 0;
+    private int line = 0; 
 
-    private bool moveRight = false;
-    private bool moveLeft = false;
-    private bool canJump = true;
+    private bool moveRight = false; //moveRight and moveLeft are used to determine  
+    private bool moveLeft = false; //if the player has properly tested out horizaontal movement
+    private bool canJump = true; //variable used to prevemt jump from being held  
     private string[] tutorialText; //will contain the tutorial instructions
 
     void Start()
     {
         tutorialStep = 0;
-        localPlayer = GameObject.Find("Local Player");
-        tutorialDummy = GameObject.Find("TutorialDummy");
+        localPlayer = GameObject.Find("Local Player"); //reference to player-controlled sprite
+        tutorialDummy = GameObject.Find("TutorialDummy"); //reference to tutorial dummy
 
-        tutorialText = read();
+        tutorialText = read(); //parses out each line of text file into a string array
 
-        for (int i = 0; i < tutorialText.Length; i++)
-        {
-            Debug.Log(tutorialText[i]);
-        }
+        tutorialDummy.SetActive(false); //temporarily deactivates tutorial dummy
 
-        tutorialDummy.SetActive(false);
-
-        endScreen = GameObject.Find("End Screen").GetComponent<CanvasGroup>();
+        endScreen = GameObject.Find("End Screen").GetComponent<CanvasGroup>(); //defines endScreen
     }
 
     void Update()
     {
-        switch (tutorialStep) //runs different 
+        switch (tutorialStep) //runs different tutorial logic depending on what step the player is currently on
         {
             case 0:
                 checkInputA();
@@ -94,42 +89,43 @@ public class TutorialStepManager : MonoBehaviour
     string[] read()
     { //reads text file and organizes each line into a string array
 
-        FileStream fStream = new FileStream("Assets/Resources/TutorialText.txt", FileMode.Open);
+        FileStream fStream = new FileStream("Assets/Resources/TutorialText.txt", FileMode.Open); //loads file Tutorial.txt
         string instructions = "";
         using (StreamReader fReader = new StreamReader(fStream, true))
         {
-            instructions = fReader.ReadToEnd();
+            instructions = fReader.ReadToEnd(); //puts contents of Tutorial.txt into one string
         }
 
-        string[] result = Regex.Split(instructions, "\r\n?|\n", RegexOptions.Singleline); //checks for "enter" in the text file, and splits string accordingly
+        string[] result = Regex.Split(instructions, "\r\n?|\n", RegexOptions.Singleline); //checks for "enter" in the text fil
+                                                                                          //and splits string accordingly
 
         return result;
     }
     void checkInputA()
     {
-        localPlayer.GetComponent<LocalPlayerScript>().disableJump();
+        localPlayer.GetComponent<LocalPlayerScript>().disableJump(); //disables jump
         if (Input.GetAxisRaw("Jump1") != 0 && canJump)
         {
             canJump = false;
-            instructions.text = tutorialText[line];
-            line++;
-            tutorialStep++;
+            instructions.text = tutorialText[line]; //displays text from array
+            line++; //advances "line" used to determine place in tutorialText array
+            tutorialStep++; //advances tutorialStep to move on in the switch-case statement
         }
-        if (Input.GetAxisRaw("Jump1") == 0) canJump = true;
+        if (Input.GetAxisRaw("Jump1") == 0) canJump = true; //allows jumpInput
     }
 
     void movement()
     {
         instructions.text = tutorialText[line];
-        if (Input.GetAxisRaw("Horizontal1") > 0)
+        if (Input.GetAxisRaw("Horizontal1") > 0) //checks moving right
         {
             moveRight = true;
         }
-        if (Input.GetAxisRaw("Horizontal1") < 0)
+        if (Input.GetAxisRaw("Horizontal1") < 0) //checks moving left
         {
             moveLeft = true;
         }
-        if (moveLeft && moveRight)
+        if (moveLeft && moveRight) //checks movement practice
         {
             tutorialStep++;
             line++;
@@ -143,13 +139,12 @@ public class TutorialStepManager : MonoBehaviour
             line++;
             tutorialStep++;
         }
-        Debug.Log("jump" + tutorialStep + ", " + line);
     }
 
     void attack()
     {
         instructions.text = tutorialText[line];
-        if (Input.GetAxisRaw("Attack1") != 0)
+        if (Input.GetAxisRaw("Attack1") != 0) //looks for attack input
         {
             tutorialStep++;
             line++;
@@ -158,9 +153,8 @@ public class TutorialStepManager : MonoBehaviour
 
     void blink()
     {
-        Debug.Log(tutorialStep);
         instructions.text = tutorialText[line];
-        if (Input.GetAxisRaw("Blink1") != 0)
+        if (Input.GetAxisRaw("Blink1") != 0) //looks for blink input
         {
             tutorialStep++;
             line++;
@@ -171,14 +165,12 @@ public class TutorialStepManager : MonoBehaviour
     {
         tutorialDummy.SetActive(true);
         instructions.text = tutorialText[line];
-        if (localPlayer.GetComponent<LocalPlayerScript>().reversaled())
+        if (localPlayer.GetComponent<LocalPlayerScript>().reversaled()) // looks for successful Blink
         {
-
             tutorialStep++;
             line++;
             instructions.text = tutorialText[line];
         }
-        Debug.Log(tutorialStep);
     }
 
     void super()
@@ -186,8 +178,7 @@ public class TutorialStepManager : MonoBehaviour
             instructions.text = tutorialText[line];
             if (localPlayer.GetComponent<LocalPlayerScript>().getKills() > 0) {
                 tutorialStep++;
-            }
-          
+            } 
     }
 
     void glory()
@@ -209,15 +200,15 @@ public class TutorialStepManager : MonoBehaviour
 
     void combo()
     {
-        if (localPlayer.GetComponent<LocalPlayerScript>().canSuper()) {
+        if (localPlayer.GetComponent<LocalPlayerScript>().canSuper()) {//checks for filled glory meter
             tutorialStep++;
             line++;
         }
     }
 
     void endScreenDisplay() {
-        endScreen.alpha = 1;
-        setInteractable(endScreen, true);
+        endScreen.alpha = 1; //sets transparency of window to opague 
+        setInteractable(endScreen, true); //allows interaction with end window
         endScreen.GetComponent<RectTransform>().SetAsLastSibling();
     }
 

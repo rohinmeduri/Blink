@@ -11,8 +11,8 @@ public class StageSelectScript : MonoBehaviour {
 	// Use this for initialization
     public void stageClick()
     {
-        preview.GetComponent<Image>().sprite = stage;
-        GameObject.Find("Stage Data Holder").GetComponent<StageDataScript>().stage = stage;
-        GameObject.Find("Stage Data Holder").GetComponent<StageDataScript>().frame = frame;
+        preview.GetComponent<Image>().sprite = stage; // establishes stage sprite
+        GameObject.Find("Stage Data Holder").GetComponent<StageDataScript>().stage = stage; //sets StageDataScript.stage = to current stage
+        GameObject.Find("Stage Data Holder").GetComponent<StageDataScript>().frame = frame; // sets StageDataScript.stage = to current frame
     }
 }
