@@ -123,7 +123,7 @@ public class NetworkedPlayerScript : LocalPlayerScript
     //this function is called on all other clients when a new player is created so that it can be initialized properly
     public void newPlayer()
     {
-        if (!hasAuthority)
+        if (!hasAuthority && (getPlayerID() == 0))
         {
             IDAssigner = GameObject.Find("ID Assigner");
             GetComponent<NetworkedPlayerScript>().setPlayerID(IDAssigner.GetComponent<IDAssigner>().getID());
