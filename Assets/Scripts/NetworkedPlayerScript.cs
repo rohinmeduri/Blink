@@ -11,6 +11,10 @@ public class NetworkedPlayerScript : LocalPlayerScript {
     [SyncVar(hook = "OnPlayerNumber")]
     private int playerNumber;
     private string[] characterStrings = { "Mage", "Rebel", "Saidon" };
+    private static bool mageChosen = false;
+    private static bool rebelChosen = false;
+    private static bool saidonChosen = false;
+    private static int numColored = 0;
 
     public override void OnStartAuthority()
     {
@@ -21,29 +25,71 @@ public class NetworkedPlayerScript : LocalPlayerScript {
             IDAssigner = GameObject.Find("ID Assigner");
             foreach(var i in players)
             {
-                if(i == gameObject)
+                if (i == gameObject)
                 {
-                    setPlayerID(1);
+
                     setPlayerType(characterStrings[GetComponent<CharacterDataObject>().getCharacter(0)]);
+                    if (GetComponent<CharacterDataObject>().getCharacter(0) == 0)
+                    {
+                        mageChosen = true;
+                    }
+                    else if (GetComponent<CharacterDataObject>().getCharacter(0) == 1)
+                    {
+                        rebelChosen = true;
+                    }
+                    else
+                    {
+                        saidonChosen = true;
+                    }
                     gameObject.layer = 2;
+                    setColor(0);
+                    setPlayerID(1);
                 }
-                else
+            }
+            foreach(var i in players)
+            {
+                if(i != gameObject)
                 {
-                    i.GetComponent<NetworkedPlayerScript>().setPlayerID(IDAssigner.GetComponent<IDAssigner>().getID());
                     Random rnd = new Random();
                     int playerType = (Random.Range(0,3));
+                    bool repeat = false;
                     if (playerType == 0)
                     {
-                        i.GetComponent<NetworkedPlayerScript>().setPlayerType("Saidon");
+                        i.GetComponent<NetworkedPlayerScript>().setPlayerType("Mage");
+                        if (mageChosen)
+                        {
+                            repeat = true;
+                        }
+                        mageChosen = true;
                     }
                     else if(playerType == 1)
                     {
                         i.GetComponent<NetworkedPlayerScript>().setPlayerType("Rebel");
+                        if (rebelChosen)
+                        {
+                            repeat = true;
+                        }
+                        rebelChosen = true;
                     }
                     else
                     {
                         i.GetComponent<NetworkedPlayerScript>().setPlayerType("Saidon");
+                        if (saidonChosen)
+                        {
+                            repeat = true;
+                        }
+                        saidonChosen = true;
                     }
+                    if (repeat)
+                    {
+                        numColored++;
+                        i.GetComponent<LocalPlayerScript>().setColor(numColored);
+                    }
+                    else
+                    {
+                        i.GetComponent<LocalPlayerScript>().setColor(0);
+                    }
+                    i.GetComponent<NetworkedPlayerScript>().setPlayerID(IDAssigner.GetComponent<IDAssigner>().getID());
                 }
             }
             CmdNewPlayer();
@@ -89,21 +135,46 @@ public class NetworkedPlayerScript : LocalPlayerScript {
         if (!hasAuthority && (getPlayerID() == 0))
         {
             IDAssigner = GameObject.Find("ID Assigner");
-            setPlayerID(IDAssigner.GetComponent<IDAssigner>().getID());
             Random rnd = new Random();
             int playerType = (Random.Range(0, 3));
+            bool repeat = false;
             if (playerType == 0)
             {
-                GetComponent<NetworkedPlayerScript>().setPlayerType("Mage");
+                setPlayerType("Mage");
+                if (mageChosen)
+                {
+                    repeat = true;
+                }
+                mageChosen = true;
             }
             else if (playerType == 1)
             {
-                GetComponent<NetworkedPlayerScript>().setPlayerType("Rebel");
+                setPlayerType("Rebel");
+                if (rebelChosen)
+                {
+                    repeat = true;
+                }
+                rebelChosen = true;
             }
             else
             {
-                GetComponent<NetworkedPlayerScript>().setPlayerType("Saidon");
+                setPlayerType("Saidon");
+                if (saidonChosen)
+                {
+                    repeat = true;
+                }
+                saidonChosen = true;
             }
+            if (repeat)
+            {
+                numColored++;
+                setColor(numColored);
+            }
+            else
+            {
+                setColor(0);
+            }
+            setPlayerID(IDAssigner.GetComponent<IDAssigner>().getID());
         }
     }
 

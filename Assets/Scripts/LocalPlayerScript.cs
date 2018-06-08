@@ -933,22 +933,6 @@ public class LocalPlayerScript : NetworkBehaviour
 
     Color getColor()
     {
-        /*if(playerID == 1)
-        {
-            return new Color(1, 1, 1, 1);
-        }
-        else if(playerID == 2)
-        {
-            return new Color(1, 0, 0, 1);
-        }
-        else if(playerID == 3)
-        {
-            return new Color(0, 1, 0, 1);
-        }
-        else
-        {
-            return new Color(0, 0, 1, 1);
-        }*/
         return color;
     }
 
