@@ -94,7 +94,7 @@ public class NetworkedPlayerScript : LocalPlayerScript {
             int playerType = (Random.Range(0, 3));
             if (playerType == 0)
             {
-                GetComponent<NetworkedPlayerScript>().setPlayerType("Saidon");
+                GetComponent<NetworkedPlayerScript>().setPlayerType("Mage");
             }
             else if (playerType == 1)
             {
