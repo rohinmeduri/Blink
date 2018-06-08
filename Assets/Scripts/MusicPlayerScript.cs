@@ -50,9 +50,14 @@ public class MusicPlayerScript : MonoBehaviour {
         }
     }
 
-    public void playVictory()
+    public void queueVictory()
     {
         GetComponent<AudioSource>().Stop();
+        Invoke("playVictory", 2);
+    }
+
+    private void playVictory()
+    {
         GetComponent<AudioSource>().PlayOneShot(victoryMusic);
         /**
          * Uncomment the below code if want to have music return after victory sound

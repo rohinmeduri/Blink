@@ -29,7 +29,7 @@ public class SoundEffectPlayer : MonoBehaviour {
      * 6: Jump/Land
      * 7: Reversal
      * 8: Run
-     * 9: Thump
+     * 9: Bighit
      * 
      */
     public virtual void setSoundEffects(string playerType)
@@ -61,7 +61,7 @@ public class SoundEffectPlayer : MonoBehaviour {
         soundEffectClip[6][1] = Resources.Load("SoundEffects/" + playerType + "/Land") as AudioClip;
         soundEffectClip[7][0] = Resources.Load("SoundEffects/" + playerType + "/Reversal") as AudioClip;
         soundEffectClip[8][0] = Resources.Load("SoundEffects/" + playerType + "/Run") as AudioClip;
-        soundEffectClip[9][0] = Resources.Load("SoundEffects/" + playerType + "/Death") as AudioClip;
+        soundEffectClip[9][0] = Resources.Load("SoundEffects/" + playerType + "/Bighit") as AudioClip;
     }
 
     public virtual void playSoundEffect(int index, int version, float volume)
