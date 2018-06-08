@@ -90,10 +90,13 @@ public class LocalDataTracker : NetworkBehaviour {
             {
 
                 NetworkedPlayerScript winningPlayer = GameObject.FindGameObjectWithTag("Player").GetComponent<NetworkedPlayerScript>();
+
+                winner = winningPlayer.getPlayerType();
+                Debug.Log(winner);
+
                 if (winningPlayer.getHasAuthority())
                 {
                     winningPlayer.compileData();
-                    winner = winningPlayer.getPlayerType();
                 }
             }
         }
