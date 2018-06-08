@@ -28,9 +28,32 @@ public class CSSUIObject: MonoBehaviour {
     private static string[] types = { "Player", "AI", "None" };
     private static string[] difficulties = { "Easy", "Normal", "Hard" };
 
+    private static int frameCounter = 0;
+    private static bool disabled = false;
+    private static float difficultyYPosition;
+
     // Use this for initialization
     void Start () {
+        if (!disabled)
+        {
+            difficultyYPosition = DifficultySelection.GetComponent<RectTransform>().anchoredPosition.y;
+        }
+        DifficultySelection.GetComponent<RectTransform>().anchoredPosition = new Vector2(DifficultySelection.GetComponent<RectTransform>().anchoredPosition.x, difficultyYPosition + 2000);
+        disabled = true;
+    }
+    private void Update()
+    {
+        /*frameCounter++;
+        if(frameCounter >= 2 && !disabled)
+        {
+            DifficultySelection.SetActive(false);
+            disabled = true;
+        }*/
+    }
 
+    private void OnEnable()
+    {
+        //DifficultySelection.SetActive(false);
     }
 
     public void increaseTypeButtonClick(int characterIndex)  // -1 is left, 1 is right
@@ -41,6 +64,7 @@ public class CSSUIObject: MonoBehaviour {
         if (data.getType(characterIndex) == 1)
         {
             DifficultySelection.SetActive(true);
+            DifficultySelection.GetComponent<RectTransform>().anchoredPosition = new Vector2(DifficultySelection.GetComponent<RectTransform>().anchoredPosition.x, difficultyYPosition);
         }
         else
         {
@@ -66,6 +90,7 @@ public class CSSUIObject: MonoBehaviour {
         if (data.getType(characterIndex) == 1)
         {
             DifficultySelection.SetActive(true);
+            DifficultySelection.GetComponent<RectTransform>().anchoredPosition = new Vector2(DifficultySelection.GetComponent<RectTransform>().anchoredPosition.x, difficultyYPosition);
         }
         else
         {

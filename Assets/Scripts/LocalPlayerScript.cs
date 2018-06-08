@@ -198,20 +198,16 @@ public class LocalPlayerScript : NetworkBehaviour
 
         if(ID == 1)
         {
-            setPlayerType("Mage");
         }
         else if (ID == 2)
         {
-            setPlayerType("Rebel");
             facingRight = false;
         }
         else if (ID == 3)
         {
-            setPlayerType("Mage");
         }
         else if (ID == 4)
         {
-            setPlayerType("Rebel");
             facingRight = false;
         }
 
@@ -272,7 +268,7 @@ public class LocalPlayerScript : NetworkBehaviour
     }
 
 
-    protected virtual void setPlayerType(string pt)
+    public virtual void setPlayerType(string pt)
     {
         playerType = pt;
         if (playerType.Equals("Mage"))
