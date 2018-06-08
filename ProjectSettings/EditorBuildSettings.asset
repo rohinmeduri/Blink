@@ -36,6 +36,6 @@ EditorBuildSettings:
     path: Assets/_Scenes/Multiplayer Scene and Music Select Menu.unity
     guid: 909245fd4342b5e4ebe5a3c7905a9cee
   - enabled: 1
-    path: Assets/_Scenes/Character Select Menu.unity
+    path: Assets/_Scenes/Local Character Select Menu.unity
     guid: 24d57378c38811e4d90e2de88b11c00d
   m_configObjects: {}
