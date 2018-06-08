@@ -337,7 +337,7 @@ public class LocalPlayerScript : NetworkBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
-         hasSuper = true; /////
+        ///// hasSuper = true; /////
         startCounter += Time.deltaTime;
         if (startCounter <= GAME_START_TIME)
         {
