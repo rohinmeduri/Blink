@@ -10,6 +10,7 @@ public class NetworkedPlayerScript : LocalPlayerScript {
     private GameObject dataTracker;
     [SyncVar(hook = "OnPlayerNumber")]
     private int playerNumber;
+    private string[] characterStrings = { "Mage", "Rebel", "Saidon" };
 
     public override void OnStartAuthority()
     {
@@ -23,6 +24,7 @@ public class NetworkedPlayerScript : LocalPlayerScript {
                 if(i == gameObject)
                 {
                     setPlayerID(1);
+                    setPlayerType(characterStrings[GetComponent<CharacterDataObject>().getCharacter(0)]);
                     gameObject.layer = 2;
                 }
                 else
@@ -43,7 +45,6 @@ public class NetworkedPlayerScript : LocalPlayerScript {
     {
         playerNumber = num;
         callSetPlayerPosition(num); 
-        Debug.Log("playerNumber" + playerNumber);
     }
 
     protected override void setPlayerPosition(int posNum){
