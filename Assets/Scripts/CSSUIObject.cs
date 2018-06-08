@@ -21,6 +21,8 @@ public class CSSUIObject: MonoBehaviour {
     public Text typeText;
     public Button increaseCharacterType;
     public Button decreaseCharacterType;
+    public Sprite[] characters;
+    public Image preview;
 
     //constants for use in UI
     private static string[] types = { "Player", "AI", "None" };
@@ -85,13 +87,15 @@ public class CSSUIObject: MonoBehaviour {
     public void increaseCharacterButtonClick(int characterIndex)
     {
         data.changeCharacter(characterIndex, 1);
-
+        preview.GetComponent<Image>().sprite = characters[characterIndex];
+        Debug.Log("characterIndex: " + characterIndex);
         //STILL NEED TO CHANGE SPRITE AND NAME SPRITE BASED ON CODE
     }
     public void decreaseCharacterButtonClick(int characterIndex)
     {
         data.changeCharacter(characterIndex, -1);
-
+        preview.GetComponent<Image>().sprite = characters[characterIndex];
+        Debug.Log("characterIndex: " + characterIndex);
         //STILL NEED TO CHANGE SPRITE AND NAME SPRITE BASED ON CODE
     }
 
