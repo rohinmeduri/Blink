@@ -9,12 +9,12 @@ EditorBuildSettings:
     path: Assets/_Scenes/_Main Menu.unity
     guid: 6cce08fe77cf0234bacc1df1b6378e4b
   - enabled: 1
-    path: Assets/_Scenes/Local Battle Scene 1.unity
+    path: Assets/_Scenes/Local Battle Scene.unity
     guid: c6daf72e57537c946a50437fcc85ae90
   - enabled: 1
     path: Assets/_Scenes/Multiplayer Battle Scene.unity
     guid: 657477b8a52cd554ea54d490fbc73ea8
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Scenes/Local Lobby Menu.unity
     guid: e2bf350534df7d14181835793ecab646
   - enabled: 1
@@ -23,7 +23,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Scenes/Tutorial.unity
     guid: e2c9d5eeab3a3eb469f2f3df207f553b
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Scenes/Local Character Select Menu.unity
     guid: 39ea3f29b50527a4fb54dcd838d8bd8a
   - enabled: 1
@@ -35,4 +35,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Scenes/Multiplayer Scene and Music Select Menu.unity
     guid: 909245fd4342b5e4ebe5a3c7905a9cee
+  - enabled: 1
+    path: Assets/_Scenes/Character Select Menu.unity
+    guid: 24d57378c38811e4d90e2de88b11c00d
   m_configObjects: {}
