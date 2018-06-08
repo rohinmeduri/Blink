@@ -125,6 +125,7 @@ GameObject:
   - component: {fileID: 55062326}
   - component: {fileID: 55062325}
   - component: {fileID: 55062328}
+  - component: {fileID: 55062329}
   m_Layer: 5
   m_Name: Colliseum
   m_TagString: Untagged
@@ -249,6 +250,19 @@ MonoBehaviour:
   stage: {fileID: 21300000, guid: 056ba33d918a23b418d53e576166c9fb, type: 3}
   preview: {fileID: 990722663}
   frame: {fileID: 21300000, guid: 87c08216c68f18d4d836343a5cc7a0ff, type: 3}
+--- !u!114 &55062329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 55062323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea7550af803f19b49ba99d0a62a7fdb5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultStage: {fileID: 21300000, guid: 056ba33d918a23b418d53e576166c9fb, type: 3}
+  defaultFrame: {fileID: 21300000, guid: 87c08216c68f18d4d836343a5cc7a0ff, type: 3}
 --- !u!1 &57622934
 GameObject:
   m_ObjectHideFlags: 0

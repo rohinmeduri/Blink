@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+//this script handles user input in character selection so the UI elements remain robust/relevant
 public class CSSUIObject: MonoBehaviour {
 
     //DataForCharacter
@@ -32,7 +34,7 @@ public class CSSUIObject: MonoBehaviour {
     private static bool disabled = false;
     private static float difficultyYPosition;
 
-    // Use this for initialization
+    //hide difficultySelection on start (default option is player, not AI. For some reason, disabling in editor breaks this script)
     void Start () {
         if (!disabled)
         {
@@ -41,21 +43,8 @@ public class CSSUIObject: MonoBehaviour {
         DifficultySelection.GetComponent<RectTransform>().anchoredPosition = new Vector2(DifficultySelection.GetComponent<RectTransform>().anchoredPosition.x, difficultyYPosition + 2000);
         disabled = true;
     }
-    private void Update()
-    {
-        /*frameCounter++;
-        if(frameCounter >= 2 && !disabled)
-        {
-            DifficultySelection.SetActive(false);
-            disabled = true;
-        }*/
-    }
 
-    private void OnEnable()
-    {
-        //DifficultySelection.SetActive(false);
-    }
-
+    //scripts that take user input and change the options available to the player accordingly (for example, show difficulties options if an AI is selected
     public void increaseTypeButtonClick(int characterIndex)  // -1 is left, 1 is right
     {
         data.changeType(characterIndex, 1);
@@ -113,15 +102,11 @@ public class CSSUIObject: MonoBehaviour {
     {
         data.changeCharacter(characterIndex, 1);
         preview.GetComponent<Image>().sprite = characters[data.getCharacter(characterIndex)];
-        Debug.Log("characterIndex: " + characterIndex);
-        //STILL NEED TO CHANGE SPRITE AND NAME SPRITE BASED ON CODE
     }
     public void decreaseCharacterButtonClick(int characterIndex)
     {
         data.changeCharacter(characterIndex, -1);
         preview.GetComponent<Image>().sprite = characters[data.getCharacter(characterIndex)];
-        Debug.Log("characterIndex: " + characterIndex);
-        //STILL NEED TO CHANGE SPRITE AND NAME SPRITE BASED ON CODE
     }
 
     public void increaseDifficultyButtonClick(int characterIndex)
