@@ -2,20 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//script that plays sound effects in battle scenes
 public class SoundEffectPlayer : MonoBehaviour {
 
     private AudioSource[] soundEffectSource;
     private AudioClip[][] soundEffectClip;
-
-	// Use this for initialization
-	void Start () {
-        
-    }
-
-    // Update is called once per frame
-    void Update () {
-		
-	}
 
 
     /**
@@ -32,6 +23,8 @@ public class SoundEffectPlayer : MonoBehaviour {
      * 9: Bighit
      * 
      */
+
+    //load all sound effect files
     public virtual void setSoundEffects(string playerType)
     {
         soundEffectSource = new AudioSource[10];
@@ -64,13 +57,14 @@ public class SoundEffectPlayer : MonoBehaviour {
         soundEffectClip[9][0] = Resources.Load("SoundEffects/" + playerType + "/Bighit") as AudioClip;
     }
 
+    //play sound effect given by index and version (version corresponds to player type)
     public virtual void playSoundEffect(int index, int version, float volume)
     {
         soundEffectSource[index].volume = volume;
         soundEffectSource[index].PlayOneShot(soundEffectClip[index][version]);
     }
 
-
+    //cancel a sound effect
     public virtual void stopSoundEffect(int index)
     {
         soundEffectSource[index].Stop();
