@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
+/* Script that takes the local player script and syncs values across a network for online battle
+ * NOTE: command function are run on the server, rpc functions are run on clients
+ *       As clients cannot communicate directly to one another, much of this script consists of telling the server to
+ *       tell the other clients to update some value or perform an action
+ */ 
+
 public class NetworkedPlayerScript : LocalPlayerScript
 {
 
@@ -15,6 +21,7 @@ public class NetworkedPlayerScript : LocalPlayerScript
 
     public override void OnStartAuthority()
     {
+
         if (hasAuthority)
         {
             networkAnimator = GetComponent<NetworkAnimator>();
@@ -22,15 +29,19 @@ public class NetworkedPlayerScript : LocalPlayerScript
             IDAssigner = GameObject.Find("ID Assigner");
             foreach (var i in players)
             {
+                //initialize local player
                 if (i == gameObject)
                 {
                     setPlayerType(characterStrings[GetComponent<CharacterDataObject>().getCharacter(0)]);
                     gameObject.layer = 2;
                     setPlayerID(1);
                 }
+                //initialize other player objects that were already in the scene and belong to others
                 else
                 {
                     i.GetComponent<NetworkedPlayerScript>().setPlayerID(IDAssigner.GetComponent<IDAssigner>().getID());
+
+                    //randomly assign player type - characters are functionally equivalent so its is not necessary to sync character selections
                     Random rnd = new Random();
                     int playerType = (Random.Range(0, 3));
                     if (playerType == 0)
@@ -53,6 +64,7 @@ public class NetworkedPlayerScript : LocalPlayerScript
 
     public override void setPlayerID(int ID)
     {
+        //set colors for other players so they are easy to distinguish from you local client player
         if (ID == 1)
         {
             setColor(0);
@@ -72,6 +84,7 @@ public class NetworkedPlayerScript : LocalPlayerScript
         base.setPlayerID(ID);
     }
 
+    //scripts used to sync the starting positions of the players
     public void setPlayerNumber(int number)
     {
         playerNumber = number;
@@ -93,6 +106,7 @@ public class NetworkedPlayerScript : LocalPlayerScript
         base.setPlayerPosition(num);
     }
 
+
     [Command]
     void CmdNewPlayer()
     {
@@ -106,13 +120,15 @@ public class NetworkedPlayerScript : LocalPlayerScript
     }
 
 
-    //this function is used for non-local versions of this player
+    //this function is called on all other clients when a new player is created so that it can be initialized properly
     public void newPlayer()
     {
         if (!hasAuthority && (getPlayerID() == 0))
         {
             IDAssigner = GameObject.Find("ID Assigner");
             setPlayerID(IDAssigner.GetComponent<IDAssigner>().getID());
+
+            //once again, randomize the player type (see above)
             Random rnd = new Random();
             int playerType = (Random.Range(0, 3));
             if (playerType == 0)
@@ -213,12 +229,14 @@ public class NetworkedPlayerScript : LocalPlayerScript
         }
     }
 
+    //sync glory changes after attacks
     protected override void attackGloryUpdate(GameObject otherPlayer, int hits, bool trueHit)
     {
         base.attackGloryUpdate(otherPlayer, hits, trueHit);
         CmdGloryUpdate(numGlory, otherPlayer.GetComponent<LocalPlayerScript>().numGlory, otherPlayer);
     }
 
+    //sync flory changes after reversals
     protected override void reversalGloryUpdate(GameObject attacker, int hits)
     {
         base.reversalGloryUpdate(attacker, hits);
@@ -232,6 +250,7 @@ public class NetworkedPlayerScript : LocalPlayerScript
         otherPlayer.GetComponent<LocalPlayerScript>().numGlory = otherGlory;
     }
 
+    //creates blink animations on all cients
     protected override void blinkOutAnimation()
     {
         networkAnimator.SetTrigger("blinking");
@@ -258,6 +277,7 @@ public class NetworkedPlayerScript : LocalPlayerScript
         }
     }
 
+    //trigger other animations across all clients
     protected override void reversalAnimation()
     {
         networkAnimator.SetTrigger("reversaling");
@@ -369,6 +389,7 @@ public class NetworkedPlayerScript : LocalPlayerScript
         comboHits = hits;
     }
 
+    //functions that create super projectiles on all cients
     protected override void spawnSuper()
     {
         CmdSpawnSuperProjectile();
@@ -389,6 +410,7 @@ public class NetworkedPlayerScript : LocalPlayerScript
         projectile = p;
     }
 
+    //tells all clients to 'activate' the super projectile
     protected override void activateProjectile(Vector2 direction)
     {
         CmdActivateProjectile(direction);
@@ -406,6 +428,7 @@ public class NetworkedPlayerScript : LocalPlayerScript
         base.activateProjectile(direction);
     }
 
+    //syncs sound effects on all clients
     protected override void createSoundEffect(int index, int version, float volume)
     {
         CmdCreateSoundEffect(index, version, volume);
@@ -440,6 +463,7 @@ public class NetworkedPlayerScript : LocalPlayerScript
         base.stopSoundEffect(index);
     }
 
+    //functions that sync visual effects on all clients
     protected override void createVisualEffect(int index)
     {
         CmdCreateVisualEffect(index);
@@ -457,6 +481,7 @@ public class NetworkedPlayerScript : LocalPlayerScript
         base.createVisualEffect(index);
     }
 
+    //tells all clients to create the 'super glow' on this player
     protected override void superEffect(bool active)
     {
         CmdSuperEffect(active);
@@ -514,6 +539,7 @@ public class NetworkedPlayerScript : LocalPlayerScript
         }
     }
 
+    //functions that sync player stats across the network
     [Command]
     void CmdUpdateStats(int mc, int hn, int hp, int k)
     {
