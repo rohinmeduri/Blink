@@ -384,7 +384,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stage: {fileID: 21300000, guid: 524a68b7da72ea945a117bc1abbc66ef, type: 3}
   preview: {fileID: 990722663}
-  frame: {fileID: 21300000, guid: 14d30a316e67ea245ac01f5b2e9954cc, type: 3}
+  frame: {fileID: 21300000, guid: d0359bb1b2836404eb5439575dffd6ba, type: 3}
 --- !u!1 &183237304
 GameObject:
   m_ObjectHideFlags: 0
