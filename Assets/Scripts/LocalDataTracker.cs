@@ -134,7 +134,7 @@ public class LocalDataTracker : NetworkBehaviour {
         }
         else if (winner.Equals("Saidon"))
         {
-            endScreen.transform.Find("WinnerName").GetComponent<Image>().sprite = Rebel;
+            endScreen.transform.Find("WinnerName").GetComponent<Image>().sprite = Saidon;
 
         }
 
