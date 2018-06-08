@@ -149,7 +149,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 8710afb7989f3ea4a996bc1998a178f1, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d87682889f1cec24eb71d5241251f21f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -418,9 +418,9 @@ MonoBehaviour:
   increaseCharacterType: {fileID: 0}
   decreaseCharacterType: {fileID: 0}
   characters:
-  - {fileID: 21300000, guid: 8710afb7989f3ea4a996bc1998a178f1, type: 3}
-  - {fileID: 21300000, guid: 4e87059e32e57c74188477a2dbaf9526, type: 3}
-  - {fileID: 21300000, guid: b074498491141284c831b68c22f52963, type: 3}
+  - {fileID: 21300000, guid: d87682889f1cec24eb71d5241251f21f, type: 3}
+  - {fileID: 21300000, guid: aab33992c4f037c40bc99ba2806665be, type: 3}
+  - {fileID: 21300000, guid: adf01b52f603d0d4eb798251d606a4dc, type: 3}
   preview: {fileID: 121084222}
 --- !u!114 &323542947
 MonoBehaviour:
@@ -579,9 +579,9 @@ MonoBehaviour:
   increaseCharacterType: {fileID: 0}
   decreaseCharacterType: {fileID: 0}
   characters:
-  - {fileID: 21300000, guid: d5d347e1bf1e8dd4bb8af7a0711a5a4e, type: 3}
-  - {fileID: 21300000, guid: eee788ab86b78824e9253b94019d3200, type: 3}
-  - {fileID: 21300000, guid: b074498491141284c831b68c22f52963, type: 3}
+  - {fileID: 21300000, guid: d87682889f1cec24eb71d5241251f21f, type: 3}
+  - {fileID: 21300000, guid: aab33992c4f037c40bc99ba2806665be, type: 3}
+  - {fileID: 21300000, guid: adf01b52f603d0d4eb798251d606a4dc, type: 3}
   preview: {fileID: 121084222}
 --- !u!114 &343812557
 MonoBehaviour:
@@ -1038,7 +1038,7 @@ Prefab:
     - target: {fileID: 224484663500295170, guid: 463c62a4a6214c34f80c70deb2fa1d4f,
         type: 2}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 224484663500295170, guid: 463c62a4a6214c34f80c70deb2fa1d4f,
         type: 2}
