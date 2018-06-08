@@ -337,7 +337,7 @@ public class LocalPlayerScript : NetworkBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
-        ///// hasSuper = true; /////
+        hasSuper = true; /////
         startCounter += Time.deltaTime;
         if (startCounter <= GAME_START_TIME)
         {
@@ -982,6 +982,7 @@ public class LocalPlayerScript : NetworkBehaviour
     
     void rotateSuperProjectile()
     {
+        if (projectile == null) return;
         if (startedSuper)
         {
             Vector2 direction = getDirection();
@@ -1012,6 +1013,7 @@ public class LocalPlayerScript : NetworkBehaviour
 
     protected virtual void activateProjectile(Vector2 direction)
     {
+        if (projectile == null) return;
         projectile.GetComponent<SuperProjectileScript>().setSender(gameObject);
         projectile.GetComponent<SuperProjectileScript>().activate(direction);
     }
@@ -1025,12 +1027,28 @@ public class LocalPlayerScript : NetworkBehaviour
         go.GetComponent<LocalPlayerScript>().cancelSuperAnimation();
         go.GetComponent<LocalPlayerScript>().stopSoundEffect(4);
         Destroy(go.GetComponent<LocalPlayerScript>().projectile);
-        Destroy(go);
+        go.GetComponent<LocalPlayerScript>().deathAnimation();
+        go.GetComponent<LocalPlayerScript>().stunTimer = 9999;
+        go.GetComponent<LocalPlayerScript>().hitstunAnimation();
         createSoundEffect(9, 0, 1.0f);
         kills++;
 
         LocalDataTracker ldt = GameObject.Find("Data Tracker").GetComponent<LocalDataTracker>();
         ldt.playerDeath(go, gameObject);
+    }
+
+    public virtual void deathAnimation()
+    {
+        Color currentColor = gameObject.GetComponent<SpriteRenderer>().material.color;
+        if (currentColor.a > 0)
+        {
+            gameObject.GetComponent<SpriteRenderer>().material.color = new Color(currentColor.r, currentColor.g, currentColor.b, currentColor.a - Time.deltaTime);
+            Invoke("deathAnimation", Time.deltaTime);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     public void cancelSuperAnimation()
