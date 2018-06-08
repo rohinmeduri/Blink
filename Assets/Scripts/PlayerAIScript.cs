@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
+//script that controls player AIs - derived from localPlayerScript
 public class PlayerAIScript : LocalPlayerScript {
     private float directionInputX = 0;
     private float directionInputY = 0;
@@ -17,16 +18,17 @@ public class PlayerAIScript : LocalPlayerScript {
     private bool countBlink = false;
 
     public readonly float[] REACTION_TIME = {0.5f, 0.4f, 0.25f}; //how long AI takes to react to other player's movements
-    public readonly float[] BLINK_DISTANCE_FACTOR = {4f, 2f, 1.2f};
+    public readonly float[] BLINK_DISTANCE_FACTOR = {4f, 2f, 1.2f}; //how far other players must be for AI to blink
 
     protected override void Update()
     {
-        //find enemy player
+        //find enemy players
         GameObject[] playerEnemies = GameObject.FindGameObjectsWithTag("Player");
         GameObject[] AIenemies = GameObject.FindGameObjectsWithTag("PlayerAI");
         GameObject[] enemies = playerEnemies.Concat(AIenemies).ToArray();
         float enemyDistance = Mathf.Infinity;
 
+        //find the closest enemy
         for (var i = 0; i < enemies.Length; i++)
         {
             Vector2 myTransform = GetComponent<Transform>().position;
@@ -43,6 +45,7 @@ public class PlayerAIScript : LocalPlayerScript {
             }
         }
 
+        //reset winCombo if AI gets hit
         if(stunTimer > 0)
         {
             blinkCheck = false;
@@ -55,7 +58,7 @@ public class PlayerAIScript : LocalPlayerScript {
     }
 
     
-
+    //set the difficulty of the player (changes the AI's accuracy, reaction time, and blink distance)
     public void setPlayerDifficulty(int difficulty)
     {
         if(difficulty > 2)
@@ -69,23 +72,29 @@ public class PlayerAIScript : LocalPlayerScript {
         playerDifficulty = difficulty;
     }
 
+    //main function that defines this script - playerAI behaves by providing its own inputs that take the place of the controller/keyboard
+    //these inputs are then handles as normal through the localPlayerScript functions
     protected override void assignInputs()
     {
         //check that that there is still an enemy, otherwise no input
         if (enemy != null)
         {
+            //keep track of timer for reaction time implementation purposes
             timeCounter += Time.deltaTime;
             positionTracker.Add((enemy.GetComponent<Transform>().position));
             timeTracker.Add(Time.deltaTime);
 
-            //determine movement and input based on enemy position (in the past)
+            //determine movement and input based on enemy position (in the past - defined by reaction time)
             if (timeCounter >= REACTION_TIME[playerDifficulty])
             {
+                //find input needed to bring AI closer to enemy position
                 Vector2 enemyTransform = positionTracker[0];
                 Vector2 myTransform = GetComponent<Transform>().position;
                 Vector2 input = (enemyTransform - myTransform);
                 Vector2 directionInput = input;
                 directionInput.Normalize();
+
+                //change accuracy of AI based on difficulty
                 if (playerDifficulty == 0)
                 {
                     directionInput.x += Random.Range(-0.3f, 0.3f);
@@ -107,16 +116,23 @@ public class PlayerAIScript : LocalPlayerScript {
                 directionInputY = directionInput.y;
 
                 superInput = hasSuper;
+
+                //blink if enemg is far enough away
                 blinkInput = input.magnitude > attackRadius * BLINK_DISTANCE_FACTOR[playerDifficulty] && !superInput;
 
+                //jump if enemy is sufficiently higher than AI
                 jumpInput = input.y > attackRadius;
+
+                //attack or reversal if enemy is close enough
                 if (input.magnitude < attackRadius * 0.8f)
                 {
                     facingRight = input.x >= 0;
                     input = Vector2.zero;
+                    //1 in 4 chance of reversaling if not in a combo (if in a combo, AI will always attack rather than reversal)
                     reversalInput = comboHits == 0 && Mathf.CeilToInt(Random.value * 4.0f) == 4;
                     attackInput = !reversalInput;
                 }
+                //do not attack/reversal if enemy is too far
                 else
                 {
                     input.Normalize();
@@ -127,6 +143,7 @@ public class PlayerAIScript : LocalPlayerScript {
                 inputX = input.x;
                 inputY = input.y;
 
+                //update positionTracker so reaction time can be used
                 while (timeCounter >= REACTION_TIME[playerDifficulty])
                 {
                     timeCounter -= timeTracker[0];
@@ -136,11 +153,13 @@ public class PlayerAIScript : LocalPlayerScript {
                 }
             }
 
+            //if AI has the super and is of medium or hard difficulty, initiate the winCombo
             if (hasSuper && playerDifficulty > 0)
             {
                 winCombo();
             }
         }
+        //don't do anything if there isn't enough player data for reation time to go into effect
         else
         {
             superInput = false;
@@ -249,6 +268,7 @@ public class PlayerAIScript : LocalPlayerScript {
 
     protected override void DI()
     {
+        //only DI if difficulty is medium or hard
         if (playerDifficulty > 0)
         {
             //DI away from enemy

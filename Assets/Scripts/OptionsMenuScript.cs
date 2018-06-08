@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//script that hides/shows the options menu in the main menu
 public class OptionsMenuScript : MonoBehaviour {
     private bool show = false;
-	// Use this for initialization
-	void Start () {
-		
-	}
 	
-	// Update is called once per frame
+	// slide in/out the options menu
 	void Update () {
         if (show)
         {
@@ -25,18 +22,17 @@ public class OptionsMenuScript : MonoBehaviour {
     {
         if (show)
         {
-            //GetComponent<RectTransform>().anchoredPosition = new Vector2(-1600, 0);
             show = false;
         }
         else
         {
-            //GetComponent<RectTransform>().anchoredPosition = new Vector2(-260, 0);
             show = true;
         }
     }
 
     void slideIn()
     {
+        //slide in until it reaches final position
         if(GetComponent<RectTransform>().anchoredPosition.x < -260)
         {
             GetComponent<RectTransform>().anchoredPosition = new Vector2(GetComponent<RectTransform>().anchoredPosition.x + 52, 0);
@@ -50,6 +46,7 @@ public class OptionsMenuScript : MonoBehaviour {
 
     void slideOut()
     {
+        //slide out until it reaches final position
         if (GetComponent<RectTransform>().anchoredPosition.x > -1600)
         {
             GetComponent<RectTransform>().anchoredPosition = new Vector2(GetComponent<RectTransform>().anchoredPosition.x -160, 0);

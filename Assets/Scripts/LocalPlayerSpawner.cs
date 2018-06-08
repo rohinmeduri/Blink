@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
+//script that creates the player and AI objects at the beginning of the local battle scene
 public class LocalPlayerSpawner : MonoBehaviour{
     private int numPlayers;
     private int numAIs;
@@ -29,6 +29,7 @@ public class LocalPlayerSpawner : MonoBehaviour{
         //0 is mage, 1 is rebel, 2 is saidon
         characters = GetComponent<CharacterDataObject>().getCharactersArray();
         
+        //take info from arrays and assign the values to the objects
         for(int i = 0; i < 4; i++)
         {
             if (types[i] != 2)
@@ -44,6 +45,7 @@ public class LocalPlayerSpawner : MonoBehaviour{
                     player.GetComponent<PlayerAIScript>().setPlayerDifficulty(AIDifficulties[i]);
                 }
 
+                //keep track if characters are repeated so they can be differentiated by changin color scheme
                 bool repeat = false;
                 if(characters[i] == 0)
                 {

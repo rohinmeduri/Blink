@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+//script that handles the soundfx toggle
 public class SoundFXOptionScript : MonoBehaviour {
     public static bool soundFX = true;
     public Sprite onImage;
     public Sprite offImage;
     public int frameCounter = 0;
-	// Use this for initialization
-	void Start () {
-    }
 	
 	// Update is called once per frame
 	void Update () {
         frameCounter++;
+
+        //each player has its own soundEffectPlayer, so they must all be synced individually
         if(frameCounter == 2)
         {
             GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
@@ -49,6 +50,7 @@ public class SoundFXOptionScript : MonoBehaviour {
         }
 	}
 
+    //turn soundFX on/off
     public void toggleSoundFX()
     {
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");

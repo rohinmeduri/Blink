@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-
+//script that plays music based on what sccene the player is on
 public class MusicPlayerScript : MonoBehaviour {
     public static bool created = false;
     private bool lobbyScene = true;
@@ -21,10 +21,13 @@ public class MusicPlayerScript : MonoBehaviour {
             Destroy(gameObject);
         }
         created = true;
+
+        //make sure music player persists between scenes so music doesn't stop
         DontDestroyOnLoad(gameObject);
         audioSource = GameObject.Find("MusicPlayer").GetComponent<AudioSource>();
 	}
 
+    //keep track of which scene the player is on
     void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -35,6 +38,7 @@ public class MusicPlayerScript : MonoBehaviour {
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
+    //check what music to play when the scene is changed
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         var lobbySceneNow = !(scene.name == "Local Battle Scene" || scene.name == "Multiplayer Battle Scene");
@@ -44,16 +48,13 @@ public class MusicPlayerScript : MonoBehaviour {
             if (lobbyScene)
             {
                 audioSource.clip = menuMusic;
-            }/*
-            else
-            {
-                audioSource.clip = battleMusic;
-            }*/
+            }
 
             audioSource.PlayDelayed(0.5f);
         }
     }
 
+    //function that allows user to pick the music that plays from the stage select screen
     public void chooseMusic(int index)
     {
         switch (index)
@@ -74,38 +75,16 @@ public class MusicPlayerScript : MonoBehaviour {
         audioSource.PlayDelayed(0.5f);
     }
 
+    //function that prepares to play the victory sound by stopping other music
     public void queueVictory()
     {
         audioSource.Stop();
         Invoke("playVictory", 2);
     }
 
+    //function that plays victory sound when a player wins
     private void playVictory()
     {
         audioSource.PlayOneShot(victoryMusic);
-        /**
-         * Uncomment the below code if want to have music return after victory sound
-         */
-
-        //Invoke("stopVictoryMusic", 4f);
     }
-    /*
-    private void stopVictoryMusic()
-    {
-        audioSource.volume = 0;
-        audioSource.clip = battleMusic;
-        audioSource.Play();
-        afterVictory();
-    }
-
-    private void afterVictory()
-    {
-        if (audioSource.volume < 1)
-        {
-            audioSource.volume += Time.deltaTime;
-            Debug.Log("victpry");
-            Invoke("afterVictory", Time.deltaTime);
-        }
-    }
-    */
 }
