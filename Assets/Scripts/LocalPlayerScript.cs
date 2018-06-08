@@ -195,6 +195,7 @@ public class LocalPlayerScript : NetworkBehaviour
 
     public void setPlayerID(int ID)
     {
+        Debug.Log(ID);
         playerID = ID;
 
         if(ID == 1)

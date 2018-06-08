@@ -27,7 +27,6 @@ public class NetworkedPlayerScript : LocalPlayerScript {
             {
                 if (i == gameObject)
                 {
-
                     setPlayerType(characterStrings[GetComponent<CharacterDataObject>().getCharacter(0)]);
                     if (GetComponent<CharacterDataObject>().getCharacter(0) == 0)
                     {
