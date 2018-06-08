@@ -87,14 +87,14 @@ public class CSSUIObject: MonoBehaviour {
     public void increaseCharacterButtonClick(int characterIndex)
     {
         data.changeCharacter(characterIndex, 1);
-        preview.GetComponent<Image>().sprite = characters[characterIndex];
+        preview.GetComponent<Image>().sprite = characters[data.getCharacter(characterIndex)];
         Debug.Log("characterIndex: " + characterIndex);
         //STILL NEED TO CHANGE SPRITE AND NAME SPRITE BASED ON CODE
     }
     public void decreaseCharacterButtonClick(int characterIndex)
     {
         data.changeCharacter(characterIndex, -1);
-        preview.GetComponent<Image>().sprite = characters[characterIndex];
+        preview.GetComponent<Image>().sprite = characters[data.getCharacter(characterIndex)];
         Debug.Log("characterIndex: " + characterIndex);
         //STILL NEED TO CHANGE SPRITE AND NAME SPRITE BASED ON CODE
     }

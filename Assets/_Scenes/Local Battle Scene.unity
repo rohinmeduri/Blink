@@ -810,8 +810,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 655318693}
-  - component: {fileID: 655318692}
   - component: {fileID: 655318691}
+  - component: {fileID: 655318692}
   m_Layer: 0
   m_Name: Player spawner
   m_TagString: Untagged
@@ -841,21 +841,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 655318690}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5acc82fbf2abbd74a99cc03a00873fdb, type: 3}
+  m_Script: {fileID: 11500000, guid: 0a7212bef5eea65428fb9f0a10fcfbe5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  players: {fileID: 0}
-  AI: {fileID: 0}
-  AIDiff1: {fileID: 0}
-  AIDiff2: {fileID: 0}
-  AIDiff3: {fileID: 0}
-  AIGroup1: {fileID: 0}
-  AIGroup2: {fileID: 0}
-  AIGroup3: {fileID: 0}
-  DecreaseAI: {fileID: 0}
-  IncreaseAI: {fileID: 0}
-  DecreasePlayers: {fileID: 0}
-  IncreasePlayers: {fileID: 0}
 --- !u!4 &655318693
 Transform:
   m_ObjectHideFlags: 0

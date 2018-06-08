@@ -6,16 +6,22 @@ using UnityEngine;
 public class LocalPlayerSpawner : MonoBehaviour{
     private int numPlayers;
     private int numAIs;
+    private int[] types;
+    private int[] characters;
     private int[] AIDifficulties;
     public GameObject playerPrefab;
     public GameObject AIPrefab;
 
 	// Use this for initialization
 	void Start () {
-            
-        numPlayers = GetComponent<ChangePlayerNumber>().getNumberOfPlayers();
+
+        //0 is player, 1 is AI, 2 is none;
+        types = GetComponent<CharacterDataObject>().getTypeArray();
         numAIs = GetComponent<ChangePlayerNumber>().getNumberOfAI();
         AIDifficulties = GetComponent<ChangePlayerNumber>().getAIDifficulties();
+
+        //0 is easy, 1 is medium, 2 is hard
+        //0 is mage, 1 is rebel, 2 is saidon
 
 
         for (int i = 1; i <= numPlayers + numAIs; i++)
