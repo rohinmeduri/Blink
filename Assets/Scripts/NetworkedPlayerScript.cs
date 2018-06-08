@@ -30,6 +30,7 @@ public class NetworkedPlayerScript : LocalPlayerScript {
                 else
                 {
                     i.GetComponent<NetworkedPlayerScript>().setPlayerID(IDAssigner.GetComponent<IDAssigner>().getID());
+                    i.GetComponent<NetworkedPlayerScript>().setPlayerType("Saidon");
                 }
             }
             CmdNewPlayer();

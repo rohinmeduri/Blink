@@ -350,8 +350,8 @@ MonoBehaviour:
   increaseCharacterType: {fileID: 0}
   decreaseCharacterType: {fileID: 0}
   characters:
-  - {fileID: 21300000, guid: d5d347e1bf1e8dd4bb8af7a0711a5a4e, type: 3}
-  - {fileID: 21300000, guid: eee788ab86b78824e9253b94019d3200, type: 3}
+  - {fileID: 21300000, guid: 8710afb7989f3ea4a996bc1998a178f1, type: 3}
+  - {fileID: 21300000, guid: 4e87059e32e57c74188477a2dbaf9526, type: 3}
   - {fileID: 21300000, guid: b074498491141284c831b68c22f52963, type: 3}
   preview: {fileID: 121084222}
 --- !u!114 &323542947
