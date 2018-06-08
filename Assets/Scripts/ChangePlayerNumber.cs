@@ -213,7 +213,6 @@ public class ChangePlayerNumber : MonoBehaviour {
         {
             Dank[i] = Fresh[i];
         }
-        Debug.Log(numberOfAI);
         return Dank;
     }
     public void UpdateAIGroups()

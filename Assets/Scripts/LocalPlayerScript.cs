@@ -1026,6 +1026,7 @@ public class LocalPlayerScript : NetworkBehaviour
         go.GetComponent<LocalPlayerScript>().stopSoundEffect(4);
         Destroy(go.GetComponent<LocalPlayerScript>().projectile);
         Destroy(go);
+        createSoundEffect(9, 0, 1.0f);
         kills++;
 
         LocalDataTracker ldt = GameObject.Find("Data Tracker").GetComponent<LocalDataTracker>();
@@ -1375,7 +1376,7 @@ public class LocalPlayerScript : NetworkBehaviour
             }
             else
             {
-                createSoundEffect(9, 0, soundEffectsVolume);
+                //createSoundEffect(9, 0, soundEffectsVolume);
             }
         }
 
@@ -1515,10 +1516,21 @@ public class LocalPlayerScript : NetworkBehaviour
         //check if player has super or not
         if (numGlory == 100)
         {
+            if (!hasSuper)
+            {
+                createSoundEffect(5, 0, 1.0f);
+                superEffect(true);
+            }
             hasSuper = true;
+
         }
         else if (hasSuper && numGlory < SUPER_LOSS_GLORY)
         {
+            if (hasSuper)
+            {
+                createSoundEffect(5, 1, 1.0f);
+                superEffect(false);
+            }
             hasSuper = false;
         }
     }
