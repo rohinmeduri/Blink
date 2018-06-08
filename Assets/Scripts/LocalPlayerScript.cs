@@ -186,6 +186,11 @@ public class LocalPlayerScript : NetworkBehaviour
         glory.GetComponent<CanvasGroup>().alpha = 0;
     }
 
+    public string getPlayerType()
+    {
+        return playerType;
+    }
+
     public void setPlayerID(int ID)
     {
         playerID = ID;
@@ -335,8 +340,7 @@ public class LocalPlayerScript : NetworkBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
-        //// hasSuper = true;
-
+        ///// hasSuper = true; /////
         startCounter += Time.deltaTime;
         if (startCounter <= GAME_START_TIME)
         {
