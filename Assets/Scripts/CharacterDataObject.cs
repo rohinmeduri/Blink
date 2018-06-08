@@ -71,4 +71,16 @@ public class CharacterDataObject : MonoBehaviour {
         return AIDifficulties[characterIndex];
     }
     
+    public int[] getTypesArray()
+    {
+        return types;
+    }
+    public int[] getCharactersArray()
+    {
+        return characters;
+    }
+    public int[] getAIDifficultiesArray()
+    {
+        return AIDifficulties;
+    }
 }
